@@ -2,13 +2,14 @@
 // Created by jiangshanfeng on 2023/6/25.
 //
 
-#include <timer.h>
-#include <tool.h>
-
 #include <iostream>
 #include <cstring>
 #include <thread>
 #include <mutex>
+#include <map>
+
+#include <timer.h>
+#include <tool.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -66,6 +67,20 @@ int test() {
         source[i] = (char)('a' + i);
     }
     cout << "malloc cache cost " << tm.getTimerMicroSec() << " us" << endl;
+    tm.update();
+    map<int, int> m2;
+    for (int i = 0; i < 10000000; i++) {
+        m2.emplace(i, i);
+    }
+    cout << "map emplace cost " << tm.getTimerMicroSec() << " us" << endl;
+    m2.clear();
+    tm.update();
+    map<int, int> m;
+    for (int i = 0; i < 10000000; i++) {
+        m.insert(pair<int, int>(i, i));
+    }
+    cout << "map insert cost " << tm.getTimerMicroSec() << " us" << endl;
+    m.clear();
     tm.update();
     single();
     cout << "single copy cost " << tm.getTimerMicroSec() << " us" << endl;
