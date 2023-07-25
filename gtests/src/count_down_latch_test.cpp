@@ -17,6 +17,9 @@ TEST(HelloTest, TestCountDownLatch) {
 
 TEST(HelloTest, TestSet) {
     cout << "Set unit test." << endl;
-    Set set;
-    set.test();
+    Set *set_ptr = new Set();
+    set_ptr->test();
+    set_ptr->container.emplace("1");
+    (void)set_ptr->container.emplace("2");
+    EXPECT_EQ(2, set_ptr->container.size());
 }

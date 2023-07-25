@@ -19,6 +19,7 @@ using NodePtr = std::shared_ptr<Node>;
 class Set {
 public:
     void test();
+    std::set<std::string> container;
 };
 
 
