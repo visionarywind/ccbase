@@ -13,6 +13,7 @@ target_link_libraries(
         gtests
         GTest::gtest_main
         tools
+        common
 )
 
 include(GoogleTest)

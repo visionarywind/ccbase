@@ -8,19 +8,18 @@
 #include <memory>
 
 struct Node {
-    Node(int val) : val_(val) {}
+  Node(int val) : val_(val) {}
 
-    Node *next_{nullptr};
-    int val_;
+  Node *next_{nullptr};
+  int val_;
 };
 
 using NodePtr = std::shared_ptr<Node>;
 
 class Set {
-public:
-    void test();
-    std::set<std::string> container;
+ public:
+  void test();
+  std::set<std::string> container;
 };
 
-
-#endif //CCBASE_SET_H
+#endif  // CCBASE_SET_H
