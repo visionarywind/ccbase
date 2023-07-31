@@ -1,14 +1,16 @@
 #pragma once
+
 #include <iostream>
-int gBase = 0;
+
+extern int gBase;
+
+class Base;
+static Base *GetBase();
+
 class Base {
  public:
-  static Base *GetInstance() {
-    static auto *base = gBase > 0 : new DerivedX : new Derived;
-    return base;
-  }
-
   virtual void call() = 0;
+  static Base *GetInstance() { return GetBase(); }
 };
 
 class Derived : public Base {
@@ -20,3 +22,27 @@ class DerivedX : public Base {
  public:
   void call() override;
 };
+
+static Base *GetBase() {
+  static Base *base = gBase > 0 ? (Base *)(new DerivedX) : (Base *)(new Derived);
+  return base;
+}
+
+class Fruit;
+static Fruit &GetFruit();
+
+class Fruit {
+ public:
+  static Fruit &GetInstance() { return GetFruit(); }
+  virtual std::string name() { return "Fruit"; }
+};
+
+class Apple : public Fruit {
+ public:
+  std::string name() override { return "Apple"; }
+};
+
+static Fruit &GetFruit() {
+  static Fruit base = gBase > 0 ? Apple{} : Fruit{};
+  return base;
+}

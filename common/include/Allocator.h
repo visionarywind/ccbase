@@ -8,14 +8,17 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
-class Segment {
+struct Segment {
   void *addr;
   size_t size;
 };
 
-class Block {
+struct Block {
+  void *addr;
+  size_t size;
   Block *prev;
   Block *next;
+  int status;
 };
 
 class Allocator {
@@ -45,8 +48,11 @@ class AlignedAllocator : public Allocator {
 
 class AbstractAllocator : public AlignedAllocator {
  protected:
-  atomic<std::size_t> used_count_;
+  atomic<std::size_t> used_size_;
 }
+
+typedef bool (*Comparator)(const Block *, const Block *);
+static bool BlockAddrComparator(const Block *left, const Block right) {}
 
 class DirectAllocator : public AbstractAllocator {
  public:

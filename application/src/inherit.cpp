@@ -1,5 +1,7 @@
 #include "inherit.h"
 
-void Derived call() override { std::cout << "Derived call" << std::end; }
+int gBase = 0;
 
-void DerivedX::call() override { std::cout << "DerivedX call" << std::endl; };
+void Derived::call() { std::cout << "Derived call" << std::endl; }
+
+void DerivedX::call() { std::cout << "DerivedX call" << std::endl; };
