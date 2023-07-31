@@ -4,4 +4,4 @@
 
 #pragma once
 
-extern "C" PORTABLE_EXPORT int add(int left, int right);
+extern "C" int add(int left, int right);
