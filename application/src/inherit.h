@@ -46,3 +46,5 @@ static Fruit &GetFruit() {
   static Fruit base = gBase > 0 ? Apple{} : Fruit{};
   return base;
 }
+
+void base_test();

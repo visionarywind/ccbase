@@ -3,8 +3,7 @@
 #include "inherit.h"
 
 int main() {
-  std::cout << "Hello world" << std::endl;
-  Base::GetInstance()->call();
-  std::cout << "Fruit : " << Fruit::GetInstance().name() << std::endl;
+  std::cout << "Application start" << std::endl;
+  base_test();
   return 0;
 }

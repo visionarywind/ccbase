@@ -1,9 +1,19 @@
 # Information
 - CMake multi-module project
-- Tests via `Catch2`
+- Tests via `Catch2` and `GTest`
 
 ## Description 
 Base project for learning c++
+
+## Structure
+- application
+  main function
+- common
+  common lib
+- gtests
+- test
+- libs
+- tools
 
 ## Build
 ```bash
