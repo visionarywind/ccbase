@@ -9,11 +9,17 @@
 #include <iostream>
 #include "dlopen_macro.h"
 namespace ct {
-ORIGIN_METHOD(add, int, int, int);
+
+#define ADD add
+#define CONCAT(l, r) l##r
+#define FUNC_OBJ(func_name) CONCAT(func_name, FunObj)
+#define FUNC_DEFINE(func_name, ...) ORIGIN_METHOD(func_name, __VA_ARGS__)
+
+FUNC_DEFINE(ADD, int, int, int)
 
 static constexpr const char *kLibtoolName = "libcommon.dylib";
 
-addFunObj add_ = nullptr;
+FUNC_OBJ(ADD) add_;
 
 class HelloTest {
  public:

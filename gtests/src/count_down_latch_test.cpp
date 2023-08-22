@@ -35,6 +35,16 @@ TEST(HelloTest, TestSet) {
 TEST(HelloTest, TestCommon) {
   cout << "Enter unit test : TestCommon." << endl;
   void *handle = dlopen(kLibtoolName, RTLD_NOW);
+
+  auto handle_ptr = std::shared_ptr<void *>(&handle, [](void **ptr) {
+        if (ptr != nullptr) {
+          cout << "Close GMem lib : " << *ptr << endl;
+          if (dlclose(*ptr) != 0) {
+            cout << "Close GMem lib failed." << endl;
+          }
+        }
+      });
+
   std::cout << "handle " << handle << std::endl;
   if (handle != nullptr) {
     add_ = DlsymFuncObj(add, handle);
