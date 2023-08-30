@@ -47,6 +47,7 @@ TEST(HelloTest, TestCommon) {
 
   std::cout << "handle " << handle << std::endl;
   if (handle != nullptr) {
+      #define To(x) x
     add_ = DlsymFuncObj(add, handle);
   }
   if (add_) {

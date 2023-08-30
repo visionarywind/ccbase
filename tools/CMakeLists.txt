@@ -1,3 +1,5 @@
+include_directories(include/tools)
+
 set(SOURCE_FILES
         src/tool.cpp
         src/mem.cpp
@@ -5,5 +7,4 @@ set(SOURCE_FILES
 
 add_library(tools SHARED ${SOURCE_FILES})
 
-target_include_directories(tools PRIVATE include/tools)
 target_include_directories(tools PUBLIC include)
