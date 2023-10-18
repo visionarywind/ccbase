@@ -1,3 +1,5 @@
+project(gtests)
+
 set(TEST_SOURCES
         src/count_down_latch_test.cpp
         src/count_down_latch_test.h)

@@ -3,6 +3,6 @@
 //
 
 #include <iostream>
-#include "common.h"
+#include "common/common.h"
 
 int add(int left, int right) { return left + right; }

@@ -3,21 +3,21 @@
 //
 #include <gtest/gtest.h>
 #include <iostream>
-#include "tools/tool.h"
-#include "tools/set.h"
+#include <tools/tool.h>
+#include <tools/set.h>
 #include "count_down_latch_test.h"
 
 using namespace std;
 namespace ct {
 
-TEST(HelloTest, TestCountDownLatch) {
+TEST(CountDownLatchTest, TestCountDownLatch) {
   cout << "Enter unit test : TestCountDownLatch." << endl;
   auto count_down_latch_ptr = std::make_shared<CountDownLatch>(1);
   count_down_latch_ptr->count_down();
   EXPECT_EQ(0, count_down_latch_ptr->count());
 }
 
-TEST(HelloTest, TestSet) {
+TEST(CountDownLatchTest, TestSet) {
   cout << "Enter unit test : TestSet." << endl;
   Set *set_ptr = new Set();
   std::shared_ptr<int> p = nullptr;
@@ -32,7 +32,7 @@ TEST(HelloTest, TestSet) {
   EXPECT_EQ(2, set_ptr->container.size());
 }
 
-TEST(HelloTest, TestCommon) {
+TEST(CountDownLatchTest, TestCommon) {
   cout << "Enter unit test : TestCommon." << endl;
   void *handle = dlopen(kLibtoolName, RTLD_NOW);
 

@@ -2,8 +2,8 @@
 // Created by jiangshanfeng on 2023/7/2.
 //
 
-#ifndef CCBASE_HELLO_TEST_H
-#define CCBASE_HELLO_TEST_H
+#ifndef CCBASE_COUNT_DOWN_LATCH_TEST_H
+#define CCBASE_COUNT_DOWN_LATCH_TEST_H
 
 #include <dlfcn.h>
 #include <iostream>
@@ -27,9 +27,9 @@ static constexpr const char *kLibtoolName = "libcommon.dylib";
 
 FUNC_OBJ(ADD) add_;
 
-class HelloTest {
+class CountDownLatchTest {
  public:
-  HelloTest() {}
+  CountDownLatchTest() {}
 };
 }  // namespace ct
-#endif  // CCBASE_HELLO_TEST_H
+#endif  // CCBASE_COUNT_DOWN_LATCH_TEST_H

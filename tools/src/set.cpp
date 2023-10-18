@@ -4,7 +4,7 @@
 
 #include <set>
 #include <iostream>
-#include "set.h"
+#include "tools/set.h"
 
 void Set::test() {
     std::set<NodePtr> s;

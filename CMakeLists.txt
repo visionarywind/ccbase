@@ -3,14 +3,17 @@ project(ccbase)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")
+set(CMAKE_CXX_FLAGS_DEBUG "-fPIC -O0 -g -Wall")
+set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -O2 -Wall")
 
 # enable debug
 set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 
-add_subdirectory(tools)
 add_subdirectory(common)
-add_subdirectory(application)
+add_subdirectory(tools)
+add_subdirectory(nice)
 add_subdirectory(libs)
+add_subdirectory(application)
 add_subdirectory(gtests)
 add_subdirectory(test)
 

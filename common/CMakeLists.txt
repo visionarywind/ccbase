@@ -1,3 +1,5 @@
+project(common)
+
 include_directories(include)
 
 set(SOURCE_FILES
@@ -6,4 +8,7 @@ set(SOURCE_FILES
 
 add_library(common SHARED ${SOURCE_FILES})
 
-target_include_directories(tools PUBLIC include)
+target_include_directories(${PROJECT_NAME}
+        INTERFACE
+        ${PROJECT_SOURCE_DIR}/include
+        )

@@ -44,12 +44,12 @@ class AlignedAllocator : public Allocator {
 
  protected:
   const std::size_t align_size_;
-}
+};
 
 class AbstractAllocator : public AlignedAllocator {
  protected:
   atomic<std::size_t> used_size_;
-}
+};
 
 typedef bool (*Comparator)(const Block *, const Block *);
 static bool BlockAddrComparator(const Block *left, const Block right) {}
