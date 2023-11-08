@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "inherit.h"
 #include "ref.h"
 

@@ -5,9 +5,10 @@
 #ifndef CCBASE_REF_H
 #define CCBASE_REF_H
 
+#include <memory>
 #include <vector>
 
-class Ref;
+struct Ref;
 
 class AddRef {
 public:
