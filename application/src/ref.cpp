@@ -47,3 +47,10 @@ void AddRef::Add() {
     list_.emplace_back(std::make_shared<Ref>());
     std::cout << "ref size : " << list_.size() << std::endl;
 }
+
+void RefTest() {
+  AddRef ref;
+  ref.Add();
+  ref.Add();
+  ref.Add();
+}

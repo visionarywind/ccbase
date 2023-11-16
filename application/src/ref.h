@@ -16,4 +16,6 @@ public:
     std::vector<std::shared_ptr<Ref>> list_;
 };
 
+void RefTest();
+
 #endif //CCBASE_REF_H
