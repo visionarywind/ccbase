@@ -16,6 +16,13 @@ public:
     std::vector<std::shared_ptr<Ref>> list_;
 };
 
+struct Refer {
+    std::vector<int> &list() { return list_; }
+    std::vector<int> list_;
+};
+
 void RefTest();
+
+void ReferTest();
 
 #endif //CCBASE_REF_H

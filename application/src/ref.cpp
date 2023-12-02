@@ -54,3 +54,10 @@ void RefTest() {
   ref.Add();
   ref.Add();
 }
+
+void ReferTest() {
+  Refer refer;
+  auto &list = refer.list();
+  list.emplace_back(1);
+  std::cout << refer.list().size() << std::endl;
+}
