@@ -8,6 +8,7 @@
 #include "template.h"
 #include "tools/timer.h"
 #include "common/common.h"
+#include "actor_hash.h"
 
 void test();
 
@@ -136,7 +137,7 @@ void HashTest() {
 
 int main() {
   std::cout << "Application start" << std::endl;
-  HashTest();
+  ActorHashTest();
   std::cout << "Application end" << std::endl;
   return 0;
 }

@@ -4,6 +4,7 @@ set(SOURCE_FILES src/main.cpp
         src/inherit.cpp
 				src/ref.cpp
 				src/template.cpp
+				src/actor_hash.cpp
 				../nice/include/hqueue.h)
 
 include(FetchContent)
