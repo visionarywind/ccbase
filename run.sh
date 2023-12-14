@@ -8,4 +8,4 @@ echo "Building cmake from ${BASH_SOURCE%/*}..."
 echo "Building using make using build/Makefile..."
 (exec make -C ${BUILD_DIR})
 
-./build/application/app
+./build/application/application

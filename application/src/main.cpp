@@ -4,7 +4,9 @@
 #include <vector>
 #include "inherit.h"
 #include "ref.h"
+#include "robin_hood.h"
 #include "template.h"
+#include "tools/timer.h"
 #include "common/common.h"
 
 void test();
@@ -27,8 +29,7 @@ enum class EndlessType : int {
   kEnd = kThird
 };
 
-int main() {
-  std::cout << "Application start" << std::endl;
+void SimpleTest() {
   DefineFunc(nullptr, 100);
 
   std::cout << static_cast<int>(EndlessType::kFirst) << std::endl;
@@ -51,10 +52,94 @@ int main() {
   std::cout << endsWith("asadad-/Mul-op123", "Mul-op123") << std::endl;
   std::cout << endsWith("asadad-/Mul-op123", "Mul-op13") << std::endl;
   std::cout << endsWith("asdas", "as") << std::endl;
-
-  return 0;
 }
 
+constexpr int kTestCount = 1 << 18;
+
+int RobinHashTest() {
+  robin_hood::unordered_map<std::string, std::string> map;
+  {
+    TimerClock clock("insertion");
+    for (int i = 0; i != kTestCount; i++) {
+      auto key = "kernel_graph_" + std::to_string(i);
+      map.emplace(key, std::to_string(i));
+    }
+  }
+  int hits = 0;
+  {
+    TimerClock clock("get");
+    for (int i = 0; i != kTestCount; i++) {
+    auto key = "kernel_graph_" + std::to_string(i);
+    if (map.count(key) != 0) {
+      map.at(key);
+      hits++;
+    }
+  }
+  }
+
+  return hits;
+}
+
+int StlHashTest() {
+  std::unordered_map<std::string, std::string> map;
+  {
+    TimerClock clock("insertion");
+    for (int i = 0; i != kTestCount; i++) {
+      auto key = "kernel_graph_" + std::to_string(i);
+      map.emplace(key, std::to_string(i));
+    }
+  }
+  int hits = 0;
+  {
+    TimerClock clock("get");
+    for (int i = 0; i != kTestCount; i++) {
+      auto key = "kernel_graph_" + std::to_string(i);
+      if (map.count(key) != 0) {
+        map.at(key);
+        hits++;
+      }
+    }
+  }
+
+  return hits;
+}
+
+int FlatHashTest() {
+  robin_hood::unordered_flat_map<std::string, std::string> map;
+  {
+    TimerClock clock("insertion");
+    for (int i = 0; i != kTestCount; i++) {
+      auto key = "kernel_graph_" + std::to_string(i);
+      map.emplace(key, std::to_string(i));
+    }
+  }
+  int hits = 0;
+  {
+    TimerClock clock("get");
+    for (int i = 0; i != kTestCount; i++) {
+      auto key = "kernel_graph_" + std::to_string(i);
+      if (map.count(key) != 0) {
+        map.at(key);
+        hits++;
+      }
+    }
+  }
+
+  return hits;
+}
+
+void HashTest() {
+  std::cout << "Robin hash : " << RobinHashTest() << std::endl;
+  std::cout << "Flat hash : " << FlatHashTest() << std::endl;
+  std::cout << "Stl hash : " << StlHashTest() << std::endl;
+}
+
+int main() {
+  std::cout << "Application start" << std::endl;
+  HashTest();
+  std::cout << "Application end" << std::endl;
+  return 0;
+}
 
 void DefineFunc(bool *const /*flag_ptr*/, int data) {
   std::cout << "data : " << data << std::endl;

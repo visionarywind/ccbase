@@ -17,8 +17,9 @@ add_subdirectory(application)
 add_subdirectory(gtests)
 add_subdirectory(test)
 
-# Configure for google test.
 include(FetchContent)
+
+# Configure for google test.
 FetchContent_Declare(
         googletest
         GIT_REPOSITORY https://gitee.com/mirrors/googletest.git

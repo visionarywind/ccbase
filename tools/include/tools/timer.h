@@ -5,18 +5,19 @@
 #pragma once
 
 #include <chrono>
+#include <iostream>
 
 using namespace std::chrono;
 
 class TimerClock {
 public:
-    TimerClock() {
+    TimerClock(std::string desc = "") : desc_(desc) {
         _start = update();
     }
 
     ~TimerClock() {
-        // double count = duration_cast<microseconds>(high_resolution_clock::now() - _start).count()
-        // cout << "total cost " << count << " us" << endl;
+        double count = duration_cast<microseconds>(high_resolution_clock::now() - _start).count();
+        std::cout << desc_ << " : total cost " << count << " us" << std::endl;
     }
 
     time_point<high_resolution_clock> update() {
@@ -30,4 +31,5 @@ public:
 private:
     time_point<high_resolution_clock> _start;
     time_point<high_resolution_clock> _now;
+    std::string desc_;
 };
