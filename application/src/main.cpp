@@ -2,13 +2,15 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+
+#include "actor_hash.h"
+#include "common/common.h"
 #include "inherit.h"
 #include "ref.h"
 #include "robin_hood.h"
+#include "sorted_vector.h"
 #include "template.h"
 #include "tools/timer.h"
-#include "common/common.h"
-#include "actor_hash.h"
 
 void test();
 
@@ -137,7 +139,8 @@ void HashTest() {
 
 int main() {
   std::cout << "Application start" << std::endl;
-  ActorHashTest();
+  // ActorHashTest();
+  PriorityQueueTest();
   std::cout << "Application end" << std::endl;
   return 0;
 }
