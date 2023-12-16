@@ -140,7 +140,8 @@ void HashTest() {
 int main() {
   std::cout << "Application start" << std::endl;
   // ActorHashTest();
-  PriorityQueueTest();
+  // PriorityQueueTest();
+  TemplateTest();
   std::cout << "Application end" << std::endl;
   return 0;
 }
