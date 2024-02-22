@@ -28,6 +28,9 @@ endif()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
 
 
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 # Configure for boost
 #FetchContent_Declare(boost
 #	GIT_REPOSITORY https://gitee.com/mirrors/boost.git
@@ -44,4 +47,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
 
 add_executable(application ${SOURCE_FILES})
-target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood})
+target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood} nlohmann_json::nlohmann_json)

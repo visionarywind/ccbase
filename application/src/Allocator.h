@@ -4,6 +4,8 @@
 #include <memory>
 #include <mutex>
 #include <set>
+#include <unordered_map>
+#include <vector>
 
 struct Block {
   Block(void *addr, size_t size, int status) : addr_(addr), size_(size), status_(status) {}
