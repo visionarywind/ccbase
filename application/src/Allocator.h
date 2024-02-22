@@ -1,4 +1,9 @@
 #pragma once
+#include <iostream>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <set>
 
 struct Block {
   Block(void *addr, size_t size, int status) : addr_(addr), size_(size), status_(status) {}
@@ -10,6 +15,23 @@ struct Block {
   struct Block *prev_{nullptr};
   struct Block *next_{nullptr};
 };
+using BlockRawPtr = struct Block *;
+
+class BlockComparator {
+ public:
+  bool operator()(const BlockRawPtr &left, const BlockRawPtr &right) const {
+    if (left->stream_id_ != right->stream_id_) {
+      return left->stream_id_ < right->stream_id_;
+    }
+    if (left->size_ != right->size_) {
+      return left->addr_ < right->addr_;
+    }
+    return left->size_ < right->size_;
+  }
+
+  bool operator()(const size_t size, const BlockRawPtr &block) const { return size < block->size_; }
+  bool operator()(const BlockRawPtr &block, const size_t size) const { return block->size_ < size; }
+};
 
 struct MemBlock {
   MemBlock(void *addr, size_t size) : addr_(addr), size_(size) {}
@@ -17,32 +39,29 @@ struct MemBlock {
   size_t size_;
 };
 
-public
 class Allocator {
  public:
-  virtual void *Alloc(size_t size) = 0;
+  virtual void *Alloc(size_t size, uint32_t stream_id = 0) = 0;
   virtual bool Free(void *addr) = 0;
 
-  virtual void *MemAlloc(size_t size) = 0;
+  virtual void *MemAlloc(size_t size, uint32_t stream_id = 0) = 0;
   virtual bool MemFree(void *addr) = 0;
 };
 
-public
 class MallocAllocator : public Allocator {
-  void *MemAlloc(size_t size) override {
+ protected:
+  void *MemAlloc(size_t size, uint32_t stream_id = 0) override {
     void *addr = malloc(size);
     auto mem_block = new MemBlock(addr, size);
-    (void)allocated_blocks_.emplace_back(mem_block);
+    allocated_blocks_[addr] = mem_block;
     return addr;
   }
 
   bool MemFree(void *addr) override {
-    auto it = std::find(allocated_blocks_.begin(), allocated_blocks_.end(),
-                        [addr](struct MemBlock *mem_block) { return addr == mem_block->addr_; });
-    if (it != allocated_blocks_.end()) {
-      auto mem_block = it->second;
-      allocated_blocks_.erase(mem_block);
-      free(addr);
+    auto iter = allocated_blocks_.find(addr);
+    if (iter != allocated_blocks_.end()) {
+      auto mem_block = iter->second;
+      allocated_blocks_.erase(iter);
       delete mem_block;
       return true;
     }
@@ -50,62 +69,19 @@ class MallocAllocator : public Allocator {
   }
 
  protected:
-  std::vector<MemBlock> allocated_blocks_;
+  std::unordered_map<void *, MemBlock *> allocated_blocks_;
 };
 
-public
 class DefaultAllocator : public MallocAllocator {
  public:
-  constexpr size_t MIN_SPLIT_SIZE = 512;
+  size_t MIN_SPLIT_SIZE = 512;
 
-  void *Alloc(size_t size) override {
-    auto it = free_blocks_.lower_bound(size);
-    if (it != free_blocks_.end()) {
-      auto block = it->second;
-      size_t extra_size = block->size_ - size;
-      if (extra_size >= MIN_SPLIT_SIZE) {
-            }
-      return block->addr_;
-    }
-    return nullptr;
-  }
+  void *Alloc(size_t size, uint32_t stream_id = 0) override;
 
-  bool Free(void *addr) override {
-    auto it = total_block_.find(addr);
-    if (it != total_block_.end()) {
-      auto block = it->secend;
-      block->status = 1;
-
-      auto prev_block = block->prev_;
-      if (prev_block != nullptr) {
-        if (prev_block->status == 0) {
-          free_blocks_.erase(prev_block);
-          total_block_.erase(prev_block->addr_);
-          block->addr_ = prev_block->addr_;
-          block->size_ += prev_block->size_;
-          delete prev_block;
-        }
-      }
-      auto next_block = block->next_;
-      if (next_block != nullptr) {
-        if (next_block->status == 0) {
-          free_blocks_.erase(next_block);
-          total_block_.erase(next_block->addr_);
-          block->size_ += next_block->size_;
-          delete next_block;
-        }
-      }
-
-      free_blocks_.insert(block);
-      return true;
-    }
-
-    return false;
-  }
+  bool Free(void *addr) override;
 
  private:
-  std::set<Block *> free_blocks_;  // 需要排序函数
-  std::map<void * addr, Block *> total_block_;
-
-  Block head_;
+  std::vector<std::set<BlockRawPtr, BlockComparator>> free_blocks_{decltype(free_blocks_)(128)};  // 需要排序函数
+  std::unordered_map<void *, BlockRawPtr> total_block_;
+  std::mutex mutex_;
 };
