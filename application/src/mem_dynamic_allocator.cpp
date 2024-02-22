@@ -69,7 +69,7 @@ DeviceMemPtr DynamicMemPoolBestFit::AllocTensorMem(size_t size, bool from_persis
   //   std::lock_guard<SpinLock> spin_lock(spin_lock_);
   // #else
 
-  // std::lock_guard<std::mutex> locker(mutex_);
+  std::lock_guard<std::mutex> locker(mutex_);
 
   // #endif
   // Find the memory buf by tensor size, if not find, then add new memory block and memory buf.
