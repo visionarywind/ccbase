@@ -4,6 +4,7 @@ inline size_t align(size_t size) {
   if (size == 0) {
     return 512;
   }
+
   return ((size + 512 - 1) / 512) * 512;
 }
 
@@ -36,7 +37,6 @@ void *DefaultAllocator::Alloc(size_t size, uint32_t stream_id) {
     block->size_ = size;
   }
 
-  free_blocks.emplace(block);
   return block->addr_;
 }
 

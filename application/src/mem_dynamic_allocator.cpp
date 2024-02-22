@@ -446,13 +446,13 @@ void DynamicMemPoolBestFit::SplitMemBuf(size_t size, const DynamicMemBufPtr &mem
   // MS_EXCEPTION_IF_NULL(mem_buf);
   // MS_EXCEPTION_IF_NULL(mem_mng);
 
-  auto start_time = Get();
+  // auto start_time = Get();
   const auto &mem_block = FindMemBlock(mem_buf->device_addr_, mem_mng);
 
-  auto cost = Get() - start_time;
-  std::cout << "find cost : " << cost << "ns" << std::endl;
+  // auto cost = Get() - start_time;
+  // std::cout << "find cost : " << cost << "ns" << std::endl;
 
-  start_time = Get();
+  // start_time = Get();
   // MS_EXCEPTION_IF_NULL(mem_block);
   // Divide new memory buf
   if (mem_buf->size_ < size) {
@@ -465,24 +465,24 @@ void DynamicMemPoolBestFit::SplitMemBuf(size_t size, const DynamicMemBufPtr &mem
   DeviceMemPtr newbuf_addr = AddressOffset(mem_buf->device_addr_, size);
 
   auto new_mem_buf = std::make_shared<DynamicMemBuf>(newbuf_addr, mem_buf->status_, newbuf_size);
-  cost = Get() - start_time;
-  std::cout << "calc cost : " << cost << "ns" << std::endl;
+  // cost = Get() - start_time;
+  // std::cout << "calc cost : " << cost << "ns" << std::endl;
 
-  start_time = Get();
+  // start_time = Get();
   // Add map of new memory buf in the block
   (void)mem_block->block_all_mem_buf_map_.emplace(newbuf_addr, new_mem_buf);
-  cost = Get() - start_time;
-  std::cout << "split1 cost : " << cost << "ns" << std::endl;
+  // cost = Get() - start_time;
+  // std::cout << "split1 cost : " << cost << "ns" << std::endl;
 
-  start_time = Get();
+  // start_time = Get();
   if (new_mem_buf->status_ == DynamicMemBufStatus::kMemBufIdle) {
     // Add map of new idle memory buf
     (void)mem_mng->AddIdleMemBuf(new_mem_buf, mem_block->stream_id_);
   } else if (new_mem_buf->status_ == DynamicMemBufStatus::kMemBufEagerFree) {
     (void)mem_mng->AddEagerFreeMemBuf(new_mem_buf, mem_block->stream_id_);
   }
-  cost = Get() - start_time;
-  std::cout << "split2 cost : " << cost << "ns" << std::endl;
+  // cost = Get() - start_time;
+  // std::cout << "split2 cost : " << cost << "ns" << std::endl;
 }
 
 bool DynamicMemPoolBestFit::CmpMemBlock(const DeviceMemPtr &device_addr, const DynamicMemBlockPtr &mem_block) {

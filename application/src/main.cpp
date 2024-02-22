@@ -157,12 +157,12 @@ struct SNode {
   SNode *next;
 };
 
-int main() {
-  DynamicMemPoolBestFit pool;
-  return 0;
-}
+// int main() {
+//   DynamicMemPoolBestFit pool;
+//   return 0;
+// }
 
-int main2() {
+int main() {
   std::cout << "Application start" << std::endl;
   // ActorHashTest();
   // PriorityQueueTest();

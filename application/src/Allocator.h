@@ -20,10 +20,11 @@ using BlockRawPtr = struct Block *;
 class BlockComparator {
  public:
   bool operator()(const BlockRawPtr &left, const BlockRawPtr &right) const {
-    if (left->stream_id_ != right->stream_id_) {
-      return left->stream_id_ < right->stream_id_;
-    }
-    if (left->size_ != right->size_) {
+    // stream id is not used currently
+    // if (left->stream_id_ != right->stream_id_) {
+    //   return left->stream_id_ < right->stream_id_;
+    // }
+    if (left->size_ == right->size_) {
       return left->addr_ < right->addr_;
     }
     return left->size_ < right->size_;
@@ -71,6 +72,9 @@ class MallocAllocator : public Allocator {
  protected:
   std::unordered_map<void *, MemBlock *> allocated_blocks_;
 };
+struct Comparator {
+  bool operator()(const void *addr1, const void *addr2) const { return addr1 < addr2; }
+};
 
 class DefaultAllocator : public MallocAllocator {
  public:
@@ -81,7 +85,7 @@ class DefaultAllocator : public MallocAllocator {
   bool Free(void *addr) override;
 
  private:
-  std::vector<std::set<BlockRawPtr, BlockComparator>> free_blocks_{decltype(free_blocks_)(128)};  // 需要排序函数
+  std::vector<std::set<BlockRawPtr, BlockComparator>> free_blocks_{decltype(free_blocks_)(128)};
   std::unordered_map<void *, BlockRawPtr> total_block_;
   std::mutex mutex_;
 };

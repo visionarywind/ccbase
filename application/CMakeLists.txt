@@ -6,6 +6,7 @@ set(SOURCE_FILES src/main.cpp
 				src/template.cpp
 				src/actor_hash.cpp
 				src/sorted_vector.cpp
+				src/mem_dynamic_allocator.cpp
 				../nice/include/hqueue.h)
 
 include(FetchContent)
