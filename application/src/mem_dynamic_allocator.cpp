@@ -15,6 +15,7 @@
  */
 
 #include "mem_dynamic_allocator.h"
+#include <chrono>
 #include <string>
 #include <algorithm>
 #include <iostream>
@@ -22,6 +23,11 @@
 #include <numeric>
 #include <ostream>
 #include <utility>
+
+inline int64_t Get() {
+  auto now_time = std::chrono::steady_clock::now();
+  return std::chrono::duration_cast<std::chrono::nanoseconds>(now_time.time_since_epoch()).count();
+}
 
 // namespace mindspore {
 // namespace device {
@@ -62,7 +68,9 @@ DeviceMemPtr DynamicMemPoolBestFit::AllocTensorMem(size_t size, bool from_persis
   // #ifdef __APPLE__
   //   std::lock_guard<SpinLock> spin_lock(spin_lock_);
   // #else
-  std::lock_guard<std::mutex> locker(mutex_);
+
+  // std::lock_guard<std::mutex> locker(mutex_);
+
   // #endif
   // Find the memory buf by tensor size, if not find, then add new memory block and memory buf.
   DeviceMemPtr device_addr = FindAvailableMemBuf(align_size, from_persistent_mem, stream_id);
@@ -437,7 +445,14 @@ void DynamicMemPoolBestFit::SplitMemBuf(size_t size, const DynamicMemBufPtr &mem
                                         const MemStatusManagerPtr &mem_mng, uint32_t stream_id) {
   // MS_EXCEPTION_IF_NULL(mem_buf);
   // MS_EXCEPTION_IF_NULL(mem_mng);
+
+  auto start_time = Get();
   const auto &mem_block = FindMemBlock(mem_buf->device_addr_, mem_mng);
+
+  auto cost = Get() - start_time;
+  std::cout << "find cost : " << cost << "ns" << std::endl;
+
+  start_time = Get();
   // MS_EXCEPTION_IF_NULL(mem_block);
   // Divide new memory buf
   if (mem_buf->size_ < size) {
@@ -448,15 +463,26 @@ void DynamicMemPoolBestFit::SplitMemBuf(size_t size, const DynamicMemBufPtr &mem
   size_t newbuf_size = mem_buf->size_ - size;
   mem_buf->size_ = size;
   DeviceMemPtr newbuf_addr = AddressOffset(mem_buf->device_addr_, size);
+
   auto new_mem_buf = std::make_shared<DynamicMemBuf>(newbuf_addr, mem_buf->status_, newbuf_size);
+  cost = Get() - start_time;
+  std::cout << "calc cost : " << cost << "ns" << std::endl;
+
+  start_time = Get();
   // Add map of new memory buf in the block
   (void)mem_block->block_all_mem_buf_map_.emplace(newbuf_addr, new_mem_buf);
+  cost = Get() - start_time;
+  std::cout << "split1 cost : " << cost << "ns" << std::endl;
+
+  start_time = Get();
   if (new_mem_buf->status_ == DynamicMemBufStatus::kMemBufIdle) {
     // Add map of new idle memory buf
     (void)mem_mng->AddIdleMemBuf(new_mem_buf, mem_block->stream_id_);
   } else if (new_mem_buf->status_ == DynamicMemBufStatus::kMemBufEagerFree) {
     (void)mem_mng->AddEagerFreeMemBuf(new_mem_buf, mem_block->stream_id_);
   }
+  cost = Get() - start_time;
+  std::cout << "split2 cost : " << cost << "ns" << std::endl;
 }
 
 bool DynamicMemPoolBestFit::CmpMemBlock(const DeviceMemPtr &device_addr, const DynamicMemBlockPtr &mem_block) {

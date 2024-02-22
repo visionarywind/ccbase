@@ -21,11 +21,6 @@ int AllocTest() {
     auto start_time = Get();
     addr = allocator.Alloc(512);
     cost += Get() - start_time;
-    // pool.AllocTensorMem(512);
-    // pool.AllocTensorMem(512);
-    // pool.AllocTensorMem(5120);
-    // pool.AllocTensorMem(5120);
-    // pool.AllocTensorMem(5120);
     // allocator.Free(addr);
   }
   cout << "cost : " << cost / 10000 / 1000.0 << "us, addr : " << addr << endl;
@@ -41,11 +36,6 @@ int PoolTest() {
     auto start_time = Get();
     addr = pool.AllocTensorMem(512);
     cost += Get() - start_time;
-    // pool.AllocTensorMem(512);
-    // pool.AllocTensorMem(512);
-    // pool.AllocTensorMem(5120);
-    // pool.AllocTensorMem(5120);
-    // pool.AllocTensorMem(5120);
     // pool.FreeTensorMem(addr);
   }
   cout << "cost : " << cost / 10000.0 / 1000 << "us, addr : " << addr << endl;
