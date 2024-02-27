@@ -1,9 +1,8 @@
 #include <iostream>
 #include <chrono>
-#include <sstream>
 
 #include "Allocator.h"
-// #define OP
+#define OP
 
 #ifndef OP
 #include "mem_dynamic_allocator.h"
@@ -22,20 +21,17 @@ int AllocTest() {
   DefaultAllocator allocator;
   int64_t cost = 0;
   void *addr;
-  stringstream ss;
 
   addr = allocator.Alloc(512);
   // allocator.Free(addr);
-  int count = 100;
+  int count = 100000;
+  auto start_time = Get();
   for (int i = 0; i < count; i++) {
     // addr = allocator.Alloc(5120);
-    auto start_time = Get();
     addr = allocator.Alloc(512 + i * 128);
-    cost += Get() - start_time;
-    ss << addr << ", ";
     // allocator.Free(addr);
   }
-  cout << ss.str().size() << endl;
+  cost += Get() - start_time;
   cout << "new cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
   return 1;
 }
@@ -48,20 +44,16 @@ int PoolTest() {
 #endif
   DeviceMemPtr addr;
   int64_t cost = 0;
-
-  stringstream ss;
   pool.AllocTensorMem(512);
   // pool.FreeTensorMem(addr);
-  int count = 100;
+  auto start_time = Get();
+  int count = 100000;
   for (int i = 0; i < count; i++) {
     // addr = pool.AllocTensorMem(5120);
-    auto start_time = Get();
     addr = pool.AllocTensorMem(512 + i * 128);
-    cost += Get() - start_time;
-    ss << addr << ", ";
     // pool.FreeTensorMem(addr);
   }
-  cout << ss.str().size() << endl;
+  cost += Get() - start_time;
   cout << "old cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
 
   return 1;

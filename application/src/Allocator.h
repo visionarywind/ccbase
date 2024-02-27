@@ -26,14 +26,11 @@ class BlockComparator {
     // if (left->stream_id_ != right->stream_id_) {
     //   return left->stream_id_ < right->stream_id_;
     // }
-    if (left->size_ == right->size_) {
-      return left->addr_ < right->addr_;
-    }
-    return left->size_ < right->size_;
+    return (left->size_ != right->size_) ? left->size_ < right->size_ : left->addr_ < right->addr_;
   }
 
-  bool operator()(const size_t size, const BlockRawPtr &block) const { return size < block->size_; }
-  bool operator()(const BlockRawPtr &block, const size_t size) const { return block->size_ < size; }
+  // bool operator()(const size_t size, const BlockRawPtr &block) const { return size < block->size_; }
+  // bool operator()(const BlockRawPtr &block, const size_t size) const { return block->size_ < size; }
 };
 
 struct MemBlock {

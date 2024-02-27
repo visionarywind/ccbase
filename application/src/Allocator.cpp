@@ -8,16 +8,18 @@ inline size_t align(size_t size) {
   return ((size + 512 - 1) / 512) * 512;
 }
 
+auto key = new Block(nullptr, 0, 0);
+
 void *DefaultAllocator::Alloc(size_t size, uint32_t stream_id) {
   // std::cout << "alloc size : " << size << std::endl;
   size = align(size);
   std::lock_guard<std::mutex> locker(mutex_);
   auto &free_blocks = free_blocks_[stream_id];
-  auto key = new Block(nullptr, size, stream_id);
+  key->size_ = size;
+  key->stream_id_ = stream_id;
   auto it = free_blocks.lower_bound(key);
-  delete key;
   Block *block = nullptr;
-  if (it == free_blocks.end() || (*it)->stream_id_ != stream_id) {
+  if (it == free_blocks.end()) {
     void *addr = MemAlloc(1 << 30);
     // std::cout << "malloc addr : " << addr << std::endl;
     block = new Block(addr, 1 << 30, 0);
