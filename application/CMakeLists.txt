@@ -44,4 +44,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
 #include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
 
 add_executable(application ${SOURCE_FILES})
-target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood})
+target_link_libraries(application LINK_PRIVATE tools ${libRobinHood})
+
+target_link_libraries(application LINK_PRIVATE common)
+target_link_libraries(application LINK_PRIVATE layer)

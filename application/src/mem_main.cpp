@@ -53,7 +53,7 @@ int PoolTest() {
   pool.AllocTensorMem(512);
   // pool.FreeTensorMem(addr);
   int count = 100;
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; false && i < count; i++) {
     // addr = pool.AllocTensorMem(5120);
     auto start_time = Get();
     addr = pool.AllocTensorMem(512 + i * 128);
@@ -68,7 +68,7 @@ int PoolTest() {
 }
 
 int main() {
-  AllocTest();
+  // AllocTest();
   PoolTest();
   return 1;
 }

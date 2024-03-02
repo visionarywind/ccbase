@@ -15,6 +15,7 @@
 #include "tools/timer.h"
 #include "skiplist.h"
 #include "mem_dynamic_allocator.h"
+#include "layer.h"
 
 using namespace std;
 
@@ -157,12 +158,15 @@ struct SNode {
   SNode *next;
 };
 
-// int main() {
-//   DynamicMemPoolBestFit pool;
-//   return 0;
-// }
-
 int main() {
+  cout << LayerAdd(1, 1) << endl;
+  cout << LayerAdd(1, 1) << endl;
+  cout << add(1, 1) << endl;
+  cout << add(1, 1) << endl;
+  return 0;
+}
+
+int skiplist_test() {
   std::cout << "Application start" << std::endl;
   // ActorHashTest();
   // PriorityQueueTest();

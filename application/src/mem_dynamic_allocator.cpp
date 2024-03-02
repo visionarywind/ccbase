@@ -105,6 +105,7 @@ DeviceMemPtr DynamicMemPoolBestFit::AllocTensorMem(size_t size, bool from_persis
   //               UsedMemPeakStatistics()
   //               << "B, in used mem:" << TotalUsedMemStatistics()
   //               << "B, total idle mem:" << (TotalMemStatistics() - TotalUsedMemStatistics()) << "B.";
+  DumpDynamicMemPoolStateInfo();
   return device_addr;
 }
 
@@ -799,6 +800,8 @@ void DynamicMemPoolBestFit::ReleaseDeviceRes() {
 }
 
 void DynamicMemPoolBestFit::DumpDynamicMemPoolStateInfo() {
+  std::cout << "allocate size : " << TotalMemStatistics() << ", used size : " << TotalUsedMemStatistics()
+            << ", idle size : " << TotalIdleMemStatistics() << std::endl;
   // size_t total_used_size_list[kAllocatorTypeNum] = {0};
   // auto fn = [&](const MemStatusManagerPtr &mem_mng, const std::string &mem_type) {
   //   // MS_EXCEPTION_IF_NULL(mem_mng);
