@@ -27,6 +27,7 @@
 #include <mutex>
 #include <string>
 #include <tuple>
+#include <string_view>
 // #include "utils/ms_utils.h"
 // #include "include/backend/visible.h"
 // #include "include/common/utils/stream_util.h"
@@ -47,13 +48,15 @@ constexpr size_t kDefaultMempoolBlockSize = 1 << 31;
 // namespace device {
 // The status of memory buf.
 enum class DynamicMemBufStatus : int { kMemBufIdle, kMemBufUsed, kMemBufEagerFree };
+
 // Memory allocator type is used to record the memory classification statistics information.
 enum class AllocatorType : int { kWeight, kConstantValue, kKernelOutput, kGraphOutput, kOther };
 constexpr int kAllocatorTypeNum = 5;
 // Alloc memory aligned according to 512 bytes.
 constexpr size_t kDynamicMemAlignSize = 512;
 // The minimum unit size (1G) of memory block used for dynamic extend.
-constexpr size_t kDynamicMemAllocUnitSize = 1024 << 20;
+// constexpr size_t kDynamicMemAllocUnitSize = 1024 << 20;
+constexpr size_t kDynamicMemAllocUnitSize = 1024;
 
 // The Comparator of device address from small to large.
 using DeviceMemPtr = void(*);

@@ -43,6 +43,7 @@ constexpr size_t kDefaultMempoolBlockSize = 1 << 31;
 // namespace device {
 // The status of memory buf.
 enum class DynamicMemBufStatus : int { kMemBufIdle, kMemBufUsed, kMemBufEagerFree };
+
 // Memory allocator type is used to record the memory classification statistics information.
 enum class AllocatorType : int { kWeight, kConstantValue, kKernelOutput, kGraphOutput, kOther };
 constexpr int kAllocatorTypeNum = 5;

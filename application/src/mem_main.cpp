@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <set>
 #include <sstream>
 
 #include "Allocator.h"
@@ -53,15 +54,30 @@ int PoolTest() {
   pool.AllocTensorMem(512);
   // pool.FreeTensorMem(addr);
   int count = 100;
-  for (int i = 0; false && i < count; i++) {
+  set<DeviceMemPtr> set;
+  vector<DeviceMemPtr> vec;
+  for (int i = 0; i < count; i++) {
     // addr = pool.AllocTensorMem(5120);
     auto start_time = Get();
     addr = pool.AllocTensorMem(512 + i * 128);
     cost += Get() - start_time;
     ss << addr << ", ";
+    if (set.count(addr) == 0) {
+      set.emplace(addr);
+      vec.emplace_back(addr);
+    }
+
+    auto tmp = pool.AllocTensorMem(512 + i * 128 * 10);
+    pool.FreeTensorMem(tmp);
     // pool.FreeTensorMem(addr);
   }
+
+  cout << "start to free" << endl;
+  for (int i = 0; i < count / 3; i++) {
+    pool.FreeTensorMem(vec[i]);
+  }
   cout << ss.str().size() << endl;
+  pool.DumpDynamicMemPoolStateInfo();
   cout << "old cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
 
   return 1;

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <sstream>
 
 #include "Allocator.h"
 #define OP
@@ -45,22 +46,27 @@ int PoolTest() {
   DeviceMemPtr addr;
   int64_t cost = 0;
   pool.AllocTensorMem(512);
+  stringstream ss;
   // pool.FreeTensorMem(addr);
-  auto start_time = Get();
-  int count = 100000;
+  int count = 100;
   for (int i = 0; i < count; i++) {
     // addr = pool.AllocTensorMem(5120);
+    auto start_time = Get();
     addr = pool.AllocTensorMem(512 + i * 128);
+    cost += Get() - start_time;
+    ss << addr << ", ";
     // pool.FreeTensorMem(addr);
+    auto tmp = pool.AllocTensorMem(512 + i * 128 * 10);
+    pool.FreeTensorMem(tmp);
   }
-  cost += Get() - start_time;
+  cout << ss.str().size() << endl;
   cout << "old cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
 
   return 1;
 }
 
 int main() {
-  AllocTest();
+  // AllocTest();
   PoolTest();
   return 1;
 }

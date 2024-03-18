@@ -1,1 +1,1 @@
-clang++ Allocator.cpp mem_optimized_allocator.cpp mem_opt_main.cpp -std=c++17 -O2
+clang++ Allocator.cpp mem_optimized_allocator.cpp mem_opt_main.cpp -std=c++17 -O2 && ./a.out
