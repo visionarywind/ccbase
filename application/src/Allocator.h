@@ -13,9 +13,14 @@ struct Block {
   size_t size_;
   int status_;  // 0 : free, 1 : used, 2 : eager free.
 
-  int stream_id_;
+  int stream_id_{0};
   struct Block *prev_{nullptr};
   struct Block *next_{nullptr};
+
+  void Print() {
+    std::cout << "Block[" << addr_ << "] size_ : " << size_ << ", status_ : " << status_
+              << ", prev_ : " << (prev_ ? prev_->addr_ : 0) << ", next_ : " << (next_ ? next_->addr_ : 0) << std::endl;
+  }
 };
 using BlockRawPtr = struct Block *;
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 #include "actor_hash.h"
@@ -210,9 +211,8 @@ int skiplist_test() {
   // s.display_list();
 
   return 0;
-
-  std::cout << "Application end" << std::endl;
-  return 0;
+  // std::cout << "Application end" << std::endl;
+  // return 0;
 }
 
 void DefineFunc(bool *const /*flag_ptr*/, int data) { std::cout << "data : " << data << std::endl; }

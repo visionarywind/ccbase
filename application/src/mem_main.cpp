@@ -19,15 +19,15 @@ inline int64_t Get() {
   return std::chrono::duration_cast<std::chrono::nanoseconds>(now_time.time_since_epoch()).count();
 }
 
-int AllocTest() {
+int AllocTest(int count = 10000) {
   DefaultAllocator allocator;
   int64_t cost = 0;
   void *addr;
   stringstream ss;
 
   addr = allocator.Alloc(512);
-  // allocator.Free(addr);
-  int count = 100;
+  set<DeviceMemPtr> set;
+  vector<DeviceMemPtr> vec;
   for (int i = 0; i < count; i++) {
     // addr = allocator.Alloc(5120);
     auto start_time = Get();
@@ -35,13 +35,31 @@ int AllocTest() {
     cost += Get() - start_time;
     ss << addr << ", ";
     // allocator.Free(addr);
+    if (set.count(addr) == 0) {
+      set.emplace(addr);
+      vec.emplace_back(addr);
+    }
+
+    auto tmp = allocator.Alloc(512 + i * 128 * 10);
+    allocator.Free(tmp);
   }
+
+  cout << "new start to free" << endl;
+  int free_count = count / 2;
+  int64_t free_cost = 0;
+  for (int i = 0; i < free_count; i++) {
+    auto free_start = Get();
+    allocator.Free(vec[i]);
+    free_cost += Get() - free_start;
+  }
+
   cout << ss.str().size() << endl;
-  cout << "new cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "new alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "new free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
 }
 
-int PoolTest() {
+int PoolTest(int count = 10000) {
 #ifdef OP
   DynamicMemPoolBestFitOpt pool;
 #else
@@ -52,8 +70,6 @@ int PoolTest() {
 
   stringstream ss;
   pool.AllocTensorMem(512);
-  // pool.FreeTensorMem(addr);
-  int count = 100;
   set<DeviceMemPtr> set;
   vector<DeviceMemPtr> vec;
   for (int i = 0; i < count; i++) {
@@ -73,18 +89,34 @@ int PoolTest() {
   }
 
   cout << "start to free" << endl;
-  for (int i = 0; i < count / 3; i++) {
+  int free_count = count / 2;
+  int64_t free_cost = 0;
+  for (int i = 0; i < free_count; i++) {
+    auto free_start = Get();
     pool.FreeTensorMem(vec[i]);
+    free_cost += Get() - free_start;
   }
   cout << ss.str().size() << endl;
   pool.DumpDynamicMemPoolStateInfo();
-  cout << "old cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "old alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "old free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
+  return 1;
+}
 
+int main2() {
+  PoolTest();
+  cout << "===========================================" << endl;
+  AllocTest();
+  cout << "===========================================" << endl;
+  PoolTest();
+  cout << "===========================================" << endl;
+  AllocTest();
   return 1;
 }
 
 int main() {
-  // AllocTest();
-  PoolTest();
+  int count = 10000;
+  PoolTest(count);
+  AllocTest(count);
   return 1;
 }
