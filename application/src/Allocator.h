@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <map>
 #include <memory>
@@ -6,6 +7,8 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+
+#include "sorted_list.h"
 
 struct Block {
   Block(void *addr, size_t size, int status) : addr_(addr), size_(size), status_(status) {}
@@ -90,6 +93,20 @@ class DefaultAllocator : public MallocAllocator {
 
  private:
   std::vector<std::set<BlockRawPtr, BlockComparator>> free_blocks_{decltype(free_blocks_)(128)};
+  std::unordered_map<void *, BlockRawPtr> total_block_;
+  std::mutex mutex_;
+};
+
+class SkipListAllocator : public MallocAllocator {
+ public:
+  size_t MIN_SPLIT_SIZE = 512;
+
+  void *Alloc(size_t size, uint32_t stream_id = 0) override;
+
+  bool Free(void *addr) override;
+
+ private:
+  std::vector<SortedList<size_t, BlockRawPtr>> free_blocks_{decltype(free_blocks_)(128)};
   std::unordered_map<void *, BlockRawPtr> total_block_;
   std::mutex mutex_;
 };

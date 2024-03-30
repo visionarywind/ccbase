@@ -10,7 +10,7 @@ using namespace std;
 
 using DeviceEventPtr = void *;
 
-constexpr int32_t LIST_LEVEL = 15;
+constexpr int32_t LIST_LEVEL = 10;
 
 template <typename K, typename V>
 struct Node {
@@ -51,13 +51,14 @@ class SortedList {
   // Get smallest task id on stream.
   K SmallestTaskIdOnStream() const { return head_->nexts_[0] ? head_->nexts_[0]->key_ : -1L; }
   // Insert element into list.
-  void Insert(K id, V event) { Add(id, event); }
+  void Insert(K id, V value) { Add(id, value); }
   // Traverse elements in list.
   void Traverse(std::function<void(K, V &)> func);
   // Remove range elements that less than id.
   bool RemoveLess(K id);
   // Remove range elements that not greater than id.
   bool RemoveLowerBound(K key);
+  bool RemoveNode(Node<K, V> *node, Node<K, V> *next[]);
   // Get size of list.
   [[nodiscard]] size_t Size() const { return size_; }
   // Print elements in list.
@@ -66,11 +67,13 @@ class SortedList {
   // Get element is list.
   V Get(K key);
   // Add element into list.
-  void Add(K key, V event);
+  void Add(K key, V value);
   // Remove element by key.
   bool Remove(K key);
+  // Remove element by key and value.
+  bool Remove(K key, V value);
 
- private:
+ public:
   // Locate position that less than key.
   void Locate(K key, Node<K, V> *next[]);
   // Locate position that not greater than key.
@@ -217,6 +220,11 @@ bool SortedList<K, V, Comparator>::Remove(K key) {
   if (node == nullptr || comparator_(node->key_, key) != 0) {
     return false;
   }
+  return RemoveNode(node, next);
+}
+
+template <typename K, typename V, class Comparator>
+bool SortedList<K, V, Comparator>::RemoveNode(Node<K, V> *node, Node<K, V> *next[]) {
   for (int i = 0; i < LIST_LEVEL && next[i]->nexts_[i] == node; i++) {
     next[i]->nexts_[i] = next[i]->nexts_[i]->nexts_[i];
   }
@@ -226,6 +234,25 @@ bool SortedList<K, V, Comparator>::Remove(K key) {
   delete node;
   size_--;
   return true;
+}
+
+template <typename K, typename V, class Comparator>
+bool SortedList<K, V, Comparator>::Remove(K key, V value) {
+  Node<K, V> *next[LIST_LEVEL];
+  LocateLowerBound(key, next);
+  Node<K, V> *node = next[0]->nexts_[0];
+  bool found = false;
+  while (node != nullptr && comparator_(node->key_, key) == 0) {
+    if (node->value_ == value) {
+      found = true;
+      break;
+    }
+    node = node->nexts_[0];
+  }
+  if (found) {
+    RemoveNode(node, next);
+  }
+  return found;
 }
 
 template <typename K, typename V, class Comparator>
@@ -243,7 +270,7 @@ template <typename K, typename V, class Comparator>
 void SortedList<K, V, Comparator>::LocateLowerBound(K key, Node<K, V> *next[]) {
   Node<K, V> *cur = head_;
   for (int i = LIST_LEVEL - 1; i >= 0; i--) {
-    while (cur->nexts_[i] != nullptr && comparator_(cur->nexts_[i]->key_, key) != 1) {
+    while (cur->nexts_[i] != nullptr && comparator_(cur->nexts_[i]->key_, key) == -1) {
       cur = cur->nexts_[i];
     }
     next[i] = cur;

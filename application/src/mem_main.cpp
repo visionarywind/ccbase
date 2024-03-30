@@ -114,9 +114,67 @@ int main2() {
   return 1;
 }
 
+int SkipAllocTest(int count = 10000) {
+  SkipListAllocator allocator;
+  int64_t cost = 0;
+  void *addr;
+  stringstream ss;
+
+  addr = allocator.Alloc(512);
+  set<DeviceMemPtr> set;
+  vector<DeviceMemPtr> vec;
+  for (int i = 0; i < count; i++) {
+    // addr = allocator.Alloc(5120);
+    auto start_time = Get();
+    addr = allocator.Alloc(512 + i * 128);
+    cost += Get() - start_time;
+    ss << addr << ", ";
+    // allocator.Free(addr);
+    if (set.count(addr) == 0) {
+      set.emplace(addr);
+      vec.emplace_back(addr);
+    }
+
+    auto tmp = allocator.Alloc(512 + i * 128 * 10);
+    allocator.Free(tmp);
+  }
+
+  // cout << "skiplist start to free" << endl;
+  // int free_count = count / 2;
+  // int64_t free_cost = 0;
+  // for (int i = 0; i < free_count; i++) {
+  //   auto free_start = Get();
+  //   allocator.Free(vec[i]);
+  //   free_cost += Get() - free_start;
+  // }
+
+  cout << ss.str().size() << endl;
+  cout << "skiplist alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  // cout << "skiplist free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
+  return 1;
+}
+
+void TestSortedList() {
+  SortedList<size_t, size_t> skip_list;
+  vector<size_t> blocks;
+  for (int i = 0; i < 10; i++) {
+    blocks.emplace_back(i);
+  }
+  for (auto block : blocks) {
+    skip_list.Insert(block, block);
+  }
+  cout << "list size : " << skip_list.Size() << endl;
+
+  for (auto block : blocks) {
+    skip_list.Remove(block, block);
+  }
+  cout << "list size : " << skip_list.Size() << endl;
+}
+
 int main() {
-  int count = 10000;
+  int count = 100000;
   PoolTest(count);
   AllocTest(count);
+  SkipAllocTest(count);
   return 1;
 }

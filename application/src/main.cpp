@@ -218,7 +218,7 @@ struct BlockIntComparator {
 int main() {
   // cout << LayerAdd(1, 1) << endl;
   // cout << LayerAdd(1, 1) << endl;
-  int count = 1000000;
+  int count = 10000;
   std::set<BlockRawPtr, BlockComparator> set_base;
   SortedList<size_t, BlockRawPtr> sort_list;
   vector<BlockRawPtr> inputs;
@@ -256,7 +256,7 @@ int main() {
 
   for (int i = 0; i < count; i++) {
     auto start = Get();
-    sort_list.Remove(inputs[i]->size_);
+    sort_list.Remove(inputs[i]->size_, inputs[i]);
     cost += Get() - start;
   }
   cout << "free cost in sorted_list : " << cost * 1.0 / 1000 / count << ".us" << endl;
