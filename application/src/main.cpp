@@ -197,23 +197,70 @@ class BlockComparator {
   // bool operator()(const BlockRawPtr &block, const size_t size) const { return block->size_ < size; }
 };
 
+struct BlockIntComparator {
+  int operator()(const BlockRawPtr &left, const BlockRawPtr &right) const {
+    if (left->size_ < right->size_) {
+      return -1;
+    } else if (left->size_ > right->size_) {
+      return 1;
+    } else {
+      if (left->addr_ < right->addr_) {
+        return -1;
+      } else if (left->addr_ > right->addr_) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }
+  }
+};
+
 int main() {
   // cout << LayerAdd(1, 1) << endl;
   // cout << LayerAdd(1, 1) << endl;
+  int count = 1000000;
   std::set<BlockRawPtr, BlockComparator> set_base;
-  SortedList<BlockRawPtr, BlockRawPtr> sort_list;
-  auto start_in_double = TimeSinceEpoch();
-  for (int i = 0; i < 10000; i++) {
-    add(1, 1);
+  SortedList<size_t, BlockRawPtr> sort_list;
+  vector<BlockRawPtr> inputs;
+  for (int i = 0; i < count; i++) {
+    inputs.emplace_back(new Block(malloc(i), i, 0));
   }
-  auto cost_in_double = TimeSinceEpoch() - start_in_double;
-  cout << "cost in double : " << cost_in_double << endl;
-  auto start = Get();
-  for (int i = 0; i < 10000; i++) {
-    add(1, 1);
+  cout << "start test" << endl;
+  // Alloc
+  int64_t cost_in_double = 0L;
+  for (int i = 0; i < count; i++) {
+    auto start_in_double = TimeSinceEpoch();
+    set_base.emplace(inputs[i]);
+    cost_in_double += TimeSinceEpoch() - start_in_double;
   }
-  auto cost = Get() - start;
-  cout << "cost : " << cost << endl;
+  cout << "alloc cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
+  // Free
+  cost_in_double = 0;
+  for (int i = 0; i < count; i++) {
+    auto start_in_double = TimeSinceEpoch();
+    set_base.erase(inputs[i]);
+    cost_in_double += TimeSinceEpoch() - start_in_double;
+  }
+  cout << "free cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
+  cout << "After free size : " << set_base.size() << endl;
+  // Alloc
+  int64_t cost = 0L;
+  for (int i = 0; i < count; i++) {
+    auto start = Get();
+    sort_list.Add(inputs[i]->size_, inputs[i]);
+    cost += Get() - start;
+  }
+  cout << "alloc cost in sorted_list : " << cost * 1.0 / 1000 / count << ".us" << endl;
+  cost = 0L;
+  // Free
+
+  for (int i = 0; i < count; i++) {
+    auto start = Get();
+    sort_list.Remove(inputs[i]->size_);
+    cost += Get() - start;
+  }
+  cout << "free cost in sorted_list : " << cost * 1.0 / 1000 / count << ".us" << endl;
+  cout << "After free size : " << sort_list.Size() << endl;
   return 0;
 }
 

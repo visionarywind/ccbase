@@ -10,11 +10,12 @@ using namespace std;
 
 using DeviceEventPtr = void *;
 
-constexpr int32_t LIST_LEVEL = 5;
+constexpr int32_t LIST_LEVEL = 15;
 
 template <typename K, typename V>
 struct Node {
   Node(K key, V value) : key_(key), value_(value) {}
+  Node(){};
   ~Node() {}
 
   K key_;
@@ -22,9 +23,9 @@ struct Node {
   Node *nexts_[LIST_LEVEL]{nullptr};
 };
 
-template <typename K, typename V>
-struct DefaultComparator : std::binary_function<K, V, int> {
-  int operator()(int a, int b) const {
+template <typename K>
+struct DefaultComparator : std::binary_function<K, K, int> {
+  int operator()(K a, K b) const {
     if (a < b) {
       return -1;
     } else if (a > b) {
@@ -36,11 +37,10 @@ struct DefaultComparator : std::binary_function<K, V, int> {
 };
 
 // Sorted list inspired from skip list.
-template <typename K, typename V, class Comparator = DefaultComparator<K, V>>
+template <typename K, typename V, class Comparator = DefaultComparator<K>>
 class SortedList {
  public:
-  SortedList(Comparator comparator = Comparator{})
-      : head_(new Node(-1L, nullptr)), last_(head_), comparator_(comparator) {}
+  SortedList(Comparator comparator = Comparator{}) : head_(new Node<K, V>()), last_(head_), comparator_(comparator) {}
   ~SortedList();
   // Disable copy and assignment constructor.
   SortedList(const SortedList &other) = delete;
@@ -182,7 +182,7 @@ V SortedList<K, V, Comparator>::Get(K key) {
   Node<K, V> *next[LIST_LEVEL];
   Locate(key, next);
   if (next[0]->nexts_[0] != nullptr && comparator_(next[0]->nexts_[0]->key_, key) == 0) {
-    return next[0]->nexts_[0]->value_l
+    return next[0]->nexts_[0]->value_;
   } else {
     return nullptr;
   }
@@ -200,7 +200,9 @@ void SortedList<K, V, Comparator>::Add(K key, V event) {
   for (int i = 0; i < LIST_LEVEL; i++) {
     node->nexts_[i] = next[i]->nexts_[i];
     next[i]->nexts_[i] = node;
-    if (std::chrono::duration_cast<int64_t>(std::chrono::steady_clock::now().time_since_epoch()).count() & 1) {
+    if (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch())
+          .count() &
+        1) {
       break;
     }
   }
@@ -212,7 +214,7 @@ bool SortedList<K, V, Comparator>::Remove(K key) {
   Node<K, V> *next[LIST_LEVEL];
   Locate(key, next);
   Node<K, V> *node = next[0]->nexts_[0];
-  if (node == nullptr || node->key_ != key) {
+  if (node == nullptr || comparator_(node->key_, key) != 0) {
     return false;
   }
   for (int i = 0; i < LIST_LEVEL && next[i]->nexts_[i] == node; i++) {
