@@ -22,7 +22,7 @@
 #include <functional>
 #include <mutex>
 #include <memory>
-#include "utils/ms_utils.h"
+// #include "utils/ms_utils.h"
 
 #ifdef FORK_UTILS_DEBUG
 #define FORK_UTILS_LOG(content, args...) \
@@ -39,9 +39,9 @@ struct fork_callback_info {
   std::function<void()> child_atfork_func;
 };
 
-MS_CORE_API void EmptyFunction();
+void EmptyFunction();
 
-class MS_CORE_API ForkUtils {
+class ForkUtils {
  public:
   static ForkUtils &GetInstance() noexcept;
 

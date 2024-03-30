@@ -28,12 +28,12 @@
 #else
 // #include "common/log_adapter.h"
 #endif
-#define MS_LOG //
+#define MS_LOG  //
 namespace mindspore {
 #define FlushHLogCache()
 // Kill the process for safe exiting.
 inline void KillProcess(const std::string &ret) {
-  MS_LOG(DEBUG) << "MINDRT Exit Tip:" << ret.c_str();
+  // MS_LOG(DEBUG) << "MINDRT Exit Tip:" << ret.c_str();
   // flush the log in cache to disk before exiting.
   FlushHLogCache();
 }

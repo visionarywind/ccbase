@@ -52,18 +52,20 @@ const MindrtAddress &GetMindrtAddress() { return local::g_mindrtAddress; }
 
 class MindrtExit {
  public:
-  MindrtExit() { MS_LOG(DEBUG) << "trace: enter MindrtExit()."; }
+  MindrtExit() {
+    // MS_LOG(DEBUG) << "trace: enter MindrtExit().";
+  }
   ~MindrtExit() {
-    MS_LOG(DEBUG) << "trace: enter ~MindrtExit().";
+    // MS_LOG(DEBUG) << "trace: enter ~MindrtExit().";
     mindspore::Finalize();
   }
 };
 
 int InitializeImp(const std::string &tcpUrl, const std::string &tcpUrlAdv, const std::string &udpUrl,
                   const std::string &udpUrlAdv, int threadCount) {
-  MS_LOG(DEBUG) << "mindrt starts.";
+  // MS_LOG(DEBUG) << "mindrt starts.";
   auto ret = ActorMgr::GetActorMgrRef()->Initialize();
-  MS_LOG(DEBUG) << "mindrt has started.";
+  // MS_LOG(DEBUG) << "mindrt has started.";
   return ret;
 }
 
@@ -77,7 +79,7 @@ int Initialize(const std::string &tcpUrl, const std::string &tcpUrlAdv, const st
 
 AID Spawn(const ActorReference actor, bool sharedThread) {
   if (actor == nullptr) {
-    MS_LOG(ERROR) << "Actor is nullptr.";
+    // MS_LOG(ERROR) << "Actor is nullptr.";
     MINDRT_EXIT("Actor is nullptr.");
   }
   if (local::g_finalizeMindrtStatus.load() == true) {
@@ -111,13 +113,13 @@ void TerminateAll() { mindspore::ActorMgr::GetActorMgrRef()->TerminateAll(); }
 void Finalize() {
   bool inite = false;
   if (local::g_finalizeMindrtStatus.compare_exchange_strong(inite, true) == false) {
-    MS_LOG(DEBUG) << "mindrt has been Finalized.";
+    // MS_LOG(DEBUG) << "mindrt has been Finalized.";
     return;
   }
-  MS_LOG(DEBUG) << "mindrt starts to finalize.";
+  // MS_LOG(DEBUG) << "mindrt starts to finalize.";
   mindspore::ActorMgr::GetActorMgrRef()->Finalize();
 
-  MS_LOG(DEBUG) << "mindrt has been finalized.";
+  // MS_LOG(DEBUG) << "mindrt has been finalized.";
   // flush the log in cache to disk before exiting.
   FlushHLogCache();
 }
@@ -126,14 +128,14 @@ void SetDelegate(const std::string &delegate) { mindspore::ActorMgr::GetActorMgr
 
 static int g_mindrtLogPid = 1;
 void SetLogPID(int pid) {
-  MS_LOG(DEBUG) << "Set Mindrt log PID:" << pid;
+  // MS_LOG(DEBUG) << "Set Mindrt log PID:" << pid;
   g_mindrtLogPid = pid;
 }
 int GetLogPID() { return g_mindrtLogPid; }
 
 static int g_httpKmsgEnable = -1;
 void SetHttpKmsgFlag(int flag) {
-  MS_LOG(DEBUG) << "Set Mindrt http message format:" << flag;
+  // MS_LOG(DEBUG) << "Set Mindrt http message format:" << flag;
   g_httpKmsgEnable = flag;
 }
 int GetHttpKmsgFlag() { return g_httpKmsgEnable; }

@@ -32,7 +32,7 @@ std::shared_ptr<IOMgr> &ActorMgr::GetIOMgrRef(const std::string &protocol) {
   if (it != ioMgrs.end()) {
     return it->second;
   } else {
-    MS_LOG(DEBUG) << "Can't find IOMgr of protocol " << protocol.c_str();
+    // MS_LOG(DEBUG) << "Can't find IOMgr of protocol " << protocol.c_str();
     static std::shared_ptr<IOMgr> nullIOMgr;
     return nullIOMgr;
   }
@@ -52,12 +52,12 @@ ActorMgr::~ActorMgr() {
 
 int ActorMgr::Initialize(bool use_inner_pool, size_t actor_thread_num, size_t max_thread_num, size_t actor_queue_size,
                          const std::vector<int> &core_list) {
-  MS_LOG(DEBUG) << "ActorMgr Initialize, use_inner_pool : " << use_inner_pool
-                << ", actor_thread_num : " << actor_thread_num << ", max_thread_num : " << max_thread_num
-                << ", actor_queue_size : " << actor_queue_size << ", core_list size : " << core_list.size();
+  // MS_LOG(DEBUG) << "ActorMgr Initialize, use_inner_pool : " << use_inner_pool
+  //               << ", actor_thread_num : " << actor_thread_num << ", max_thread_num : " << max_thread_num
+  //               << ", actor_queue_size : " << actor_queue_size << ", core_list size : " << core_list.size();
   std::unique_lock lock(actorsMutex);
   if (initialized_) {
-    MS_LOG(DEBUG) << "Actor Manager has been initialized before";
+    // MS_LOG(DEBUG) << "Actor Manager has been initialized before";
     return MINDRT_OK;
   }
   initialized_ = true;
@@ -67,7 +67,7 @@ int ActorMgr::Initialize(bool use_inner_pool, size_t actor_thread_num, size_t ma
     if (max_thread_num <= actor_thread_num) {
       inner_pool_ = ActorThreadPool::CreateThreadPool(actor_thread_num);
       if (inner_pool_ == nullptr) {
-        MS_LOG(ERROR) << "ActorMgr CreateThreadPool failed";
+        // MS_LOG(ERROR) << "ActorMgr CreateThreadPool failed";
         return MINDRT_ERROR;
       }
     } else {
@@ -79,7 +79,7 @@ int ActorMgr::Initialize(bool use_inner_pool, size_t actor_thread_num, size_t ma
       auto bind_mode = !bind_list.empty() ? BindMode::Power_Higher : BindMode::Power_NoBind;
       inner_pool_ = ActorThreadPool::CreateThreadPool(actor_thread_num, max_thread_num, bind_list, bind_mode);
       if (inner_pool_ == nullptr) {
-        MS_LOG(ERROR) << "ActorMgr CreateThreadPool failed";
+        // MS_LOG(ERROR) << "ActorMgr CreateThreadPool failed";
         return MINDRT_ERROR;
       }
       inner_pool_->SetActorThreadNum(actor_thread_num);
@@ -101,8 +101,8 @@ void ActorMgr::SetActorReady(const ActorReference &actor) const {
   MINDRT_OOM_EXIT(actor);
   ActorThreadPool *pool = actor->pool_ ? actor->pool_ : inner_pool_;
   if (pool == nullptr) {
-    MS_LOG(ERROR) << "ThreadPool is nullptr, " << actor->pool_ << ", " << inner_pool_
-                  << ", actor: " << actor->GetAID().Name();
+    // MS_LOG(ERROR) << "ThreadPool is nullptr, " << actor->pool_ << ", " << inner_pool_
+    //               << ", actor: " << actor->GetAID().Name();
     return;
   }
   pool->PushActorToQueue(actor.get());
@@ -162,21 +162,21 @@ void ActorMgr::TerminateAll() {
 
 void ActorMgr::Finalize() {
   this->TerminateAll();
-  MS_LOG(INFO) << "mindrt Actors finish exiting.";
+  // MS_LOG(INFO) << "mindrt Actors finish exiting.";
 
   // stop all actor threads;
-  MS_LOG(INFO) << "mindrt Threads finish exiting.";
+  // MS_LOG(INFO) << "mindrt Threads finish exiting.";
 
   // stop iomgr thread
   for (auto mgrIt = ioMgrs.begin(); mgrIt != ioMgrs.end(); ++mgrIt) {
-    MS_LOG(INFO) << "finalize IOMgr=" << mgrIt->first.c_str();
+    // MS_LOG(INFO) << "finalize IOMgr=" << mgrIt->first.c_str();
     mgrIt->second->Finalize();
   }
 
   // delete actor thread pool if use_inner_pool
   delete inner_pool_;
   inner_pool_ = nullptr;
-  MS_LOG(INFO) << "mindrt IOMGRS finish exiting.";
+  // MS_LOG(INFO) << "mindrt IOMGRS finish exiting.";
 }
 
 ActorReference ActorMgr::GetActor(const AID &id) {
@@ -200,7 +200,7 @@ ActorReference ActorMgr::GetActor(const AID &id) {
 #else
     actorsMutex.unlock();
 #endif
-    MS_LOG(DEBUG) << "can't find ACTOR with name=" << id.Name().c_str();
+    // MS_LOG(DEBUG) << "can't find ACTOR with name=" << id.Name().c_str();
     return nullptr;
   }
 }
@@ -224,7 +224,7 @@ int ActorMgr::Send(const AID &to, std::unique_ptr<MessageBase> msg, bool remoteL
   } else {
     // send to remote actor
     if (msg->GetType() != MessageBase::Type::KMSG) {
-      MS_LOG(ERROR) << "The msg is not KMSG,it can't send to remote=" << std::string(to).c_str();
+      // MS_LOG(ERROR) << "The msg is not KMSG,it can't send to remote=" << std::string(to).c_str();
       return ACTOR_PARAMER_ERR;
     } else {
       // null
@@ -234,9 +234,9 @@ int ActorMgr::Send(const AID &to, std::unique_ptr<MessageBase> msg, bool remoteL
     if (io != nullptr) {
       return io->Send(std::move(msg), remoteLink, isExactNotRemote);
     } else {
-      MS_LOG(ERROR) << "The protocol is not supported:"
-                    << "p=" << to.GetProtocol().c_str() << ",f=" << msg->From().Name().c_str()
-                    << ",t=" << to.Name().c_str() << ",m=" << msg->Name().c_str();
+      // MS_LOG(ERROR) << "The protocol is not supported:"
+      //               << "p=" << to.GetProtocol().c_str() << ",f=" << msg->From().Name().c_str()
+      //               << ",t=" << to.Name().c_str() << ",m=" << msg->Name().c_str();
       return IO_NOT_FIND;
     }
   }
@@ -246,10 +246,10 @@ AID ActorMgr::Spawn(const ActorReference &actor, bool shareThread) {
   actorsMutex.lock();
   if (actors.find(actor->GetAID().Name()) != actors.end()) {
     actorsMutex.unlock();
-    MS_LOG(ERROR) << "The actor's name conflicts,name:" << actor->GetAID().Name().c_str();
+    // MS_LOG(ERROR) << "The actor's name conflicts,name:" << actor->GetAID().Name().c_str();
     MINDRT_EXIT("Actor name conflicts.");
   }
-  MS_LOG(DEBUG) << "ACTOR was spawned,a=" << actor->GetAID().Name().c_str();
+  // MS_LOG(DEBUG) << "ACTOR was spawned,a=" << actor->GetAID().Name().c_str();
 
   if (shareThread) {
     auto mailbox = std::make_unique<NonblockingMailBox>();
@@ -308,7 +308,7 @@ void ActorMgr::Wait(const AID &id) {
 
 void ActorMgr::ChildAfterFork() {
   if (inner_pool_) {
-    MS_LOG(DEBUG) << "ActorMgr reinitialize inner_pool_ after fork.";
+    // MS_LOG(DEBUG) << "ActorMgr reinitialize inner_pool_ after fork.";
     inner_pool_->ChildAfterFork();
   }
 }

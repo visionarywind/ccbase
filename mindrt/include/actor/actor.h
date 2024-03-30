@@ -49,8 +49,8 @@ class MS_CORE_API ActorBase {
   inline void PrintMsgRecord() {
     uint32_t startPoint = recordNextPoint % MAX_ACTOR_RECORD_SIZE;
     for (uint32_t i = 0; i < MAX_ACTOR_RECORD_SIZE; i++) {
-      MS_LOG(DEBUG) << "Actor message dumps:"
-                    << "actor:" << id.Name().c_str() << " msg:" << msgRecords[startPoint].c_str();
+      // MS_LOG(DEBUG) << "Actor message dumps:"
+      //               << "actor:" << id.Name().c_str() << " msg:" << msgRecords[startPoint].c_str();
       startPoint = (startPoint + MAX_ACTOR_RECORD_SIZE - 1) % MAX_ACTOR_RECORD_SIZE;
     }
   }
@@ -98,17 +98,17 @@ class MS_CORE_API ActorBase {
 
   // KHTTPMsg handler
   virtual void HandleHttp(const std::unique_ptr<MessageBase> &msg) {
-    MS_LOG(ERROR) << "ACTOR (" << id.Name().c_str() << ") HandleHttp() is not implemented";
+    // MS_LOG(ERROR) << "ACTOR (" << id.Name().c_str() << ") HandleHttp() is not implemented";
   }
 
   // KLOCALMsg handler
   virtual void HandleLocalMsg(const std::unique_ptr<MessageBase> &msg) {
-    MS_LOG(ERROR) << "ACTOR (" << id.Name().c_str() << ") HandleLocalMsg() is not implemented.";
+    // MS_LOG(ERROR) << "ACTOR (" << id.Name().c_str() << ") HandleLocalMsg() is not implemented.";
   }
 
   // The link is closed.
   virtual void Exited(const AID &actor) {
-    MS_LOG(ERROR) << "ACTOR (" << id.Name().c_str() << ") Exited() is not implemented. ";
+    // MS_LOG(ERROR) << "ACTOR (" << id.Name().c_str() << ") Exited() is not implemented. ";
   }
 
   // Filter the KMSG
@@ -166,8 +166,8 @@ class MS_CORE_API ActorBase {
                            const std::unique_ptr<MessageBase> &msg) {
     MINDRT_OOM_EXIT(msg);
     if (msg->type != MessageBase::Type::KMSG) {
-      MS_LOG(ERROR) << "Drop non-tcp message: from:" << std::string(msg->from).c_str()
-                    << ",to:" << std::string(msg->to).c_str() << ",name:" << msg->name.c_str();
+      // MS_LOG(ERROR) << "Drop non-tcp message: from:" << std::string(msg->from).c_str()
+      //               << ",to:" << std::string(msg->to).c_str() << ",name:" << msg->name.c_str();
       return;
     }
     (t->*method)(msg->from, std::move(msg->name), std::move(msg->body));
@@ -179,8 +179,8 @@ class MS_CORE_API ActorBase {
                             const std::unique_ptr<MessageBase> &msg) {
     MINDRT_OOM_EXIT(msg);
     if (msg->type != MessageBase::Type::KMSG) {
-      MS_LOG(ERROR) << "Drop non-tcp message:  from:" << std::string(msg->from).c_str()
-                    << ",to:" << std::string(msg->to).c_str() << ",name:" << msg->name.c_str();
+      // MS_LOG(ERROR) << "Drop non-tcp message:  from:" << std::string(msg->from).c_str()
+      //               << ",to:" << std::string(msg->to).c_str() << ",name:" << msg->name.c_str();
       return;
     }
     (t->*method)(msg->from, std::move(msg->name), std::move(msg->body));
@@ -192,8 +192,8 @@ class MS_CORE_API ActorBase {
                                  const std::unique_ptr<MessageBase> &msg) {
     MINDRT_OOM_EXIT(msg);
     if (msg->type != MessageBase::Type::KUDP) {
-      MS_LOG(ERROR) << "Drop non-udp message:  from:" << std::string(msg->from).c_str()
-                    << ",to:" << std::string(msg->to).c_str() << ",name:" << msg->name.c_str();
+      // MS_LOG(ERROR) << "Drop non-udp message:  from:" << std::string(msg->from).c_str()
+      //               << ",to:" << std::string(msg->to).c_str() << ",name:" << msg->name.c_str();
       return;
     }
     (t->*method)(msg->from, std::move(msg->name), std::move(msg->body));

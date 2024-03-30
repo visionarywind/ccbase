@@ -9,6 +9,8 @@
 
 #define STORE_FILE "store/dumpFile"
 
+namespace sk {
+
 std::mutex mtx;  // mutex for critical section
 std::string delimiter = ":";
 
@@ -447,3 +449,5 @@ int SkipList<K, V>::get_random_level() {
   k = (k < _max_level) ? k : _max_level;
   return k;
 };
+
+}

@@ -27,7 +27,7 @@
 #include "async/defer.h"
 #include "async/spinlock.h"
 #include "actor/actor.h"
-#include "mindrt/include/mindrt.hpp"
+#include "include/mindrt.hpp"
 
 namespace mindspore {
 template <typename T>
@@ -104,10 +104,10 @@ inline Future<std::list<T>> Collect(const std::list<Future<T>> &futures) {
 }
 
 template <typename... Ts>
-Future<std::tuple<Ts...>> Collect(const Future<Ts> &... futures) {
+Future<std::tuple<Ts...>> Collect(const Future<Ts> &...futures) {
   std::list<Future<Nothing>> wrappers = {futures.Then([]() { return Nothing(); })...};
 
-  auto f = [](const Future<Ts> &... futures) { return std::make_tuple(futures.Get()...); };
+  auto f = [](const Future<Ts> &...futures) { return std::make_tuple(futures.Get()...); };
 
   return Collect(wrappers).Then(std::bind(f, futures...));
 }

@@ -28,7 +28,7 @@
 #include "async/status.h"
 #include "async/uuid_generator.h"
 #include "async/future_base.h"
-#include "mindrt/include/mindrt.hpp"
+#include "include/mindrt.hpp"
 
 namespace mindspore {
 template <typename T>
@@ -44,7 +44,7 @@ class Future : public FutureBase {
   typedef typename FutureData<T>::CompleteCallback CompleteCallback;
   typedef typename FutureData<T>::AbandonedCallback AbandonedCallback;
   typedef FutureData<T> Data;
-  Future() : data(new (std::nothrow) Data()) {
+  Future() : data(new(std::nothrow) Data()) {
     MINDRT_OOM_EXIT(data);
     data->abandoned = true;
   }
@@ -53,18 +53,18 @@ class Future : public FutureBase {
 
   Future(Future<T> &&f) : data(std::move(f.data)) {}
 
-  explicit Future(const T &t) : data(new (std::nothrow) Data()) {
+  explicit Future(const T &t) : data(new(std::nothrow) Data()) {
     MINDRT_OOM_EXIT(data);
     SetValue(std::move(t));
   }
 
   template <typename V>
-  explicit Future(const V &value) : data(new (std::nothrow) Data()) {
+  explicit Future(const V &value) : data(new(std::nothrow) Data()) {
     MINDRT_OOM_EXIT(data);
     SetValue(value);
   }
 
-  explicit Future(const MindrtStatus &s) : data(new (std::nothrow) Data()) {
+  explicit Future(const MindrtStatus &s) : data(new(std::nothrow) Data()) {
     MINDRT_OOM_EXIT(data);
     SetFailed(s.GetCode());
   }
@@ -86,7 +86,7 @@ class Future : public FutureBase {
 
   const T &Get() const {
     if (data->status.IsError()) {
-      MS_LOG(WARNING) << "Future::Get() but status == Error: " << GetErrorCode();
+      // MS_LOG(WARNING) << "Future::Get() but status == Error: " << GetErrorCode();
       return data->t;
     }
 

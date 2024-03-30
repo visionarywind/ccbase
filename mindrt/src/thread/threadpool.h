@@ -161,7 +161,7 @@ class Worker {
   void Run();
 };
 
-class MS_CORE_API ThreadPool {
+class ThreadPool {
  public:
   static ThreadPool *CreateThreadPool(size_t thread_num, const std::vector<int> &core_list = {});
   virtual ~ThreadPool();

@@ -21,13 +21,12 @@
 #include <vector>
 #include <memory>
 #include <string>
-#include "utils/hash_map.h"
-#include "mindapi/base/macros.h"
+// #include "mindapi/base/macros.h"
 #include "actor/actor.h"
 #include "async/uuid_base.h"
 #include "async/future.h"
 #include "async/async.h"
-#include "mindrt/include/async/collect.h"
+#include "async/collect.h"
 
 namespace mindspore {
 // OpActor data route.
@@ -119,11 +118,11 @@ class OpActor : public ActorBase {
 
  protected:
   // The op data.
-  mindspore::HashMap<int, std::vector<OpData<T> *>> input_op_datas_;
+  std::unordered_map<int, std::vector<OpData<T> *>> input_op_datas_;
   std::vector<DataArrowPtr> output_data_arrows_;
 
   // The op controls.
-  mindspore::HashMap<int, std::vector<AID *>> input_op_controls_;
+  std::unordered_map<int, std::vector<AID *>> input_op_controls_;
   std::vector<ControlArrowPtr> output_control_arrows_;
 };
 }  // namespace mindspore

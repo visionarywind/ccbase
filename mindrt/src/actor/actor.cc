@@ -38,14 +38,14 @@ void ActorBase::Spawn(const std::shared_ptr<ActorBase>, std::unique_ptr<MailBox>
 void ActorBase::Await() {
   std::string actorName = id.Name();
   // lock here or at spawn(). and unlock here or at worker(). wait for the worker to finish.
-  MS_LOG(DEBUG) << "ACTOR is waiting for terminate to finish. a=" << actorName.c_str();
+  // MS_LOG(DEBUG) << "ACTOR is waiting for terminate to finish. a=" << actorName.c_str();
   waiterLock.Wait();
   waiterLock.Signal();
 
   // mailbox's hook may hold the actor reference, we need explicitly free the mailbox to avoid the memory leak. the
   // details can refer to the comments in ActorMgr::Spawn
   delete mailbox.release();
-  MS_LOG(DEBUG) << "ACTOR succeeded in waiting. a=" << actorName.c_str();
+  // MS_LOG(DEBUG) << "ACTOR succeeded in waiting. a=" << actorName.c_str();
 }
 void ActorBase::Terminate() {
   bool flag = false;
@@ -62,8 +62,8 @@ void ActorBase::HandlekMsg(const std::unique_ptr<MessageBase> &msg) {
     ActorFunction &func = it->second;
     func(msg);
   } else {
-    MS_LOG(WARNING) << "ACTOR can not find function for message, a=" << id.Name().c_str()
-                    << ",m=" << msg->Name().c_str();
+    // MS_LOG(WARNING) << "ACTOR can not find function for message, a=" << id.Name().c_str()
+    //                 << ",m=" << msg->Name().c_str();
   }
 }
 int ActorBase::EnqueMessage(std::unique_ptr<MessageBase> msg) const {
@@ -120,7 +120,7 @@ void ActorBase::Run() {
         if (msg == nullptr) {
           continue;
         }
-        MS_LOG(DEBUG) << "dequeue message]actor=" << id.Name() << ",msg=" << msg->Name();
+        // MS_LOG(DEBUG) << "dequeue message]actor=" << id.Name() << ",msg=" << msg->Name();
         if (msgHandler(msg) == ACTOR_TERMINATED) {
           return;
         }
@@ -151,8 +151,8 @@ int ActorBase::Send(const AID &to, std::string &&name, std::string &&strMsg, boo
 // register the message handle
 void ActorBase::Receive(const std::string &msgName, ActorFunction &&func) {
   if (actionFunctions.find(msgName) != actionFunctions.end()) {
-    MS_LOG(ERROR) << "ACTOR function's name conflicts, a=" << id.Name().c_str() << ",f=" << msgName.c_str();
-    MINDRT_EXIT("function's name conflicts");
+    // MS_LOG(ERROR) << "ACTOR function's name conflicts, a=" << id.Name().c_str() << ",f=" << msgName.c_str();
+    // MINDRT_EXIT("function's name conflicts");
     return;
   }
   actionFunctions.emplace(msgName, std::move(func));

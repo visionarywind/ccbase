@@ -15,6 +15,7 @@
 #include "template.h"
 #include "tools/timer.h"
 #include "skiplist.h"
+#include "sorted_list.h"
 #include "mem_dynamic_allocator.h"
 #include "layer.h"
 
@@ -159,11 +160,60 @@ struct SNode {
   SNode *next;
 };
 
+double TimeSinceEpoch() {
+  auto now = std::chrono::steady_clock::now();
+  auto d = now.time_since_epoch();
+  return d.count();
+}
+
+struct Block {
+  Block(void *addr, size_t size, int status) : addr_(addr), size_(size), status_(status) {}
+  void *addr_;
+  size_t size_;
+  int status_;  // 0 : free, 1 : used, 2 : eager free.
+
+  int stream_id_{0};
+  struct Block *prev_{nullptr};
+  struct Block *next_{nullptr};
+
+  void Print() {
+    std::cout << "Block[" << addr_ << "] size_ : " << size_ << ", status_ : " << status_
+              << ", prev_ : " << (prev_ ? prev_->addr_ : 0) << ", next_ : " << (next_ ? next_->addr_ : 0) << std::endl;
+  }
+};
+using BlockRawPtr = struct Block *;
+
+class BlockComparator {
+ public:
+  bool operator()(const BlockRawPtr &left, const BlockRawPtr &right) const {
+    // stream id is not used currently
+    // if (left->stream_id_ != right->stream_id_) {
+    //   return left->stream_id_ < right->stream_id_;
+    // }
+    return (left->size_ != right->size_) ? left->size_ < right->size_ : left->addr_ < right->addr_;
+  }
+
+  // bool operator()(const size_t size, const BlockRawPtr &block) const { return size < block->size_; }
+  // bool operator()(const BlockRawPtr &block, const size_t size) const { return block->size_ < size; }
+};
+
 int main() {
-  cout << LayerAdd(1, 1) << endl;
-  cout << LayerAdd(1, 1) << endl;
-  cout << add(1, 1) << endl;
-  cout << add(1, 1) << endl;
+  // cout << LayerAdd(1, 1) << endl;
+  // cout << LayerAdd(1, 1) << endl;
+  std::set<BlockRawPtr, BlockComparator> set_base;
+  SortedList<BlockRawPtr, BlockRawPtr> sort_list;
+  auto start_in_double = TimeSinceEpoch();
+  for (int i = 0; i < 10000; i++) {
+    add(1, 1);
+  }
+  auto cost_in_double = TimeSinceEpoch() - start_in_double;
+  cout << "cost in double : " << cost_in_double << endl;
+  auto start = Get();
+  for (int i = 0; i < 10000; i++) {
+    add(1, 1);
+  }
+  auto cost = Get() - start;
+  cout << "cost : " << cost << endl;
   return 0;
 }
 
@@ -173,7 +223,7 @@ int skiplist_test() {
   // PriorityQueueTest();
   // TemplateTest();
   std::map<size_t, SNode *> m;
-  SkipList<size_t, SNode *> s(5);
+  sk::SkipList<size_t, SNode *> s(5);
 
   auto insert_start = Get();
   for (size_t i = 0; i < 1000; i++) {

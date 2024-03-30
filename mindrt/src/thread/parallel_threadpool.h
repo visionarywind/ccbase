@@ -70,7 +70,7 @@ class MS_CORE_API ParallelThreadPool : public ActorThreadPool {
                                               const std::vector<int> &core_list, BindMode bind_mode,
                                               std::string runner_id = "");
   ~ParallelThreadPool() override {
-    MS_LOG(INFO) << "free parallel thread pool.";
+    // MS_LOG(INFO) << "free parallel thread pool.";
     // wait until actor queue is empty
     bool terminate = false;
     int count = 0;
@@ -88,12 +88,12 @@ class MS_CORE_API ParallelThreadPool : public ActorThreadPool {
         std::this_thread::yield();
       }
     } while (!terminate && count++ < kMaxCount);
-    MS_LOG(INFO) << "Wait for all worker to delete.";
+    // MS_LOG(INFO) << "Wait for all worker to delete.";
     for (auto &worker : workers_) {
       delete worker;
       worker = nullptr;
     }
-    MS_LOG(INFO) << "delete workers.";
+    // MS_LOG(INFO) << "delete workers.";
     workers_.clear();
     tasks_size_ = 0;
     if (tasks_) {

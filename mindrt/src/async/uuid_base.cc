@@ -45,7 +45,7 @@ Option<unsigned char> uuid::GetValue(char c) {
   static unsigned char const values[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 10, 11, 12, 13, 14, 15};
   size_t pos = std::find(digitsBegin, digitsEnd, c) - digitsBegin;
   if (pos >= digitsLen) {
-    MS_LOG(ERROR) << "invalid char";
+    // MS_LOG(ERROR) << "invalid char";
     return Option<unsigned char>(MindrtNone());
   }
   return Option<unsigned char>(values[pos]);
@@ -72,7 +72,7 @@ Option<uuid> uuid::FromString(const std::string &s) {
       if (c == '-' && sBegin != s.end()) {
         c = *(sBegin++);
       } else {
-        MS_LOG(ERROR) << "str invalid";
+        // MS_LOG(ERROR) << "str invalid";
         return Option<uuid>(MindrtNone());
       }
     }
@@ -92,7 +92,7 @@ Option<uuid> uuid::FromString(const std::string &s) {
     u.uuidData[i] |= oc2.Get();
   }
   if ((hasOpenBrace && (c != '}')) || (sBegin != s.end())) {
-    MS_LOG(ERROR) << "No } end or leng invalid";
+    // MS_LOG(ERROR) << "No } end or leng invalid";
     return Option<uuid>(MindrtNone());
   }
   return Option<uuid>(u);
