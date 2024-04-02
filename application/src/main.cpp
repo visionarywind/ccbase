@@ -11,6 +11,8 @@
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
+#include "absl/container/btree_set.h"
+
 #include "actor_hash.h"
 #include "common/common.h"
 #include "inherit.h"
@@ -163,11 +165,6 @@ struct SNode {
   SNode *next;
 };
 
-// int main() {
-//   DynamicMemPoolBestFit pool;
-//   return 0;
-// }
-
 unsigned char parse_hex(char c) {
   if ('0' <= c && c <= '9') return c - '0';
   if ('A' <= c && c <= 'Z') return c - 'A' + 10;
@@ -207,8 +204,42 @@ int main() {
   //   out_data[std::to_string(i)] = "I am a big string_" + std::to_string(i);
   // }
   // cout << "out_data : " << out_data.size() << endl;
-  json new_data = json::parse("12312312");
-  cout << "new_data : size : " << new_data.size() << endl;
+  // json new_data = json::parse("12312312");
+  // cout << "new_data : size : " << new_data.size() << endl;
+
+  absl::btree_set<std::string> ducks;
+  int count = 10000;
+  auto start = Get();
+  for (int i = 0; i < count; i++) {
+    ducks.emplace(std::to_string(i));
+  }
+  auto cost = Get() - start;
+  cout << "absl - cost : " << cost * 1.0 / count / 1000 << "us" << endl;
+
+  start = Get();
+  for (int i = 0; i < count; i++) {
+    ducks.find(std::to_string(i));
+  }
+  auto query_cost = Get() - start;
+
+  cout << "absl - query_cost : " << query_cost * 1.0 / count / 1000 << "us" << endl;
+
+  std::set<std::string> chicken;
+  start = Get();
+  for (int i = 0; i < count; i++) {
+    chicken.emplace(std::to_string(i));
+  }
+  cost = Get() - start;
+  cout << "std - cost : " << cost * 1.0 / count / 1000 << "us" << endl;
+
+  start = Get();
+  for (int i = 0; i < count; i++) {
+    chicken.find(std::to_string(i));
+  }
+  query_cost = Get() - start;
+  cout << "std - query_cost : " << query_cost * 1.0 / count / 1000 << "us" << endl;
+
+  cout << "ducks size : " << ducks.size() << ", chicken size : " << chicken.size() << endl;
 
   // string s("zzhahaha");
   // stringstream ss;

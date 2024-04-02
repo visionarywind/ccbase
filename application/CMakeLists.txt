@@ -11,6 +11,29 @@ set(SOURCE_FILES src/main.cpp
 
 include(FetchContent)
 
+# # Configure for boost
+# FetchContent_Declare(boost
+# 	GIT_REPOSITORY https://gitee.com/mirrors/boost.git
+# 	GIT_TAG boost-1.84.0
+# 	CONFIGURE_COMMAND ""
+# 	BUILD_COMMAND ""
+# )
+# FetchContent_GetProperties(boost)
+# if(NOT boost)
+#   FetchContent_Populate(boost)
+#   add_subdirectory(${boost_SOURCE_DIR} ${boost_BINARY_DIR})
+# endif()
+
+# # Configure for folly.
+# FetchContent_Declare(
+#   folly
+#   GIT_REPOSITORY https://gitee.com/mirrors/folly.git
+#   GIT_TAG v2024.03.25.00
+# 	CONFIGURE_COMMAND ""
+# 	BUILD_COMMAND ""
+# )
+# FetchContent_MakeAvailable(folly)
+
 # Configure for robin hood
 set(libRobinHood robin_hood)
 FetchContent_Declare(${libRobinHood}
@@ -29,22 +52,16 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
 
 
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
-FetchContent_MakeAvailable(json)
 
-# Configure for boost
-#FetchContent_Declare(boost
-#	GIT_REPOSITORY https://gitee.com/mirrors/boost.git
-#	GIT_TAG boost-1.81
-#	CONFIGURE_COMMAND ""
-#	BUILD_COMMAND ""
-#)
-
-#FetchContent_GetProperties(boost)
-#if(NOT boost)
-#  FetchContent_Populate(boost)
-#  add_subdirectory(${boost_SOURCE_DIR} ${boost_BINARY_DIR})
-#endif()
-#include_directories(${CMAKE_CURRENT_SOURCE_DIR}/robin_hood/include)
+# Configure for folly.
+FetchContent_Declare(
+  abseil-cpp
+  GIT_REPOSITORY https://gitee.com/mirrors/abseil-cpp.git
+  GIT_TAG 20240116.1
+	CONFIGURE_COMMAND ""
+	BUILD_COMMAND ""
+)
+FetchContent_MakeAvailable(json abseil-cpp)
 
 add_executable(application ${SOURCE_FILES})
-target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood} nlohmann_json::nlohmann_json)
+target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood} nlohmann_json::nlohmann_json absl::base absl::strings)
