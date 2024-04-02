@@ -8,8 +8,6 @@
 
 using namespace std;
 
-using DeviceEventPtr = void *;
-
 constexpr int32_t LIST_LEVEL = 10;
 
 template <typename K, typename V>
