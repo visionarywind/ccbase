@@ -153,13 +153,14 @@ DeviceMemPtr DynamicMemPoolBestFit::AllocTensorMem(size_t size, bool from_persis
   if (false) {
     (void)mem_bufs_.insert(device_addr);
   }
-  std::cout << "Alloc memory details, name:" << DynamicMemAllocatorDebugInfo::GetDebugInfo().name_
-            << ", persistent_mem:" << from_persistent_mem << ", stream id: " << stream_id << ", address:" << device_addr
-            << ", size:" << size << "B, total allocated mem:" << TotalMemStatistics()
-            << "B, peak used mem:" << UsedMemPeakStatistics() << "B, actual peak used mem:" << ActualPeakStatistics()
-            << "B, in used mem:" << TotalUsedMemStatistics()
-            << "B, used by event mem:" << TotalUsedByEventMemStatistics()
-            << "B, total idle mem:" << TotalIdleMemStatistics() << "B." << std::endl;
+  // std::cout << "Alloc memory details, name:" << DynamicMemAllocatorDebugInfo::GetDebugInfo().name_
+  //           << ", persistent_mem:" << from_persistent_mem << ", stream id: " << stream_id << ", address:" <<
+  //           device_addr
+  //           << ", size:" << size << "B, total allocated mem:" << TotalMemStatistics()
+  //           << "B, peak used mem:" << UsedMemPeakStatistics() << "B, actual peak used mem:" << ActualPeakStatistics()
+  //           << "B, in used mem:" << TotalUsedMemStatistics()
+  //           << "B, used by event mem:" << TotalUsedByEventMemStatistics()
+  //           << "B, total idle mem:" << TotalIdleMemStatistics() << "B." << std::endl;
   return device_addr;
 }
 
@@ -307,7 +308,7 @@ void DynamicMemPoolBestFit::SetMemAllocUintSize(size_t common_size, size_t persi
   persistent_mem_->unit_size_ = persist_size;
   common_mem_->unit_size_ = common_size;
   config_unit_size_ = common_size;
-  std::cout << "Set mem alloc unit size, common " << common_size << " persistent " << persist_size << std::endl;
+  // std::cout << "Set mem alloc unit size, common " << common_size << " persistent " << persist_size << std::endl;
 }
 
 void *DynamicMemPoolBestFit::GetMinUsingMemoryAddr() const {
@@ -385,10 +386,10 @@ DeviceMemPtr DynamicMemPoolBestFit::AddMemBlockAndMemBufByEagerFree(size_t size,
                                                                     uint32_t stream_id) {
   // Check used max memory limits.
   if (TotalUsedMemStatistics() + TotalUsedByEventMemStatistics() + size > total_mem_size()) {
-    std::cout << "TotalUsedMemStatistics : " << TotalUsedMemStatistics()
-              << " plus TotalUsedByEventMemStatistics : " << TotalUsedByEventMemStatistics()
-              << " and plus alloc size : " << size << " is more than total mem size : " << total_mem_size() << "."
-              << std::endl;
+    // std::cout << "TotalUsedMemStatistics : " << TotalUsedMemStatistics()
+    //           << " plus TotalUsedByEventMemStatistics : " << TotalUsedByEventMemStatistics()
+    //           << " and plus alloc size : " << size << " is more than total mem size : " << total_mem_size() << "."
+    //           << std::endl;
     return nullptr;
   }
 
@@ -443,12 +444,13 @@ DeviceMemPtr DynamicMemPoolBestFit::CreateMemBlockAndMemBuf(size_t size, bool fr
   } else if (mem_buf_status == DynamicMemBufStatus::kMemBufEagerFree) {
     mem_mng->mps_.total_eager_free_mem_size_ += source_size - mem_buf->size_;
   } else {
-    std::cout << "Unsupported mem_buf_status : " << mem_buf_status << "." << std::endl;
+    // std::cout << "Unsupported mem_buf_status : " << mem_buf_status << "." << std::endl;
   }
-  std::cout << "Create mem block - usage: used size : " << TotalUsedMemStatistics()
-            << ", used by event size : " << TotalUsedByEventMemStatistics()
-            << ", idle size : " << TotalIdleMemStatistics() << ", eager free size : " << TotalEagerFreeMemStatistics()
-            << "." << std::endl;
+  // std::cout << "Create mem block - usage: used size : " << TotalUsedMemStatistics()
+  //           << ", used by event size : " << TotalUsedByEventMemStatistics()
+  //           << ", idle size : " << TotalIdleMemStatistics() << ", eager free size : " <<
+  //           TotalEagerFreeMemStatistics()
+  //           << "." << std::endl;
   return mem_buf->device_addr_;
 }
 
@@ -581,12 +583,12 @@ void DynamicMemPoolBestFit::FreeTensorMemInner(const DeviceMemPtr &device_addr) 
   if (false) {
     (void)mem_bufs_.erase(device_addr);
   }
-  std::cout << "Free memory details, name:" << DynamicMemAllocatorDebugInfo::GetDebugInfo().name_
-            << ", address:" << device_addr << ", total allocated mem:" << TotalMemStatistics()
-            << "B, peak used mem:" << UsedMemPeakStatistics() << "B, actual peak used mem:" << ActualPeakStatistics()
-            << "B, in used mem:" << TotalUsedMemStatistics()
-            << "B, used by event mem:" << TotalUsedByEventMemStatistics()
-            << "B, total idle mem:" << TotalIdleMemStatistics() << "B." << std::endl;
+  // std::cout << "Free memory details, name:" << DynamicMemAllocatorDebugInfo::GetDebugInfo().name_
+  //           << ", address:" << device_addr << ", total allocated mem:" << TotalMemStatistics()
+  //           << "B, peak used mem:" << UsedMemPeakStatistics() << "B, actual peak used mem:" << ActualPeakStatistics()
+  //           << "B, in used mem:" << TotalUsedMemStatistics()
+  //           << "B, used by event mem:" << TotalUsedByEventMemStatistics()
+  //           << "B, total idle mem:" << TotalIdleMemStatistics() << "B." << std::endl;
 }
 
 bool DynamicMemPoolBestFit::PreCombineMemBuf(const DynamicMemBufPtr &mem_buf, const DynamicMemBlockPtr &mem_block,

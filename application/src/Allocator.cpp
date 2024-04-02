@@ -127,10 +127,10 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
   std::lock_guard<std::mutex> locker(mutex_);
   auto &free_blocks = free_blocks_[stream_id];
   // locate position
-  Node<size_t, BlockRawPtr> *next[LIST_LEVEL];
+  Node<size_t, BlockRawPtr> *next[LIST_LEVEL] = {0};
   free_blocks.Locate(size, next);
   Block *block = nullptr;
-  Node<size_t, BlockRawPtr> *node = next[0]->nexts_[0];
+  auto node = next[0]->nexts_[0];
   if (node == nullptr) {
     void *addr = MemAlloc(1 << 30);
     // std::cout << "malloc addr : " << addr << std::endl;
@@ -146,10 +146,10 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
   if (remaining >= MIN_SPLIT_SIZE) {
     auto remaining_addr = static_cast<int8_t *>(block->addr_) + size;
     auto remaining_block = new Block(remaining_addr, remaining, 0);
-    auto next = block->next_;
-    if (next != nullptr) {
-      next->prev_ = remaining_block;
-      remaining_block->next_ = next;
+    auto next_block = block->next_;
+    if (next_block != nullptr) {
+      next_block->prev_ = remaining_block;
+      remaining_block->next_ = next_block;
     }
     block->next_ = remaining_block;
     remaining_block->prev_ = block;
@@ -182,7 +182,6 @@ bool SkipListAllocator::Free(void *addr) {
 
     auto prev_block = block->prev_;
     if (prev_block != nullptr) {
-      // prev_block->Print();
       if (prev_block->status_ == 0) {
         // erase prev block pointer
         auto prev = prev_block->prev_;
@@ -190,8 +189,12 @@ bool SkipListAllocator::Free(void *addr) {
         if (prev != nullptr) {
           prev->next_ = block;
         }
+        prev_block->prev_ = prev_block->next_ = nullptr;
 
-        free_blocks.Remove(prev_block->size_, prev_block);
+        bool ret = free_blocks.Remove(prev_block->size_, prev_block);
+        if (!ret) {
+          std::cout << "free block failed, size : " << prev_block->size_ << std::endl;
+        }
         total_block_.erase(prev_block->addr_);
         block->addr_ = prev_block->addr_;
         block->size_ += prev_block->size_;
@@ -212,9 +215,13 @@ bool SkipListAllocator::Free(void *addr) {
         if (next != nullptr) {
           next->prev_ = block;
         }
+        next_block->prev_ = next_block->next_ = nullptr;
 
         block->size_ += next_block->size_;
-        free_blocks.Remove(next_block->size_, next_block);
+        bool ret = free_blocks.Remove(next_block->size_, next_block);
+        if (!ret) {
+          std::cout << "remove next block failed, size : " << next_block->size_ << std::endl;
+        }
         total_block_.erase(next_block->addr_);
         // next_block->Print();
         // std::cout << "remove next : " << next_block << std::endl;
@@ -227,7 +234,7 @@ bool SkipListAllocator::Free(void *addr) {
 
     // std::cout << "insert back : " << free_blocks.size() << std::endl;
     // block->Print();
-    free_blocks.Insert(block->size_, block);
+    free_blocks.Add(block->size_, block);
     // std::cout << "free_blocks size : " << free_blocks.size() << std::endl;
     return true;
   } else {

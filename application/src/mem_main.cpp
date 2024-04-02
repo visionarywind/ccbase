@@ -45,7 +45,7 @@ int AllocTest(int count = 10000) {
   }
 
   cout << "new start to free" << endl;
-  int free_count = count / 2;
+  int free_count = count;
   int64_t free_cost = 0;
   for (int i = 0; i < free_count; i++) {
     auto free_start = Get();
@@ -89,7 +89,7 @@ int PoolTest(int count = 10000) {
   }
 
   cout << "start to free" << endl;
-  int free_count = count / 2;
+  int free_count = count;
   int64_t free_cost = 0;
   for (int i = 0; i < free_count; i++) {
     auto free_start = Get();
@@ -140,18 +140,18 @@ int SkipAllocTest(int count = 10000) {
     allocator.Free(tmp);
   }
 
-  // cout << "skiplist start to free" << endl;
-  // int free_count = count / 2;
-  // int64_t free_cost = 0;
-  // for (int i = 0; i < free_count; i++) {
-  //   auto free_start = Get();
-  //   allocator.Free(vec[i]);
-  //   free_cost += Get() - free_start;
-  // }
+  cout << "skiplist start to free" << endl;
+  int free_count = count;
+  int64_t free_cost = 0;
+  for (int i = 0; i < free_count; i++) {
+    auto free_start = Get();
+    allocator.Free(vec[i]);
+    free_cost += Get() - free_start;
+  }
 
   cout << ss.str().size() << endl;
   cout << "skiplist alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
-  // cout << "skiplist free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
+  cout << "skiplist free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
 }
 
@@ -173,9 +173,9 @@ void TestSortedList() {
 }
 
 int main() {
-  int count = 10000;
-  PoolTest(count);
+  int count = 50;
+  // PoolTest(count);
   // AllocTest(count);
-  // SkipAllocTest(count);
+  SkipAllocTest(count);
   return 1;
 }

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-constexpr int32_t LIST_LEVEL = 10;
+constexpr int32_t LIST_LEVEL = 15;
 
 template <typename K, typename V>
 struct Node {
@@ -191,6 +191,7 @@ V SortedList<K, V, Comparator>::Get(K key) {
 
 template <typename K, typename V, class Comparator>
 void SortedList<K, V, Comparator>::Add(K key, V event) {
+  // std::cout << "enter add" << std::endl;
   // auto start = GetCurrentTime();
   Node<K, V> *next[LIST_LEVEL];
   Locate(key, next);
@@ -208,6 +209,7 @@ void SortedList<K, V, Comparator>::Add(K key, V event) {
     }
   }
   size_++;
+  // std::cout << "exit add, size_ : " << size_ << std::endl;
 }
 
 template <typename K, typename V, class Comparator>
@@ -236,8 +238,9 @@ bool SortedList<K, V, Comparator>::RemoveNode(Node<K, V> *node, Node<K, V> *next
 
 template <typename K, typename V, class Comparator>
 bool SortedList<K, V, Comparator>::Remove(K key, V value) {
+  // std::cout << "enter remove" << std::endl;
   Node<K, V> *next[LIST_LEVEL];
-  LocateLowerBound(key, next);
+  Locate(key, next);
   Node<K, V> *node = next[0]->nexts_[0];
   bool found = false;
   while (node != nullptr && comparator_(node->key_, key) == 0) {
@@ -250,16 +253,35 @@ bool SortedList<K, V, Comparator>::Remove(K key, V value) {
   if (found) {
     RemoveNode(node, next);
   }
+  // std::cout << "exit remove, element size : " << size_ << std::endl;
   return found;
 }
 
 template <typename K, typename V, class Comparator>
 void SortedList<K, V, Comparator>::Locate(K key, Node<K, V> *next[]) {
+  // cout << "enter locate" << endl;
   Node<K, V> *cur = head_;
+  if (cur == nullptr) {
+    cout << "exception" << endl;
+  }
   for (int i = LIST_LEVEL - 1; i >= 0; i--) {
+    // if (size_ >= 2400) {
+    //   cout << "1" << endl;
+    //   cout << "1 : " << i << ", cur : " << cur << ", next : " << cur->nexts_[i] << endl;
+    //   if (cur->nexts_[i]) cout << "key : " << cur->nexts_[i]->key_ << endl;
+    // }
     while (cur->nexts_[i] != nullptr && comparator_(cur->nexts_[i]->key_, key) == -1) {
+      // if (size_ > 2400) {
+      //   cout << "2 : " << i << ", cur->nexts_[i] : " << cur->nexts_[i] << endl;
+      // }
       cur = cur->nexts_[i];
+      if (cur == nullptr) {
+        cout << "exception2" << endl;
+      }
     }
+    // if (size_ > 2400) {
+    //   cout << "3 : " << i << endl;
+    // }
     next[i] = cur;
   }
 }

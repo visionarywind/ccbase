@@ -233,16 +233,18 @@ int main() {
     set_base.emplace(inputs[i]);
     cost_in_double += TimeSinceEpoch() - start_in_double;
   }
-  cout << "alloc cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
+  cout << "emplace cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
   // Free
   cost_in_double = 0;
   for (int i = 0; i < count; i++) {
+    auto iter = set_base.find(inputs[i]);
     auto start_in_double = TimeSinceEpoch();
-    set_base.erase(inputs[i]);
+    set_base.erase(iter);
     cost_in_double += TimeSinceEpoch() - start_in_double;
   }
-  cout << "free cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
+  cout << "erase cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
   cout << "After free size : " << set_base.size() << endl;
+
   // Alloc
   int64_t cost = 0L;
   for (int i = 0; i < count; i++) {
@@ -250,17 +252,20 @@ int main() {
     sort_list.Add(inputs[i]->size_, inputs[i]);
     cost += Get() - start;
   }
-  cout << "alloc cost in sorted_list : " << cost * 1.0 / 1000 / count << ".us" << endl;
+  cout << "sorted_list add cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
   cost = 0L;
   // Free
 
   for (int i = 0; i < count; i++) {
+    Node<size_t, BlockRawPtr> *next[LIST_LEVEL];
+    sort_list.Locate(inputs[i]->size_, next);
+    auto node = next[0]->nexts_[0];
     auto start = Get();
-    sort_list.Remove(inputs[i]->size_, inputs[i]);
+    sort_list.RemoveNode(node, next);
     cost += Get() - start;
   }
-  cout << "free cost in sorted_list : " << cost * 1.0 / 1000 / count << ".us" << endl;
-  cout << "After free size : " << sort_list.Size() << endl;
+  cout << "sorted_list remove cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
+  cout << "After remove size : " << sort_list.Size() << endl;
   return 0;
 }
 
