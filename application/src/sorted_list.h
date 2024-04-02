@@ -270,9 +270,16 @@ template <typename K, typename V, class Comparator>
 void SortedList<K, V, Comparator>::LocateLowerBound(K key, Node<K, V> *next[]) {
   Node<K, V> *cur = head_;
   for (int i = LIST_LEVEL - 1; i >= 0; i--) {
-    while (cur->nexts_[i] != nullptr && comparator_(cur->nexts_[i]->key_, key) == -1) {
-      cur = cur->nexts_[i];
+    while (cur->nexts_[i] != nullptr) {
+      auto ret = comparator_(cur->nexts_[i]->key_, key);
+      if (ret == -1) {
+        cur = cur->nexts_[i];
+      } else if (ret == 0) {
+        cur = cur->nexts_[i];
+        break;
+      } else {
+        break;
+      }
     }
-    next[i] = cur;
   }
 }

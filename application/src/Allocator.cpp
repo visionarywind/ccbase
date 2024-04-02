@@ -128,7 +128,7 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
   auto &free_blocks = free_blocks_[stream_id];
   // locate position
   Node<size_t, BlockRawPtr> *next[LIST_LEVEL];
-  free_blocks.LocateLowerBound(size, next);
+  free_blocks.Locate(size, next);
   Block *block = nullptr;
   Node<size_t, BlockRawPtr> *node = next[0]->nexts_[0];
   if (node == nullptr) {
@@ -154,7 +154,7 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
     block->next_ = remaining_block;
     remaining_block->prev_ = block;
 
-    free_blocks.Insert(remaining_block->size_, remaining_block);
+    free_blocks.Add(remaining_block->size_, remaining_block);
     // remaining_block->Print();
     // std::cout << "free_blocks insert : " << remaining_block->addr_ << std::endl;
     total_block_.emplace(remaining_block->addr_, remaining_block);

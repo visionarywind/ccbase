@@ -17,6 +17,7 @@
 #ifndef MINDSPORE_CCSRC_BACKEND_OPTIMIZER_MEM_REUSE_MEM_DYNAMIC_ALLOCATOR_H_
 #define MINDSPORE_CCSRC_BACKEND_OPTIMIZER_MEM_REUSE_MEM_DYNAMIC_ALLOCATOR_H_
 
+#include <list>
 #include <memory>
 #include <map>
 #include <set>
@@ -28,6 +29,7 @@
 #include <string>
 #include <tuple>
 #include <string_view>
+#include <unordered_map>
 // #include "utils/ms_utils.h"
 // #include "include/backend/visible.h"
 // #include "include/common/utils/stream_util.h"
@@ -258,9 +260,29 @@ struct DynamicMemBuf {
   DynamicMemBufStatus status_;
   size_t size_;
 
+  // Record event on mem buf.
+  bool RecordEvent(int64_t task_id_on_stream, uint32_t user_stream_id, const void *&event) { return true; }
+
+  // Release events on mem buf.
+  bool WaitEvent(uint32_t task_id_on_stream, uint32_t user_stream_id) { return true; }
+
+  // Indidates if mem buf used by event, return true when no event bind on mem buf.
+  bool IsEventNotUsed() { return true; }
+
+  // Wait all events that bound on mem buf.
+  bool WaitEvents() { return true; }
+
+  void set_can_free_by_wait(bool can_free_by_wait) { can_free_by_wait_ = can_free_by_wait; }
+
   // Debug info.
   std::string allocator_name_;
   AllocatorType allocator_type_{AllocatorType::kOther};
+
+  // Parameter: user_stream_id, list of <task_id_on_stream, event>.
+  std::unordered_map<uint32_t, std::list<std::pair<int64_t, void *>>> stream_task_id_on_stream_events_;
+
+  // can_free_by_wait_ indicates if mem buf has been freed, if can_free_by_wait_ is true, mem buf can be freed by wait.
+  bool can_free_by_wait_{false};
 };
 
 class DynamicMemBlock {
