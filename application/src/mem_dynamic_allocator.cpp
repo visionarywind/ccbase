@@ -140,7 +140,7 @@ DeviceMemPtr DynamicMemPoolBestFit::AllocTensorMem(size_t size, bool from_persis
   }
 
   // if (common::IsNeedProfileMemory()) {
-  if (true) {
+  if (false) {
     std::cout << "Need Profile Memory, Memory pool alloc, total mem: " << TotalMemStatistics()
               << ", peak mem: " << UsedMemPeakStatistics() << ", in use mem: " << TotalUsedMemStatistics()
               << ", used by event mem: " << TotalUsedByEventMemStatistics() << ", device address addr: " << device_addr
@@ -445,7 +445,7 @@ DeviceMemPtr DynamicMemPoolBestFit::CreateMemBlockAndMemBuf(size_t size, bool fr
   } else {
     std::cout << "Unsupported mem_buf_status : " << mem_buf_status << "." << std::endl;
   }
-  std::cout << "Usage: used size : " << TotalUsedMemStatistics()
+  std::cout << "Create mem block - usage: used size : " << TotalUsedMemStatistics()
             << ", used by event size : " << TotalUsedByEventMemStatistics()
             << ", idle size : " << TotalIdleMemStatistics() << ", eager free size : " << TotalEagerFreeMemStatistics()
             << "." << std::endl;
@@ -901,14 +901,13 @@ void DynamicMemPoolBestFit::DumpDynamicMemPoolStateInfo() {
 
   fn(common_mem_, std::string(kCommonMem));
   fn(persistent_mem_, std::string(kPersistentParamMem));
-  std::cout << "The dynamic memory pool total allocated mem:" << TotalMemStatistics() / kMBToByte
-            << "M, peak used mem:" << UsedMemPeakStatistics() / kMBToByte
-            << "M, actual peak used mem:" << ActualPeakStatistics() / kMBToByte
-            << "M, in used mem:" << TotalUsedMemStatistics() / kMBToByte
-            << "M, total used by event mem:" << TotalUsedByEventMemStatistics() / kMBToByte
-            << "M, total idle mem:" << TotalIdleMemStatistics() / kMBToByte
-            << "M, total eager free mem:" << TotalEagerFreeMemStatistics() / kMBToByte
-            << "M. Weight used size:" << total_used_size_list[static_cast<int>(AllocatorType::kWeight)] / kMBToByte
+  std::cout << "The dynamic memory pool total allocated mem:" << TotalMemStatistics()
+            << "b, peak used mem:" << UsedMemPeakStatistics() << "b, actual peak used mem:" << ActualPeakStatistics()
+            << "b, in used mem:" << TotalUsedMemStatistics()
+            << "b, total used by event mem:" << TotalUsedByEventMemStatistics()
+            << "b, total idle mem:" << TotalIdleMemStatistics()
+            << "b, total eager free mem:" << TotalEagerFreeMemStatistics()
+            << "b. Weight used size:" << total_used_size_list[static_cast<int>(AllocatorType::kWeight)] / kMBToByte
             << "M, constant value used size:"
             << total_used_size_list[static_cast<int>(AllocatorType::kConstantValue)] / kMBToByte
             << "M, kernel output used size:"
@@ -931,9 +930,8 @@ void DynamicMemPoolBestFit::DumpDynamicMemPoolDebugInfo() {
         continue;
       }
       const auto &mem_buf_map = iter->second;
-      // MS_LOG(WARNING) << "  stream id : " << stream_id << ", used by event mem buf info : count[]" <<
-      // mem_buf_map.size()
-      //                 << "].";
+      std::cout << "  stream id : " << stream_id << ", used by event mem buf info : count[]" << mem_buf_map.size()
+                << "]." << std::endl;
       for (auto &&idle_iter = mem_buf_map.begin(); idle_iter != mem_buf_map.end(); idle_iter++) {
         auto &mem_buf = idle_iter->second;
         // MS_EXCEPTION_IF_NULL(mem_buf);
@@ -959,8 +957,8 @@ void DynamicMemPoolBestFit::DumpDynamicMemPoolDebugInfo() {
         auto &mem_buf = idle_iter->second;
         // MS_EXCEPTION_IF_NULL(mem_buf);
         total_idle_mem_in_mem_mng += mem_buf->size_;
-        // MS_LOG(INFO) << " Idle mem_buf info: size[" << mem_buf->size_ << "] address[" << mem_buf->device_addr_
-        //              << "] status[" << kBufStatusString.at(mem_buf->status_) << "].";
+        // std::cout << " Idle mem_buf info: size[" << mem_buf->size_ << "] address[" << mem_buf->device_addr_
+        //           << "] status[" << kBufStatusString.at(mem_buf->status_) << "]." << std::endl;
       }
     }
     // Dump all the eager free memory buf info.
@@ -979,8 +977,8 @@ void DynamicMemPoolBestFit::DumpDynamicMemPoolDebugInfo() {
         auto &mem_buf = idle_iter->second;
         // MS_EXCEPTION_IF_NULL(mem_buf);
         total_eager_free_mem_in_mem_mng += mem_buf->size_;
-        // MS_LOG(INFO) << " Eager free mem_buf info: size[" << mem_buf->size_ << "] address[" << mem_buf->device_addr_
-        //              << "] status[" << kBufStatusString.at(mem_buf->status_) << "].";
+        // std::cout << " Eager free mem_buf info: size[" << mem_buf->size_ << "] address[" << mem_buf->device_addr_
+        //           << "] status[" << kBufStatusString.at(mem_buf->status_) << "]." << std::endl;
       }
     }
     // Dump the memory statistical info.
@@ -989,19 +987,19 @@ void DynamicMemPoolBestFit::DumpDynamicMemPoolDebugInfo() {
     //                 << device_state.total_used_by_event_mem_size_ << "], idle memory["
     //                 << device_state.total_idle_mem_size_ << "].";
     if (device_state.total_idle_mem_size_ != total_idle_mem_in_mem_mng) {
-      // MS_LOG(ERROR) << "Check error: the idle memory in the mem_block is not equal the global idle memory.";
+      std::cout << "Check error: the idle memory in the mem_block is not equal the global idle memory." << std::endl;
     }
     if (device_state.total_eager_free_mem_size_ != total_eager_free_mem_in_mem_mng) {
-      // MS_LOG(ERROR) << "Check error: the eager free memory in the mem_block is not equal the global eager free
-      // memory.";
+      std::cout << "Check error: the eager free memory in the mem_block is not equal the global eager free memory."
+                << std::endl;
     }
     if (device_state.total_mem_size_ != device_state.total_used_mem_size_ + device_state.total_used_by_event_mem_size_ +
                                           device_state.total_idle_mem_size_ + device_state.total_eager_free_mem_size_) {
-      // MS_LOG(ERROR) << "Check error: the the total memory : " << device_state.total_mem_size_
-      //               << " is not equal the sum of used memory : " << device_state.total_used_mem_size_
-      //               << ", use by event memory : " << device_state.total_used_by_event_mem_size_
-      //               << ", idle memory : " << device_state.total_idle_mem_size_
-      //               << " and eager free memory : " << device_state.total_eager_free_mem_size_ << ".";
+      std::cout << "Check error: the the total memory : " << device_state.total_mem_size_
+                << " is not equal the sum of used memory : " << device_state.total_used_mem_size_
+                << ", use by event memory : " << device_state.total_used_by_event_mem_size_
+                << ", idle memory : " << device_state.total_idle_mem_size_
+                << " and eager free memory : " << device_state.total_eager_free_mem_size_ << "." << std::endl;
     }
   };
 
@@ -1289,9 +1287,10 @@ const DeviceState MemStatusManager::DumpMemBlockDebugInfo(const std::string &mem
   for (auto iter = mem_block_list_.begin(); iter != mem_block_list_.end(); ++iter) {
     device_state.total_mem_size_ += (*iter)->size();
     auto mem_buf_map = (*iter)->block_all_mem_buf_map_;
-    // MS_LOG(WARNING) << " MemBlock info: number[" << iter - mem_block_list_.begin() << "] mem_buf_counts["
-    //                 << mem_buf_map.size() << "] base_address[" << (*iter)->device_addr() << "] block_size["
-    //                 << (*iter)->size() << "].";
+    // std::cout << " MemBlock info: number[" << iter - mem_block_list_.begin() << "] mem_buf_counts["
+    //           << mem_buf_map.size() << "] base_address[" << (*iter)->device_addr() << "] block_size[" <<
+    //           (*iter)->size()
+    //           << "]." << std::endl;
     for (auto iter_mem_buf = mem_buf_map.begin(); iter_mem_buf != mem_buf_map.end(); ++iter_mem_buf) {
       auto mem_buf = iter_mem_buf->second;
       // MS_EXCEPTION_IF_NULL(mem_buf);

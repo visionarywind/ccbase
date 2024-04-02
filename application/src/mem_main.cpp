@@ -98,6 +98,7 @@ int PoolTest(int count = 10000) {
   }
   cout << ss.str().size() << endl;
   pool.DumpDynamicMemPoolStateInfo();
+  pool.DumpDynamicMemPoolDebugInfo();
   cout << "old alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
   cout << "old free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
@@ -172,9 +173,9 @@ void TestSortedList() {
 }
 
 int main() {
-  int count = 100000;
+  int count = 10000;
   PoolTest(count);
-  AllocTest(count);
-  SkipAllocTest(count);
+  // AllocTest(count);
+  // SkipAllocTest(count);
   return 1;
 }

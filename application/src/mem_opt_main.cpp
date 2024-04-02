@@ -103,7 +103,7 @@ int PoolTest(int count = 10000) {
 }
 
 int main() {
-  int count = 1000;
+  int count = 1000000;
   PoolTest(count);
   AllocTest(count);
   return 1;

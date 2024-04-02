@@ -152,10 +152,16 @@ class BACKEND_EXPORT DynamicMemPoolBestFit {
   void DumpDynamicMemPoolDebugInfo();
 
   // The related interface of device memory real operation, needs override by device type.
-  virtual size_t AllocDeviceMem(size_t size, DeviceMemPtr *addr) {}
-  virtual bool FreeDeviceMem(const DeviceMemPtr &addr) = 0;
-  virtual size_t free_mem_size() = 0;
-  virtual uint64_t total_mem_size() const { return 0; }
+  virtual size_t AllocDeviceMem(size_t size, DeviceMemPtr *addr) {
+    *addr = malloc(size);
+    return size;
+  }
+  virtual bool FreeDeviceMem(const DeviceMemPtr &addr) {
+    free(addr);
+    return true;
+  }
+  virtual size_t free_mem_size() { return SIZE_MAX; };
+  virtual uint64_t total_mem_size() const { return SIZE_MAX; }
   // Set mem pool block size
   virtual void SetMemPoolBlockSize(size_t available_device_mem_size);
   virtual size_t GetMaxUsedMemSize() const { return 0; }
