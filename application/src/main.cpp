@@ -218,7 +218,7 @@ struct BlockIntComparator {
 int main() {
   // cout << LayerAdd(1, 1) << endl;
   // cout << LayerAdd(1, 1) << endl;
-  int count = 10000;
+  int count = 1000000;
   std::set<BlockRawPtr, BlockComparator> set_base;
   SortedList<size_t, BlockRawPtr> sort_list;
   vector<BlockRawPtr> inputs;
@@ -229,18 +229,18 @@ int main() {
   // Alloc
   int64_t cost_in_double = 0L;
   for (int i = 0; i < count; i++) {
-    auto start_in_double = TimeSinceEpoch();
+    auto start_in_double = Get();
     set_base.emplace(inputs[i]);
-    cost_in_double += TimeSinceEpoch() - start_in_double;
+    cost_in_double += Get() - start_in_double;
   }
   cout << "emplace cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
   // Free
   cost_in_double = 0;
   for (int i = 0; i < count; i++) {
+    auto start_in_double = Get();
     auto iter = set_base.find(inputs[i]);
-    auto start_in_double = TimeSinceEpoch();
     set_base.erase(iter);
-    cost_in_double += TimeSinceEpoch() - start_in_double;
+    cost_in_double += Get() - start_in_double;
   }
   cout << "erase cost in set : " << cost_in_double * 1.0 / 1000 / count << ".us" << endl;
   cout << "After free size : " << set_base.size() << endl;
@@ -257,10 +257,10 @@ int main() {
   // Free
 
   for (int i = 0; i < count; i++) {
+    auto start = Get();
     Node<size_t, BlockRawPtr> *next[LIST_LEVEL];
     sort_list.Locate(inputs[i]->size_, next);
     auto node = next[0]->nexts_[0];
-    auto start = Get();
     sort_list.RemoveNode(node, next);
     cost += Get() - start;
   }
