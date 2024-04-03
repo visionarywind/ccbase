@@ -10,17 +10,6 @@ using namespace std;
 
 constexpr int32_t LIST_LEVEL = 15;
 
-template <typename K, typename V>
-struct Node {
-  Node(K key, V value) : key_(key), value_(value) {}
-  Node(){};
-  ~Node() {}
-
-  K key_;
-  V value_;
-  Node *nexts_[LIST_LEVEL]{nullptr};
-};
-
 template <typename K>
 struct DefaultComparator : std::binary_function<K, K, int> {
   int operator()(K a, K b) const {
@@ -38,18 +27,36 @@ struct DefaultComparator : std::binary_function<K, K, int> {
 template <typename K, typename V, class Comparator = DefaultComparator<K>>
 class SortedList {
  public:
+  template <typename K, typename V>
+  struct Node {
+    Node(K key, V value) : key_(key), value_(value) {}
+    Node(){};
+    ~Node() {}
+
+    K key_;
+    V value_;
+    Node *nexts_[LIST_LEVEL]{nullptr};
+  };
+
+ public:
   SortedList(Comparator comparator = Comparator{}) : head_(new Node<K, V>()), last_(head_), comparator_(comparator) {}
   ~SortedList();
   // Disable copy and assignment constructor.
   SortedList(const SortedList &other) = delete;
   SortedList &operator=(SortedList const &) = delete;
 
-  // Get largest task id on stream.
-  K LargestTaskIdOnStream() const { return last_ == head_ ? -1L : last_->key_; }
-  // Get smallest task id on stream.
-  K SmallestTaskIdOnStream() const { return head_->nexts_[0] ? head_->nexts_[0]->key_ : -1L; }
-  // Insert element into list.
-  void Insert(K id, V value) { Add(id, value); }
+  // Get element is list, unsafe.
+  V Get(K key);
+  // Add element into list.
+  void Insert(K key, V value);
+  // Remove element by key and value.
+  bool Remove(K key, V value);
+
+  // Get largest.
+  Node *Largest() const { return last_ == head_ ? nullptr : last_; }
+  // Get smallest.
+  Node *Smallest() const { return head_->nexts_[0]; }
+
   // Traverse elements in list.
   void Traverse(std::function<void(K, V &)> func);
   // Remove range elements that less than id.
@@ -61,15 +68,6 @@ class SortedList {
   [[nodiscard]] size_t Size() const { return size_; }
   // Print elements in list.
   void Print();
-
-  // Get element is list.
-  V Get(K key);
-  // Add element into list.
-  void Add(K key, V value);
-  // Remove element by key.
-  bool Remove(K key);
-  // Remove element by key and value.
-  bool Remove(K key, V value);
 
  public:
   // Locate position that less than key.
@@ -190,7 +188,7 @@ V SortedList<K, V, Comparator>::Get(K key) {
 }
 
 template <typename K, typename V, class Comparator>
-void SortedList<K, V, Comparator>::Add(K key, V event) {
+void SortedList<K, V, Comparator>::Insert(K key, V event) {
   // std::cout << "enter add" << std::endl;
   // auto start = GetCurrentTime();
   Node<K, V> *next[LIST_LEVEL];
@@ -210,17 +208,6 @@ void SortedList<K, V, Comparator>::Add(K key, V event) {
   }
   size_++;
   // std::cout << "exit add, size_ : " << size_ << std::endl;
-}
-
-template <typename K, typename V, class Comparator>
-bool SortedList<K, V, Comparator>::Remove(K key) {
-  Node<K, V> *next[LIST_LEVEL];
-  Locate(key, next);
-  Node<K, V> *node = next[0]->nexts_[0];
-  if (node == nullptr || comparator_(node->key_, key) != 0) {
-    return false;
-  }
-  return RemoveNode(node, next);
 }
 
 template <typename K, typename V, class Comparator>
