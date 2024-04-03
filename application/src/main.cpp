@@ -19,6 +19,8 @@
 #include "mem_dynamic_allocator.h"
 #include "layer.h"
 
+#include "chef_skiplist.hpp"
+
 using namespace std;
 
 void test();
@@ -255,7 +257,6 @@ int main() {
   cout << "sorted_list add cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
   cost = 0L;
   // Free
-
   for (int i = 0; i < count; i++) {
     auto start = Get();
     Node<size_t, BlockRawPtr> *next[LIST_LEVEL];
@@ -265,6 +266,26 @@ int main() {
     cost += Get() - start;
   }
   cout << "sorted_list remove cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
+  cout << "After remove size : " << sort_list.Size() << endl;
+
+  chef::skiplist<size_t, BlockRawPtr> sl;
+  // Alloc
+  cost = 0L;
+  for (int i = 0; i < count; i++) {
+    auto start = Get();
+    sl.insert(std::make_pair(inputs[i]->size_, inputs[i]));
+    cost += Get() - start;
+  }
+  cout << "skiplist add cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
+  cost = 0L;
+  // Free
+
+  for (int i = 0; i < count; i++) {
+    auto start = Get();
+    sl.erase(sl.find(inputs[i]->size_));
+    cost += Get() - start;
+  }
+  cout << "skiplist remove cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
   cout << "After remove size : " << sort_list.Size() << endl;
   return 0;
 }
