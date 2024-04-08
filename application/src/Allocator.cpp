@@ -122,35 +122,34 @@ bool DefaultAllocator::Free(void *addr) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
-  // std::cout << "alloc size : " << size << std::endl;
-  // size = align(size);
+  size = align(size);
   std::lock_guard<std::mutex> locker(mutex_);
-  // locate position
-  Node *next[LIST_LEVEL] = {0};
   auto &free_blocks = free_blocks_[stream_id];
+  // std::cout << "free_blocks size : " << free_blocks.size() << std::endl;
+
+  Node *next[LIST_LEVEL] = {0};
   free_blocks.Locate(size, next);
-  Block *block = nullptr;
   auto node = next[0]->nexts_[0];
+  Block *block = nullptr;
   if (node == nullptr) {
     void *addr = MemAlloc(1 << 30);
     // std::cout << "malloc addr : " << addr << std::endl;
     block = new Block(addr, 1 << 30, 0);
-    total_block_.emplace(addr, block);
+    total_block_.emplace(block->addr_, block);
   } else {
     block = node->block_;
     // std::cout << "free_blocks erase : " << block->addr_ << std::endl;
-    // free_blocks.RemoveNode(node, next);
-    free_blocks.Remove(block);
+    free_blocks.RemoveNode(node, next);
   }
 
   size_t remaining = block->size_ - size;
   if (remaining >= MIN_SPLIT_SIZE) {
     auto remaining_addr = static_cast<int8_t *>(block->addr_) + size;
     auto remaining_block = new Block(remaining_addr, remaining, 0);
-    auto next_block = block->next_;
-    if (next_block != nullptr) {
-      next_block->prev_ = remaining_block;
-      remaining_block->next_ = next_block;
+    auto next = block->next_;
+    if (next != nullptr) {
+      next->prev_ = remaining_block;
+      remaining_block->next_ = next;
     }
     block->next_ = remaining_block;
     remaining_block->prev_ = block;
@@ -163,85 +162,77 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
   }
   block->status_ = 1;
 
-  // std::cout << "alloc free_blocks size : " << free_blocks.Size() << std::endl;
-  std::cout << "alloc block : " << block << ", addr : " << block->addr_ << ", prev " << block->prev_ << ", next "
-            << block->next_ << std::endl;
+  // std::cout << "alloc free_blocks size : " << free_blocks.size() << std::endl;
+  // std::cout << "alloc block : " << block << ", addr : " << block->addr_ << ", prev " << block->prev_ << ", next "
+  //           << block->next_ << std::endl;
   return block->addr_;
 }
 
 bool SkipListAllocator::Free(void *addr) {
-  std::cout << "free addr : " << addr << std::endl;
+  // std::cout << "free addr : " << addr << std::endl;
   std::lock_guard<std::mutex> locker(mutex_);
   auto it = total_block_.find(addr);
   if (it != total_block_.end()) {
     auto block = it->second;
-    // block->Print();
     block->status_ = 0;
-    // std::cout << "locate block : " << block << ", prev : " << block->prev_ << ", next : " << block->next_
-    //           << ", stream_id : " << block->stream_id_ << std::endl;
+    if (block->stream_id_ != 0) {
+      std::cout << "unknown stream id : " << std::endl;
+    }
     auto &free_blocks = free_blocks_[block->stream_id_];
-    std::cout << "free blocks size : " << free_blocks.Size() << std::endl;
 
+    // erase prev block pointer
     auto prev_block = block->prev_;
     if (prev_block != nullptr) {
-      if (prev_block->status_ == block->status_) {
-        std::cout << "merge prev" << std::endl;
-        // erase prev block pointer
+      if (prev_block->status_ == 0) {
         auto prev = prev_block->prev_;
         block->prev_ = prev;
         if (prev != nullptr) {
           prev->next_ = block;
         }
-        prev_block->prev_ = prev_block->next_ = nullptr;
 
-        bool ret = free_blocks.Remove(prev_block);
-        if (!ret) {
-          block->prev_ = prev_block;
-          std::cout << "remove prev block failed, size : " << prev_block->size_ << std::endl;
-          return false;
+        free_blocks.Remove(prev_block);
+        if (!total_block_.erase(prev_block->addr_)) {
+          std::cout << "erase failed" << std::endl;
         }
-        total_block_.erase(prev_block->addr_);
         block->addr_ = prev_block->addr_;
         block->size_ += prev_block->size_;
         // prev_block->Print();
-        std::cout << "remove prev : " << prev_block << std::endl;
+        // std::cout << "remove prev : " << prev_block << std::endl;
         delete prev_block;
       } else {
         // std::cout << "prev_block->status_ : " << prev_block->status_ << " is not ok" << std::endl;
       }
     }
+
+    /*
+    // erase next block pointer
     auto next_block = block->next_;
     if (next_block != nullptr) {
-      // next_block->Print();
-      if (next_block->status_ == block->status_) {
-        // erase next block pointer
+      if (next_block->status_ == 0) {
         auto next = next_block->next_;
         block->next_ = next;
         if (next != nullptr) {
           next->prev_ = block;
         }
-        next_block->prev_ = next_block->next_ = nullptr;
 
         block->size_ += next_block->size_;
-        bool ret = free_blocks.Remove(next_block);
-        if (!ret) {
-          std::cout << "remove next block failed, size : " << next_block->size_ << std::endl;
-          free_blocks.Insert(block);
-          return false;
+        free_blocks.Remove(next_block);
+        if (!total_block_.erase(next_block->addr_)) {
+          std::cout << "erase failed" << std::endl;
         }
-        total_block_.erase(next_block->addr_);
         // next_block->Print();
-        std::cout << "remove next : " << next_block << std::endl;
+        // std::cout << "remove next : " << next_block << std::endl;
         delete next_block;
       } else {
         // std::cout << "next_block : " << next_block << ", size : " << next_block->size_
         //           << ", status_ : " << next_block->status_ << " is not ok" << std::endl;
       }
     }
-
+    */
     // std::cout << "insert back : " << free_blocks.size() << std::endl;
     // block->Print();
     free_blocks.Insert(block);
+    total_block_.emplace(block->addr_, block);
     // std::cout << "free_blocks size : " << free_blocks.size() << std::endl;
     return true;
   } else {

@@ -47,13 +47,14 @@ struct Node {
   Node(){};
   ~Node() {}
 
+  size_t size() { return block_->size_; }
   BlockRawPtr block_{nullptr};
   Node *nexts_[LIST_LEVEL]{nullptr};
 };
 
 class SkipList {
  public:
-  SkipList() : head_(new Node()), last_(head_) {}
+  SkipList() : head_(new Node()) {}
   ~SkipList() {
     Node *begin = head_->nexts_[0];
     while (begin != nullptr) {
@@ -80,10 +81,9 @@ class SkipList {
     for (int i = 0; i < LIST_LEVEL && next[i]->nexts_[i] == node; i++) {
       next[i]->nexts_[i] = next[i]->nexts_[i]->nexts_[i];
     }
-    if (next[0]->nexts_[0] == nullptr) {
-      last_ = next[0];
-    }
+    // std::cout << "delete node : " << node << std::endl;
     delete node;
+
     size_--;
     return true;
   }
@@ -99,14 +99,11 @@ class SkipList {
 
   // Add element into list.
   void Insert(BlockRawPtr block) {
-    // std::cout << "enter add" << std::endl;
-    // auto start = GetCurrentTime();
-    Node *next[LIST_LEVEL];
+    // std::cout << "Insert block : " << block << ", size : " << block->size_ << std::endl;
+    Node *next[LIST_LEVEL] = {0};
     Locate(block->size_, next);
     Node *node = new Node(block);
-    if (next[0]->nexts_[0] == nullptr) {
-      last_ = node;
-    }
+    // std::cout << "new node : " << node << std::endl;
     for (int i = 0; i < LIST_LEVEL; i++) {
       node->nexts_[i] = next[i]->nexts_[i];
       next[i]->nexts_[i] = node;
@@ -118,27 +115,30 @@ class SkipList {
     }
     size_++;
   }
+
   // Remove element by key.
   bool Remove(BlockRawPtr block) {
-    // std::cout << "enter remove" << std::endl;
-    Node *next[LIST_LEVEL];
+    Node *next[LIST_LEVEL] = {0};
     Locate(block->size_, next);
     Node *node = next[0]->nexts_[0];
     bool found = false;
-    while (node != nullptr && node->block_->size_ == block->size_) {
+    // std::cout << "Remove block : " << block << ", size : " << block->size_ << ", node size : " << node->block_->size_
+    //           << std::endl;
+    while (node != nullptr && node->size() == block->size_) {
       if (node->block_ == block) {
         found = true;
         break;
       }
       node = node->nexts_[0];
-      if (node->block_ == nullptr) {
-        std::cout << "unknown branch" << std::endl;
-      }
+      // if (node->block_ == nullptr) {
+      //   std::cout << "unknown branch" << std::endl;
+      // }
     }
     if (found) {
       RemoveNode(node, next);
     } else {
-      std::cout << "remove block failed : " << block << std::endl;
+      std::cout << "remove block failed : " << block << ", node : " << node << ", node->size : " << node->size()
+                << ", block size : " << block->size_ << std::endl;
     }
 
     return found;
@@ -148,34 +148,16 @@ class SkipList {
   // Locate position that less than key.
   void Locate(size_t size, Node *next[]) {
     Node *cur = head_;
-    if (cur == nullptr) {
-      std::cout << "exception" << std::endl;
-    }
     for (int i = LIST_LEVEL - 1; i >= 0; i--) {
-      // if (size_ >= 2400) {
-      //   cout << "1" << endl;
-      //   cout << "1 : " << i << ", cur : " << cur << ", next : " << cur->nexts_[i] << endl;
-      //   if (cur->nexts_[i]) cout << "key : " << cur->nexts_[i]->key_ << endl;
-      // }
-      while (cur->nexts_[i] != nullptr && cur->nexts_[i]->block_->size_ < size) {
-        // if (size_ > 2400) {
-        //   cout << "2 : " << i << ", cur->nexts_[i] : " << cur->nexts_[i] << endl;
-        // }
+      while (cur->nexts_[i] != nullptr && cur->nexts_[i]->size() < size) {
         cur = cur->nexts_[i];
-        if (cur == nullptr) {
-          std::cout << "exception2" << std::endl;
-        }
       }
-      // if (size_ > 2400) {
-      //   cout << "3 : " << i << endl;
-      // }
       next[i] = cur;
     }
   }
 
  private:
   Node *head_;
-  Node *last_;
 
   size_t size_{0};
 };

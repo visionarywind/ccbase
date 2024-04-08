@@ -1,1 +1,1 @@
-clang++ Allocator.cpp mem_dynamic_allocator.cpp mem_main.cpp -std=c++17 -O2 && ./a.out
+clang++ Allocator.cpp mem_dynamic_allocator.cpp mem_main.cpp -std=c++17 -g && ./a.out

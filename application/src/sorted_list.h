@@ -262,9 +262,9 @@ void SortedList<K, V, Comparator>::Locate(K key, Node<K, V> *next[]) {
       //   cout << "2 : " << i << ", cur->nexts_[i] : " << cur->nexts_[i] << endl;
       // }
       cur = cur->nexts_[i];
-      if (cur == nullptr) {
-        cout << "exception2" << endl;
-      }
+      // if (cur == nullptr) {
+      //   cout << "exception2" << endl;
+      // }
     }
     // if (size_ > 2400) {
     //   cout << "3 : " << i << endl;
