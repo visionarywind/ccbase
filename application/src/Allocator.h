@@ -56,6 +56,7 @@ class SkipList {
  public:
   SkipList() : head_(new Node()) {}
   ~SkipList() {
+    std::cout << "size : " << Size() << std::endl;
     Node *begin = head_->nexts_[0];
     while (begin != nullptr) {
       Node *to_delete = begin;
@@ -67,6 +68,12 @@ class SkipList {
   // Disable copy and assignment constructor.
   SkipList(const SkipList &other) = delete;
   SkipList &operator=(SkipList const &) = delete;
+
+  void Dump() {
+    Traverse([](BlockRawPtr ptr) -> void {
+      std::cout << "ptr : " << ptr->addr_ << ", size : " << ptr->size_ << ", status : " << ptr->status_ << std::endl;
+    });
+  }
 
   // Traverse elements in list.
   void Traverse(std::function<void(BlockRawPtr)> func) {
@@ -228,14 +235,25 @@ class DefaultAllocator : public MallocAllocator {
 
 class SkipListAllocator : public MallocAllocator {
  public:
+  ~SkipListAllocator() {}
   size_t MIN_SPLIT_SIZE = 512;
 
   void *Alloc(size_t size, uint32_t stream_id = 0) override;
 
   bool Free(void *addr) override;
 
+  void Dump() {
+    std::cout << "========dump======" << std::endl;
+    free_blocks_[0].Dump();
+    std::cout << "total_block_ size : " << total_block_.size() << std::endl;
+    for (auto block : total_block_) {
+      std::cout << "\taddr : " << block.first << ", size : " << block.second->size_
+                << ", status : " << block.second->status_ << std::endl;
+    }
+  }
+
  private:
-  std::vector<SkipList> free_blocks_{decltype(free_blocks_)(128)};
+  std::unordered_map<uint32_t, SkipList> free_blocks_;
   std::unordered_map<void *, BlockRawPtr> total_block_;
   std::mutex mutex_;
 };

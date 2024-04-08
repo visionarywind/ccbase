@@ -43,6 +43,7 @@ class SkipList {
  public:
   SkipList() : head_(new Node()) {}
   ~SkipList() {
+    std::cout << "size : " << Size() << std::endl;
     Node *begin = head_->nexts_[0];
     while (begin != nullptr) {
       Node *to_delete = begin;
@@ -54,6 +55,12 @@ class SkipList {
   // Disable copy and assignment constructor.
   SkipList(const SkipList &other) = delete;
   SkipList &operator=(SkipList const &) = delete;
+
+  void Dump() {
+    Traverse([](BlockRawPtr ptr) -> void {
+      std::cout << "ptr : " << ptr->addr_ << ", size : " << ptr->size_ << ", status : " << ptr->status_ << std::endl;
+    });
+  }
 
   // Traverse elements in list.
   void Traverse(std::function<void(BlockRawPtr)> func) {

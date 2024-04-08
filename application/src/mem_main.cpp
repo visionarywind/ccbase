@@ -180,7 +180,36 @@ int main() {
   // PoolTest(count);
   // AllocTest(count);
   // for (int i = 0; i < 100000; i++) SkipAllocTest(count);
-  SkipAllocTest(count);
   // SkipAllocTest(count);
+  // SkipAllocTest(count);
+
+  SkipListAllocator kAllocator;
+  vector<void *> addresses;
+  for (int i = 0; i < 10000; i++) {
+    auto addr1 = kAllocator.Alloc(1 + i * 512);
+    auto addr2 = kAllocator.Alloc(2 + i * 512);
+    auto addr3 = kAllocator.Alloc(3 + i * 512);
+    auto addr4 = kAllocator.Alloc(4 + i * 512);
+    auto addr5 = kAllocator.Alloc(5 + i * 512);
+    kAllocator.Free(addr1);
+    addresses.emplace_back(addr2);
+    addresses.emplace_back(addr3);
+    addresses.emplace_back(addr4);
+    addresses.emplace_back(addr5);
+    // kAllocator.Dump();
+    // kAllocator.Free(addr2);
+    // kAllocator.Free(addr3);
+    // // kAllocator.Dump();
+    // // cout << "====free next level====" << endl;
+    // kAllocator.Free(addr4);
+    // kAllocator.Free(addr5);
+    // kAllocator.Dump();
+    // kAllocator.Dump();
+    // kAllocator.Dump();
+  }
+  for (auto addr : addresses) {
+    kAllocator.Free(addr);
+  }
+
   return 1;
 }
