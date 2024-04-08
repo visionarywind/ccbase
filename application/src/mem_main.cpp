@@ -176,11 +176,11 @@ int SkipAllocTest(int count = 10000) {
 // }
 
 int main() {
-  int count = 10;
-  // PoolTest(count);
-  // AllocTest(count);
+  int count = 100000;
+  PoolTest(count);
+  AllocTest(count);
   // for (int i = 0; i < 100000; i++) SkipAllocTest(count);
-  SkipAllocTest(count);
-  SkipAllocTest(count);
+  // SkipAllocTest(count);
+  // SkipAllocTest(count);
   return 1;
 }

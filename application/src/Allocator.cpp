@@ -139,7 +139,8 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
   } else {
     block = node->block_;
     // std::cout << "free_blocks erase : " << block->addr_ << std::endl;
-    free_blocks.RemoveNode(node, next);
+    // free_blocks.RemoveNode(node, next);
+    free_blocks.Remove(block);
   }
 
   size_t remaining = block->size_ - size;
@@ -162,27 +163,25 @@ void *SkipListAllocator::Alloc(size_t size, uint32_t stream_id) {
   }
   block->status_ = 1;
 
-  // std::cout << "alloc free_blocks size : " << free_blocks.size() << std::endl;
-  // std::cout << "alloc block : " << block << ", addr : " << block->addr_ << ", prev " << block->prev_ << ", next "
-  //           << block->next_ << std::endl;
+  // std::cout << "alloc free_blocks size : " << free_blocks.Size() << std::endl;
+  std::cout << "alloc block : " << block << ", addr : " << block->addr_ << ", prev " << block->prev_ << ", next "
+            << block->next_ << std::endl;
   return block->addr_;
 }
 
 bool SkipListAllocator::Free(void *addr) {
-  // std::cout << "free addr : " << addr << std::endl;
+  std::cout << "free addr : " << addr << std::endl;
   std::lock_guard<std::mutex> locker(mutex_);
   auto it = total_block_.find(addr);
   if (it != total_block_.end()) {
     auto block = it->second;
-    block->Print();
+    // block->Print();
     block->status_ = 0;
     // std::cout << "locate block : " << block << ", prev : " << block->prev_ << ", next : " << block->next_
     //           << ", stream_id : " << block->stream_id_ << std::endl;
     auto &free_blocks = free_blocks_[block->stream_id_];
     std::cout << "free blocks size : " << free_blocks.Size() << std::endl;
 
-#define MG
-#ifdef MG
     auto prev_block = block->prev_;
     if (prev_block != nullptr) {
       if (prev_block->status_ == block->status_) {
@@ -239,7 +238,6 @@ bool SkipListAllocator::Free(void *addr) {
         //           << ", status_ : " << next_block->status_ << " is not ok" << std::endl;
       }
     }
-#endif
 
     // std::cout << "insert back : " << free_blocks.size() << std::endl;
     // block->Print();
