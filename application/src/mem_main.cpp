@@ -56,8 +56,48 @@ int AllocTest(int count = 10000) {
   }
 
   cout << ss.str().size() << endl;
-  cout << "new alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
-  cout << "new free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
+  cout << "DefaultAllocator alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "DefaultAllocator free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
+  return 1;
+}
+
+int MultimapTest(int count = 10000) {
+  MultimapAllocator allocator;
+  int64_t cost = 0;
+  void *addr;
+  stringstream ss;
+
+  addr = allocator.Alloc(512);
+  set<DeviceMemPtr> set;
+  vector<DeviceMemPtr> vec;
+  for (int i = 0; i < count; i++) {
+    // addr = allocator.Alloc(5120);
+    auto start_time = Get();
+    addr = allocator.Alloc(512 + i * 128);
+    cost += Get() - start_time;
+    ss << addr << ", ";
+    // allocator.Free(addr);
+    if (set.count(addr) == 0) {
+      set.emplace(addr);
+      vec.emplace_back(addr);
+    }
+
+    auto tmp = allocator.Alloc(512 + i * 128 * 10);
+    allocator.Free(tmp);
+  }
+
+  cout << "new start to free" << endl;
+  int free_count = count;
+  int64_t free_cost = 0;
+  for (int i = 0; i < free_count; i++) {
+    auto free_start = Get();
+    allocator.Free(vec[i]);
+    free_cost += Get() - free_start;
+  }
+
+  cout << ss.str().size() << endl;
+  cout << "MultimapAllocator alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "MultimapAllocator free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
 }
 
@@ -117,9 +157,8 @@ int main2() {
   return 1;
 }
 
-SkipListAllocator kAllocator;
-
 int SkipAllocTest(int count = 10000) {
+  SkipListAllocator kAllocator;
   int64_t cost = 0;
   void *addr;
   stringstream ss;
@@ -153,8 +192,8 @@ int SkipAllocTest(int count = 10000) {
   }
 
   cout << ss.str().size() << endl;
-  cout << "skiplist alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
-  cout << "skiplist free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
+  cout << "SkipListAllocator alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
+  cout << "SkipListAllocator free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
 }
 
@@ -176,40 +215,41 @@ int SkipAllocTest(int count = 10000) {
 // }
 
 int main() {
-  int count = 100000;
-  // PoolTest(count);
-  // AllocTest(count);
+  int count = 1000000;
+  PoolTest(count);
+  AllocTest(count);
+  MultimapTest(count);
   // for (int i = 0; i < 100000; i++) SkipAllocTest(count);
   // SkipAllocTest(count);
   // SkipAllocTest(count);
 
-  SkipListAllocator kAllocator;
-  vector<void *> addresses;
-  for (int i = 0; i < 10000; i++) {
-    auto addr1 = kAllocator.Alloc(1 + i * 512);
-    auto addr2 = kAllocator.Alloc(2 + i * 512);
-    auto addr3 = kAllocator.Alloc(3 + i * 512);
-    auto addr4 = kAllocator.Alloc(4 + i * 512);
-    auto addr5 = kAllocator.Alloc(5 + i * 512);
-    kAllocator.Free(addr1);
-    addresses.emplace_back(addr2);
-    addresses.emplace_back(addr3);
-    addresses.emplace_back(addr4);
-    addresses.emplace_back(addr5);
-    // kAllocator.Dump();
-    // kAllocator.Free(addr2);
-    // kAllocator.Free(addr3);
-    // // kAllocator.Dump();
-    // // cout << "====free next level====" << endl;
-    // kAllocator.Free(addr4);
-    // kAllocator.Free(addr5);
-    // kAllocator.Dump();
-    // kAllocator.Dump();
-    // kAllocator.Dump();
-  }
-  for (auto addr : addresses) {
-    kAllocator.Free(addr);
-  }
+  // SkipListAllocator kAllocator;
+  // vector<void *> addresses;
+  // for (int i = 0; i < 10000; i++) {
+  //   auto addr1 = kAllocator.Alloc(1 + i * 512);
+  //   auto addr2 = kAllocator.Alloc(2 + i * 512);
+  //   auto addr3 = kAllocator.Alloc(3 + i * 512);
+  //   auto addr4 = kAllocator.Alloc(4 + i * 512);
+  //   auto addr5 = kAllocator.Alloc(5 + i * 512);
+  //   kAllocator.Free(addr1);
+  //   addresses.emplace_back(addr2);
+  //   addresses.emplace_back(addr3);
+  //   addresses.emplace_back(addr4);
+  //   addresses.emplace_back(addr5);
+  //   // kAllocator.Dump();
+  //   // kAllocator.Free(addr2);
+  //   // kAllocator.Free(addr3);
+  //   // // kAllocator.Dump();
+  //   // // cout << "====free next level====" << endl;
+  //   // kAllocator.Free(addr4);
+  //   // kAllocator.Free(addr5);
+  //   // kAllocator.Dump();
+  //   // kAllocator.Dump();
+  //   // kAllocator.Dump();
+  // }
+  // for (auto addr : addresses) {
+  //   kAllocator.Free(addr);
+  // }
 
   return 1;
 }

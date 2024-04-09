@@ -112,8 +112,8 @@ class SkipList {
     Node *node = new Node(block);
     // std::cout << "new node : " << node << std::endl;
     for (int i = 0; i < LIST_LEVEL; i++) {
-      node->nexts_[i] = next[i]->nexts_[i];
       next[i]->nexts_[i] = node;
+      node->nexts_[i] = next[i]->nexts_[i];
       if (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now().time_since_epoch())
             .count() &
           1) {
@@ -198,6 +198,9 @@ class MallocAllocator : public Allocator {
     void *addr = malloc(size);
     auto mem_block = new MemBlock(addr, size);
     allocated_blocks_[addr] = mem_block;
+    if (addr == nullptr) {
+      std::cout << "MemAlloc size : " << size << ", addr : " << addr << std::endl;
+    }
     return addr;
   }
 
@@ -255,5 +258,19 @@ class SkipListAllocator : public MallocAllocator {
  private:
   std::unordered_map<uint32_t, SkipList> free_blocks_;
   std::unordered_map<void *, BlockRawPtr> total_block_;
+  std::mutex mutex_;
+};
+
+class MultimapAllocator : public MallocAllocator {
+ public:
+  size_t MIN_SPLIT_SIZE = 512;
+
+  void *Alloc(size_t size, uint32_t stream_id = 0) override;
+
+  bool Free(void *addr) override;
+
+ private:
+  std::unordered_map<uint32_t, std::multimap<size_t, BlockRawPtr>> free_blocks_;
+  std::unordered_map<void *, BlockRawPtr> total_blocks_;
   std::mutex mutex_;
 };
