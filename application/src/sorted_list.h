@@ -22,22 +22,20 @@ struct DefaultComparator : std::binary_function<K, K, int> {
     }
   }
 };
+template <typename K, typename V>
+struct Node {
+  Node(K key, V value) : key_(key), value_(value) {}
+  Node(){};
+  ~Node() {}
+
+  K key_;
+  V value_;
+  Node *nexts_[LIST_LEVEL]{nullptr};
+};
 
 // Sorted list inspired from skip list.
 template <typename K, typename V, class Comparator = DefaultComparator<K>>
 class SortedList {
- public:
-  template <typename K, typename V>
-  struct Node {
-    Node(K key, V value) : key_(key), value_(value) {}
-    Node(){};
-    ~Node() {}
-
-    K key_;
-    V value_;
-    Node *nexts_[LIST_LEVEL]{nullptr};
-  };
-
  public:
   SortedList(Comparator comparator = Comparator{}) : head_(new Node<K, V>()), last_(head_), comparator_(comparator) {}
   ~SortedList();

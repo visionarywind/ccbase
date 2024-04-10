@@ -217,7 +217,8 @@ struct BlockIntComparator {
   }
 };
 
-int main() {
+/*
+int main2() {
   // cout << LayerAdd(1, 1) << endl;
   // cout << LayerAdd(1, 1) << endl;
   int count = 1000000;
@@ -251,7 +252,7 @@ int main() {
   int64_t cost = 0L;
   for (int i = 0; i < count; i++) {
     auto start = Get();
-    sort_list.Add(inputs[i]->size_, inputs[i]);
+    sort_list.Insert(inputs[i]->size_, inputs[i]);
     cost += Get() - start;
   }
   cout << "sorted_list add cost : " << cost * 1.0 / 1000 / count << ".us" << endl;
@@ -337,6 +338,7 @@ int skiplist_test() {
   // std::cout << "Application end" << std::endl;
   // return 0;
 }
+*/
 
 void DefineFunc(bool *const /*flag_ptr*/, int data) { std::cout << "data : " << data << std::endl; }
 
