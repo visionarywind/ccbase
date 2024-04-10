@@ -64,4 +64,4 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(json abseil-cpp)
 
 add_executable(application ${SOURCE_FILES})
-target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood} nlohmann_json::nlohmann_json absl::base absl::strings)
+target_link_libraries(application LINK_PRIVATE tools common ${libRobinHood} nlohmann_json::nlohmann_json absl::base absl::strings absl::btree)

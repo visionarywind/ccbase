@@ -12,6 +12,7 @@
 using json = nlohmann::json;
 
 #include "absl/container/btree_set.h"
+#include "absl/container/btree_map.h"
 
 #include "actor_hash.h"
 #include "common/common.h"
@@ -207,34 +208,34 @@ int main() {
   // json new_data = json::parse("12312312");
   // cout << "new_data : size : " << new_data.size() << endl;
 
-  absl::btree_set<std::string> ducks;
-  int count = 10000;
+  absl::btree_map<int, int> ducks;
+  int count = 1000;
   auto start = Get();
   for (int i = 0; i < count; i++) {
-    ducks.emplace(std::to_string(i));
+    ducks.emplace(i, i);
   }
   auto cost = Get() - start;
   cout << "absl - cost : " << cost * 1.0 / count / 1000 << "us" << endl;
 
   start = Get();
   for (int i = 0; i < count; i++) {
-    ducks.find(std::to_string(i));
+    ducks.find(i);
   }
   auto query_cost = Get() - start;
 
   cout << "absl - query_cost : " << query_cost * 1.0 / count / 1000 << "us" << endl;
 
-  std::set<std::string> chicken;
+  std::map<int, int> chicken;
   start = Get();
   for (int i = 0; i < count; i++) {
-    chicken.emplace(std::to_string(i));
+    chicken.emplace(i, i);
   }
   cost = Get() - start;
   cout << "std - cost : " << cost * 1.0 / count / 1000 << "us" << endl;
 
   start = Get();
   for (int i = 0; i < count; i++) {
-    chicken.find(std::to_string(i));
+    chicken.find(i);
   }
   query_cost = Get() - start;
   cout << "std - query_cost : " << query_cost * 1.0 / count / 1000 << "us" << endl;
