@@ -18,6 +18,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <cstring>
 #include <vector>
 using namespace std;
 
@@ -29,10 +30,10 @@ vector<string> split(const std::string &str, const std::string delim = ",") {
   char *buffer = new char[str.size() + 1];
   std::strcpy(buffer, str.c_str());
   char *tmp;
-  char *p = strtok_r(buffer, delim.c_str(), &tmp);  // 第一次分割
+  char *p = strtok(buffer, delim.c_str(), &tmp);  // 第一次分割
   do {
     ret.push_back(p);  // 如果 p 为 nullptr，则将整个字符串作为结果
-  } while ((p = strtok_r(nullptr, delim.c_str(), &tmp)) != nullptr);
+  } while ((p = strtok(nullptr, delim.c_str(), &tmp)) != nullptr);
   // strtok_r 为 strtok 的线程安全版本。
   delete[] buffer;
   return ret;
