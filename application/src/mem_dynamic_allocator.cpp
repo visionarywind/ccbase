@@ -252,7 +252,10 @@ DeviceMemPtr DynamicMemPoolBestFit::FindMemBufByStatus(size_t size, bool from_pe
 DeviceMemPtr DynamicMemPoolBestFit::FindMemBufInSpecifiedMng(size_t size, bool from_persistent_mem,
                                                              DynamicMemBufStatus target_status, uint32_t stream_id) {
   auto &mem_mng = from_persistent_mem ? persistent_mem_ : common_mem_;
+  // auto start = Get();
   auto &mem_buf_map = mem_mng->GetOrCreateMemBufMap(stream_id, target_status);
+  // auto cost = Get() - start;
+  // std::cout << "cost : " << cost << " ns";
   auto iter = mem_buf_map.lower_bound(size);
   if (iter != mem_buf_map.end()) {
     // if (IsMemoryPoolRecycle()) {

@@ -6,6 +6,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include <fstream>
+#include <string>
+
 #include "actor_hash.h"
 #include "common/common.h"
 #include "inherit.h"
@@ -349,4 +352,19 @@ void test() {
   std::shared_ptr<void *> m = std::make_shared<void *>(t);
   std::cout << m << std::endl;
   m.reset();
+}
+
+int main() {
+  using namespace std;
+  string filename = "mindspore.txt";
+  ifstream fin(filename.c_str());
+  int index = 0;
+  string strline;
+  while (getline(fin, strline) && index < 20) {
+    cout << strline << endl;
+    index++;
+  }
+  fin.close();
+  cout << "Done!\n";
+  return 0;
 }
