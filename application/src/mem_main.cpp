@@ -187,8 +187,8 @@ int AllocTest(int count = 10000) {
     auto tmp = allocator.Alloc(512 + i * 128 * 10);
     allocator.Free(tmp);
   }
+  cout << "DefaultAllocator alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
 
-  cout << "new start to free" << endl;
   int free_count = count;
   int64_t free_cost = 0;
   for (int i = 0; i < free_count; i++) {
@@ -199,7 +199,6 @@ int AllocTest(int count = 10000) {
   }
 
   cout << ss.str().size() << endl;
-  cout << "DefaultAllocator alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
   cout << "DefaultAllocator free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
 }
@@ -269,12 +268,12 @@ int PoolTest(int count = 1000) {
       vec.emplace_back(addr);
     }
 
-    auto tmp = pool.AllocTensorMem(512 + i * 128 * 10);
+    // auto tmp = pool.AllocTensorMem(512 + i * 128 * 10);
     // pool.FreeTensorMem(tmp);
     // pool.FreeTensorMem(addr);
   }
+  cout << "old alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
 
-  cout << "start to free" << endl;
   int free_count = count;
   int64_t free_cost = 0;
   for (int i = 0; i < free_count; i++) {
@@ -286,7 +285,6 @@ int PoolTest(int count = 1000) {
   cout << ss.str().size() << endl;
   pool.DumpDynamicMemPoolStateInfo();
   pool.DumpDynamicMemPoolDebugInfo();
-  cout << "old alloc cost : " << cost * 1.0 / count / 1000 << "us, addr : " << addr << endl;
   cout << "old free cost : " << free_cost * 1.0 / free_count / 1000 << "us." << endl;
   return 1;
 }
@@ -330,7 +328,7 @@ int SkipAllocTest(int count = 10000) {
   cout << "skiplist start to free" << endl;
   int free_count = count;
   int64_t free_cost = 0;
-  for (int i = 0; i < free_count; i++) {
+  for (int i = 0; i < free_count; i++) { //
     auto free_start = Get();
     kAllocator.Free(vec[i]);
     free_cost += Get() - free_start;
@@ -363,9 +361,9 @@ int main() {
   int count = 100000;
   // warm up cache.
   ProcessCsv(1);
-  
-  PoolTest(count);
+
   AllocTest(count);
+  PoolTest(count);
   // MultimapTest(count);
   // for (int i = 0; i < 100000; i++) SkipAllocTest(count);
   // SkipAllocTest(count);
