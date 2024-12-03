@@ -213,34 +213,6 @@ class DynamicMemPoolBestFit {
   bool is_trigger_eager_free_{false};
 };
 
-// Recording information for debugging the memory allocator.
-struct AllocatorDebugInfo {
-  std::string name_{"Unknown"};
-  AllocatorType type_{AllocatorType::kOther};
-  int input_index_{-1};
-  int output_index_{-1};
-};
-
-class DynamicMemAllocatorDebugInfo {
- public:
-  static AllocatorDebugInfo &GetDebugInfo() noexcept { return debug_info_; }
-
-  // Set the debug info when memory alloc.
-  static void SetDebugInfo(const std::string &name, AllocatorType type, int input_index = -1, int output_index = -1) {
-    debug_info_.name_ = name;
-    debug_info_.type_ = type;
-    debug_info_.input_index_ = input_index;
-    debug_info_.output_index_ = output_index;
-  }
-
- private:
-  DynamicMemAllocatorDebugInfo() = default;
-  virtual ~DynamicMemAllocatorDebugInfo() = default;
-  // DISABLE_COPY_AND_ASSIGN(DynamicMemAllocatorDebugInfo);
-
-  static thread_local AllocatorDebugInfo debug_info_;
-};
-
 struct DynamicMemBuf {
   DynamicMemBuf(DeviceMemPtr addr, DynamicMemBufStatus status, size_t size)
       : device_addr_(addr), status_(status), size_(size) {}
