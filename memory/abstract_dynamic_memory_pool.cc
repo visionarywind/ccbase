@@ -321,7 +321,54 @@ MemBlock *MemBufAllocator::ExpandBlock(size_t size) {
   return mem_block;
 }
 
-AbstractDynamicMemPool::AbstractDynamicMemPool() {}
+AbstractDynamicMemPool::AbstractDynamicMemPool() {
+  // MS_LOG(INFO) << "Generate allocator, is persistent : " << is_persistent << ", stream id : " << stream_id << ".";
+  std::function<MemBlock *(size_t)> mem_block_expander = [&, is_persistent = false, stream_id = 0](size_t size) {
+    size_t block_size = 1024 * 1024;
+    MemBlock *mem_block = nullptr;
+    if (block_size == 0) {
+      //   MS_LOG(INFO) << "Malloc mem block failed, is enable eager free : " << IsEnableEagerFree()
+      //                << ", is enable vmm : " << IsEnableVmm() << ", size : " << size << ", block size is  0.";
+      return mem_block;
+    }
+    DeviceMemPtr addr = nullptr;
+    size_t alloc_size;
+    // MS_LOG(INFO) << "Malloc mem block, is enable eager free : " << IsEnableEagerFree()
+    //              << ", is enable vmm : " << IsEnableVmm() << ", size : " << size << ", block size : " << block_size
+    //              << ".";
+
+    alloc_size = AllocDeviceMem(block_size, &addr);
+    if (alloc_size < block_size) {
+      // MS_LOG(WARNING) << "Alloc device mem failed, alloc size : " << alloc_size << ", block size : " << block_size
+      //                 << ".";
+    }
+
+    if (alloc_size == 0) {
+      return mem_block;
+    }
+    mem_stat_.alloc_size_ += alloc_size;
+    mem_block = new MemBlock(alloc_size, addr, stream_id);
+    // MS_LOG(INFO) << "Malloc mem block : " << mem_block->ToJson() << ".";
+    return mem_block;
+  };
+
+  std::function<bool(MemBlock *)> mem_block_cleaner = [&](MemBlock *mem_block) {
+    mem_stat_.alloc_size_ -= mem_block->size_;
+    // Call free device mem as ascend memory pool would do stat in free operation.
+    return FreeDeviceMem(mem_block->addr_);
+  };
+  std::function<size_t(size_t size, void *addr)> mem_mapper = [&](size_t size, void *addr) {
+    mem_stat_.eager_free_size_ -= size;
+    return MmapDeviceMem(size, addr);
+  };
+  std::function<size_t(void *addr, const size_t size)> mem_eager_freer = [&](void *addr, const size_t size) {
+    // MS_LOG(DEBUG) << "Eager free addr : " << addr << ", size : " << size << ".";
+    return FreeDeviceMemByEagerFree(addr, size);
+  };
+
+  tiny_allocator_ = std::make_shared<MemBufAllocator>(mem_block_expander, mem_block_cleaner, mem_mapper,
+                                                      mem_eager_freer, false, false, 0);
+}
 
 void AbstractDynamicMemPool::ReleaseDeviceRes() {
   LockGuard lock(lock_);
@@ -493,6 +540,10 @@ bool AbstractDynamicMemPool::DoFreeTensorMem(const DeviceMemPtr &device_addr) {
 }
 
 MemBufAllocator *AbstractDynamicMemPool::GetMemBufAllocator(size_t size, bool from_persistent_mem, uint32_t stream_id) {
+  if (size <= 1024 * 1024) {
+    return tiny_allocator_.get();
+  }
+
   auto key = std::make_pair(from_persistent_mem, stream_id);
   MemBufAllocatorPtr allocator = nullptr;
   auto &&it = stream_id_allocators_.find(key);

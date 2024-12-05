@@ -444,6 +444,8 @@ class BACKEND_EXPORT AbstractDynamicMemPool : virtual public DynamicMemPool {
 
  public:
 #endif
+  MemBufAllocatorPtr tiny_allocator_;
+
   std::map<std::pair<bool, uint32_t>, MemBufAllocatorPtr> stream_id_allocators_;
   std::unordered_map<void *, std::pair<MemBuf *, MemBufAllocator *>> addr_mem_buf_allocators_;
   std::unordered_map<std::pair<uint32_t, uint32_t>, std::set<MemBuf *>, pair_hash> stream_pair_mem_bufs_;
