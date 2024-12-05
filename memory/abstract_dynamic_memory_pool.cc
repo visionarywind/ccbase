@@ -941,6 +941,8 @@ std::string AbstractDynamicMemPool::DynamicMemPoolStateInfo() const {
     ss << stream_id_allocator.second->DumpStateInfo();
   }
 
+  ss << "Tiny allocator : " << tiny_allocator_->DumpStateInfo() << "\n";
+
   ss << "The dynamic memory pool stat info : " << mem_stat_.ToReadableString() << ", detail : " << mem_stat_.ToJson()
      << ", actual peak used mem:" << ActualPeakStatistics() / kMBToByte
      << "M. Weight used size:" << mem_buf_used_stat[static_cast<int>(AllocatorType::kWeight)] / kMBToByte

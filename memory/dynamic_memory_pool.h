@@ -52,6 +52,8 @@ constexpr size_t kGBToByte = 1024 << 20;
 // Set experience value to 10M
 const size_t kMinimumAllocMem = 10 << 20;
 
+constexpr size_t kMaxUsedMemSize = 58 * kGBToByte;
+
 const char kBlockMemorySize[] = "block_memory_size";
 const char kBlockStreamId[] = "block_stream_id";
 const char kCommonMemPoolType[] = "common_mem_pool";

@@ -1,11 +1,13 @@
 #pragma once
 
 #include "abstract_dynamic_memory_pool.h"
+#include "ascend_vmm_adapter.h"
+
 #include <iostream>
 
 class MemoryPool : public AbstractDynamicMemPool {
  public:
-  explicit MemoryPool() { SetEnableVmm(false); }
+  explicit MemoryPool() { SetEnableVmm(AscendVmmAdapter::GetInstance().IsEnabled()); }
   ~MemoryPool() override = default;
 
   size_t AllocDeviceMem(size_t size, DeviceMemPtr *addr) override {
@@ -25,11 +27,7 @@ class MemoryPool : public AbstractDynamicMemPool {
     return true;
   }
 
-  size_t MmapDeviceMem(const size_t size, const DeviceMemPtr addr) override {
-    throw std::runtime_error("not support mmap device mem");
-  }
-
-  size_t GetMaxUsedMemSize() const override { return SIZE_MAX; }
+  size_t GetMaxUsedMemSize() const override { return kMaxUsedMemSize; }
 
   size_t GetVmmUsedMemSize() const override { throw std::runtime_error("not support mmap device mem"); }
 
@@ -55,11 +53,15 @@ class MemoryPool : public AbstractDynamicMemPool {
   const bool SyncAllStreams() override { throw std::runtime_error("not support mmap device mem"); }
 
   size_t AllocDeviceMemByEagerFree(size_t size, DeviceMemPtr *addr) override {
-    throw std::runtime_error("not support mmap device mem");
+    return AscendVmmAdapter::GetInstance().AllocDeviceMem(size, addr);
   }
 
   size_t FreeDeviceMemByEagerFree(const DeviceMemPtr addr, const size_t size) override {
-    throw std::runtime_error("not support mmap device mem");
+    return AscendVmmAdapter::GetInstance().EagerFreeDeviceMem(addr, size);
+  }
+
+  size_t MmapDeviceMem(const size_t size, const DeviceMemPtr addr) override {
+    return AscendVmmAdapter::GetInstance().MmapDeviceMem(size, addr, GetMaxUsedMemSize());
   }
 
  private:
