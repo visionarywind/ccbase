@@ -67,6 +67,12 @@ struct MemHandle {
   size_t size_{0};
 };
 
+struct Comparator {
+  bool operator()(const void *l, const void *r) const {
+    return reinterpret_cast<size_t>(l) < reinterpret_cast<size_t>(r);
+  }
+};
+
 struct VmmManager {
   VmmManager(size_t max_mem_size) : max_mem_size_(max_mem_size) {}
   ~VmmManager() {
@@ -135,8 +141,8 @@ struct VmmManager {
         throw std::runtime_error("map failed up check, addr : " + std::to_string(map_addr_size) +
                                  ", exist addr : " + std::to_string(addr_size));
       }
-      auto low_iter = upper_iter--;
-      if (low_iter != mapped_addrs_.begin()) {
+      if (upper_iter != mapped_addrs_.begin()) {
+        auto low_iter = --upper_iter;
         addr_size = reinterpret_cast<size_t>(low_iter->first);
         if (addr_size + kDefaultMapSize > map_addr_size) {
           throw std::runtime_error("map failed low check, addr : " + std::to_string(map_addr_size) +
@@ -147,6 +153,7 @@ struct VmmManager {
 
     handle->Map(addr);
     mapped_addrs_.emplace(addr, handle);
+    std::cout << "Map addr : " << addr << " - " << std::to_string(reinterpret_cast<size_t>(addr)) << std::endl;
     return true;
   }
 
@@ -157,6 +164,7 @@ struct VmmManager {
       throw std::runtime_error("unmap failed.");
       return false;
     }
+    std::cout << "Unmap addr : " << addr << " - " << std::to_string(reinterpret_cast<size_t>(addr)) << std::endl;
     iter->second->Unmap(addr);
     mapped_addrs_.erase(iter);
     return true;
@@ -168,7 +176,7 @@ struct VmmManager {
   size_t max_mem_size_;
   size_t base_addr_{0};
 
-  std::map<void *, MemHandle *> mapped_addrs_;
+  std::map<void *, MemHandle *, Comparator> mapped_addrs_;
 };
 
 using aclrtDrvMemHandle = MemHandle *;

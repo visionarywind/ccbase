@@ -29,7 +29,7 @@ class MemoryPool : public AbstractDynamicMemPool {
 
   size_t GetMaxUsedMemSize() const override { return kMaxUsedMemSize; }
 
-  size_t GetVmmUsedMemSize() const override { AscendVmmAdapter::GetInstance().GetAllocatedSize(); }
+  size_t GetVmmUsedMemSize() const override { return AscendVmmAdapter::GetInstance().GetAllocatedSize(); }
 
   size_t free_mem_size() override { return SIZE_MAX; }
 
@@ -68,5 +68,5 @@ class MemoryPool : public AbstractDynamicMemPool {
   size_t vmm_mmap_size_{0};
   std::map<void *, size_t> alloc_infos_;
 
-  size_t total_mem_size_{1024L << 30};
+  size_t total_mem_size_{kMaxUsedMemSize};
 };
