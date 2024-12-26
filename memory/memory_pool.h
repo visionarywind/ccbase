@@ -29,7 +29,7 @@ class MemoryPool : public AbstractDynamicMemPool {
 
   size_t GetMaxUsedMemSize() const override { return kMaxUsedMemSize; }
 
-  size_t GetVmmUsedMemSize() const override { throw std::runtime_error("not support mmap device mem"); }
+  size_t GetVmmUsedMemSize() const override { AscendVmmAdapter::GetInstance().GetAllocatedSize(); }
 
   size_t free_mem_size() override { return SIZE_MAX; }
 
@@ -50,7 +50,7 @@ class MemoryPool : public AbstractDynamicMemPool {
   // The related interface of device memory eager free.
   const bool IsEnableEagerFree() const override { return false; }
 
-  const bool SyncAllStreams() override { throw std::runtime_error("not support mmap device mem"); }
+  const bool SyncAllStreams() override { return true; }
 
   size_t AllocDeviceMemByEagerFree(size_t size, DeviceMemPtr *addr) override {
     return AscendVmmAdapter::GetInstance().AllocDeviceMem(size, addr);

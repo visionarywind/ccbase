@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <atomic>
 #include <functional>
+#include <iostream>
 #include <list>
 #include <map>
 #include <memory>
@@ -417,7 +418,10 @@ class BACKEND_EXPORT AbstractDynamicMemPool : virtual public DynamicMemPool {
 
   const bool IsEnableVmm() const override { return enable_vmm_; }
 
-  void SetEnableVmm(bool enable_vmm) override { enable_vmm_ = enable_vmm; }
+  void SetEnableVmm(bool enable_vmm) override {
+    std::cout << "Set enable vmm : " << enable_vmm << std::endl;
+    enable_vmm_ = enable_vmm;
+  }
 
   // Get method for proxy.
   std::unordered_map<void *, std::pair<MemBuf *, MemBufAllocator *>> &addr_mem_buf_allocators() {

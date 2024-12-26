@@ -366,8 +366,10 @@ AbstractDynamicMemPool::AbstractDynamicMemPool() {
     return FreeDeviceMemByEagerFree(addr, size);
   };
 
-  tiny_allocator_ = std::make_shared<MemBufAllocator>(mem_block_expander, mem_block_cleaner, mem_mapper,
-                                                      mem_eager_freer, false, false, 0);
+  auto enable_tiny_allocator = getenv("ENABLE_TINY_ALLOCATOR");
+  if (enable_tiny_allocator)
+    tiny_allocator_ = std::make_shared<MemBufAllocator>(mem_block_expander, mem_block_cleaner, mem_mapper,
+                                                        mem_eager_freer, false, false, 0);
 }
 
 void AbstractDynamicMemPool::ReleaseDeviceRes() {
@@ -419,8 +421,8 @@ DeviceMemPtr AbstractDynamicMemPool::AllocTensorMem(size_t size, bool from_persi
 std::pair<MemBuf *, MemBufAllocator *> AbstractDynamicMemPool::AllocMemBuf(size_t align_size, bool from_persistent_mem,
                                                                            uint32_t stream_id) {
   auto allocator = GetMemBufAllocator(align_size, from_persistent_mem, stream_id);
-  std::cout << "alloc mem buf : align size : " << align_size << ", from_persistent_mem : " << from_persistent_mem
-            << std::endl;
+  //   std::cout << "alloc mem buf : align size : " << align_size << ", from_persistent_mem : " << from_persistent_mem
+  //             << std::endl;
   auto mem_buf = allocator->Malloc(align_size);
   if (MS_UNLIKELY(mem_buf == nullptr)) {
     // Enable malloc from another allocator when from_persistent_mem is true and vmm is not enabled.
@@ -540,7 +542,7 @@ bool AbstractDynamicMemPool::DoFreeTensorMem(const DeviceMemPtr &device_addr) {
 }
 
 MemBufAllocator *AbstractDynamicMemPool::GetMemBufAllocator(size_t size, bool from_persistent_mem, uint32_t stream_id) {
-  if (size <= 1024 * 1024) {
+  if (tiny_allocator_ != nullptr && size <= 1024 * 1024) {
     return tiny_allocator_.get();
   }
 
@@ -941,7 +943,9 @@ std::string AbstractDynamicMemPool::DynamicMemPoolStateInfo() const {
     ss << stream_id_allocator.second->DumpStateInfo();
   }
 
-  ss << "Tiny allocator : " << tiny_allocator_->DumpStateInfo() << "\n";
+  if (tiny_allocator_ != nullptr) {
+    ss << "Tiny allocator : " << tiny_allocator_->DumpStateInfo() << "\n";
+  }
 
   ss << "The dynamic memory pool stat info : " << mem_stat_.ToReadableString() << ", detail : " << mem_stat_.ToJson()
      << ", actual peak used mem:" << ActualPeakStatistics() / kMBToByte

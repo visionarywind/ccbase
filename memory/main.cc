@@ -88,7 +88,7 @@ int main() {
         continue;
       }
       MemoryBlock block(line);
-      cout << "process line : " << index - 1 << ", content : " << line << ", block : " << block.ToJson() << endl;
+      // cout << "process line : " << index - 1 << ", content : " << line << ", block : " << block.ToJson() << endl;
       void *addr = pool->AllocTensorMem(block.size, block.IsPersistent());
       to_free_map.emplace(block.end_time_stamp, addr);
       // pool->DumpDynamicMemPoolStateInfo();
