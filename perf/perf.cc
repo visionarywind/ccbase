@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <chrono>
+#include <fstream>
 #include <iostream>
 #include <thread>
 #include <list>
@@ -28,10 +29,12 @@ struct Perf {
   ~Perf() { std::cout << "Perf deconstructed." << std::endl; }
 
   void Dump(const std::string &key) {
+    std::ofstream outfile;
+    std::string dump_file_name = key + "_" + std::to_string(GetTick()) + "_dump.log";
+    outfile.open(dump_file_name, std::ios::out | std::ios::trunc);
     for (const auto &tick : ticks_) {
-      std::cout << tick->ToString() << std::endl << std::flush;
+      outfile << tick->ToString() << "\n";
     }
-
     std::sort(ticks_.begin(), ticks_.end());
     // Calculate mean and median, then print them.
     auto total_size = ticks_.size();
@@ -41,15 +44,19 @@ struct Perf {
     } else {
       median = ticks_[total_size >> 1]->cost_;
     }
-    std::cout << "key : " << key << "\n" << std::flush;
-    std::cout << "total : " << total_size << "\n" << std::flush;
-    std::cout << "median : " << median << "ns.\n" << std::flush;
+    outfile << "key : " << key << "\n";
+    outfile << "total : " << total_size << "\n";
+    outfile << "median : " << median << "ns.\n";
     double sum = 0;
     for (size_t i = 0; i < total_size; i++) {
-      if (ticks_[i]->cost_ <= 1000000 && ticks_[i]->cost_ >= 200) sum += ticks_[i]->cost_;
+      sum += ticks_[i]->cost_;
     }
     double mean = sum / total_size;
-    std::cout << "mean : " << mean << "ns.\n" << std::flush;
+    outfile << "mean : " << mean << "ns.\n";
+    outfile.close();
+
+    std::cout << "mean : " << mean << "ns.\n";
+    std::cout << "median : " << median << "ns.\n";
   }
 
   void Record() { Record(GetTick()); }
