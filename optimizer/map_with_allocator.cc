@@ -6,14 +6,16 @@
 #include <stdlib.h>
 #include <thread>
 
+#include "ms.hpp"
+
 int main() {
   typedef Allocator<std::map<int, int>::value_type, 1024> MapMemoryPoolAllocator;
 
   std::thread t1 = std::thread([]() {
     auto start = GetTick();
-    for (size_t i = 0; i < 1000; i++) {
+    for (size_t i = 0; i < 1; i++) {
       std::map<int, int, std::less<int>, MapMemoryPoolAllocator> m;
-      for (int i = 0; i < 1000; i++) {
+      for (int i = 0; i < 2; i++) {
         m[i] = i;
       }
       //   for (int i = 0; i < 1000; i++) {

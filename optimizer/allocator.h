@@ -45,6 +45,7 @@ class MemoryPool {
   }
 
   T *allocate() {
+    // std::cout << "allocate : " << sizeof(T) << std::endl;
     if (firstFreeBlock) {
       Block *block = firstFreeBlock;
       firstFreeBlock = block->next;
@@ -53,13 +54,17 @@ class MemoryPool {
 
     if (bufferedBlocks >= growSize) {
       firstBuffer = new Buffer(firstBuffer);
+      // std::cout << "new buffer : " << firstBuffer << std::endl;
       bufferedBlocks = 0;
     }
 
-    return firstBuffer->getBlock(bufferedBlocks++);
+    auto ret = firstBuffer->getBlock(bufferedBlocks++);
+    // std::cout << "return : " << ret << std::endl;
+    return ret;
   }
 
   void deallocate(T *pointer) {
+    // std::cout << "free : " << pointer << ", " << sizeof(T) << std::endl;
     Block *block = reinterpret_cast<Block *>(pointer);
     block->next = firstFreeBlock;
     firstFreeBlock = block;
