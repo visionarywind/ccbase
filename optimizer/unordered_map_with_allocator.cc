@@ -111,8 +111,87 @@ struct Pooled {
   std::map<void *, MemoryPool<T, growSize> *> allocated;
 };
 
+template <class T>
+class BufferPool {
+  struct Block {
+    Block *next;
+  };
+
+  class Buffer {
+    static const std::size_t blockSize = sizeof(T) > sizeof(Block) ? sizeof(T) : sizeof(Block);
+    constexpr growSize = 1024;
+    uint8_t data[blockSize * growSize];
+
+   public:
+    Buffer *const next;
+
+    Buffer(Buffer *next) : next(next) {}
+
+    T *getBlock(std::size_t index) { return reinterpret_cast<T *>(&data[blockSize * index]); }
+  };
+
+  Block *firstFreeBlock = nullptr;
+  Buffer *firstBuffer = nullptr;
+  std::size_t bufferedBlocks = growSize;
+
+ public:
+  BufferPool() = default;
+  BufferPool(BufferPool &&memoryPool) = delete;
+  BufferPool(const BufferPool &memoryPool) = delete;
+  BufferPool operator=(BufferPool &&memoryPool) = delete;
+  BufferPool operator=(const BufferPool &memoryPool) = delete;
+
+  ~BufferPool() {
+    while (firstBuffer) {
+      Buffer *buffer = firstBuffer;
+      firstBuffer = buffer->next;
+      delete buffer;
+    }
+  }
+
+  T *Borrow() {
+    std::cout << "allocate : " << sizeof(T) << std::endl;
+    if (firstFreeBlock) {
+      Block *block = firstFreeBlock;
+      firstFreeBlock = block->next;
+      allocated.emplace(block, sizeof(T));
+
+      std::cout << "allocate : " << sizeof(T) << ", ret : " << block << std::endl;
+      return reinterpret_cast<T *>(block);
+    }
+
+    if (bufferedBlocks >= growSize) {
+      firstBuffer = new Buffer(firstBuffer);
+      // std::cout << "new buffer : " << firstBuffer << std::endl;
+      bufferedBlocks = 0;
+    }
+
+    auto ret = firstBuffer->getBlock(bufferedBlocks++);
+    // std::cout << "return : " << ret << std::endl;
+    allocated.emplace(ret, sizeof(T));
+    std::cout << "allocate : " << sizeof(T) << ", ret : " << ret << std::endl;
+    return ret;
+  }
+
+  void GiveBack(T *pointer) {
+    if (allocated.find(pointer) != allocated.end()) {
+      // std::cout << "free size : " << allocated[pointer] << std::endl;
+      allocated.erase(pointer);
+    } else {
+      std::cout << "free error : " << pointer << std::endl;
+    }
+
+    // std::cout << "free : " << pointer << ", " << sizeof(T) << std::endl;
+    Block *block = reinterpret_cast<Block *>(pointer);
+    block->next = firstFreeBlock;
+    firstFreeBlock = block;
+  }
+
+  std::map<void *, size_t> allocated;
+};
+
 template <typename T>
-struct CustomAllocator : MemoryPool<T, 1024 * 1024 * 100> {
+struct CustomAllocator {
   using value_type = T;
 
   CustomAllocator() = default;
@@ -123,13 +202,22 @@ struct CustomAllocator : MemoryPool<T, 1024 * 1024 * 100> {
   T *allocate(std::size_t n) {
     if (n > std::numeric_limits<std::size_t>::max() / sizeof(T)) throw std::bad_alloc();
     // return static_cast<T *>(malloc(n * sizeof(T)));
-    return MemoryPool<T, 1024 * 1024 * 100>::Borrow();
+    // return pool_.Borrow();
+    auto it = pool_.find(n);
+    if (it == pool_.end()) {
+      pool_[n] = new BufferPool<T>();
+      return pool_[n]->Borrow();
+    }
+    return it->Borrow();
   }
 
   void deallocate(T *p, std::size_t) noexcept {
     // free(p);
-    MemoryPool<T, 1024 * 1024 * 100>::GiveBack(p);
+    // pool_.GiveBack(p);
   }
+
+  // MemoryPool<T, 1024 * 1024 * 100> pool_;
+  std::map<size_t, BufferPool<T> *> pool_;
 };
 
 // 比较操作符
