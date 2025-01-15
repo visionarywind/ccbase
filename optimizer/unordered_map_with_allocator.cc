@@ -1,6 +1,8 @@
 // #include "allocator.h"
-
+// #include <gperftools/tcmalloc.h>
+// #include <gperftools/tcmalloc.h>
 #include <array>
+#include <chrono>
 #include <unordered_map>
 #include <memory>
 #include <stdio.h>
@@ -9,6 +11,8 @@
 #include <iostream>
 #include <unordered_map>
 #include <map>
+// #include <jemalloc/jemalloc.h>
+using namespace std::chrono_literals;
 
 struct IntHash {
   template <class T1, class T2>
@@ -86,7 +90,7 @@ class MemoryPool {
 
   void GiveBack(T *pointer) {
     if (allocated.find(pointer) != allocated.end()) {
-      std::cout << "free size : " << allocated[pointer] << std::endl;
+      // std::cout << "free size : " << allocated[pointer] << std::endl;
       allocated.erase(pointer);
     } else {
       std::cout << "free error : " << pointer << std::endl;
@@ -101,8 +105,14 @@ class MemoryPool {
   std::map<void *, size_t> allocated;
 };
 
+template <class T, std::size_t growSize = 1024>
+struct Pooled {
+  std::map<size_t, MemoryPool<T, growSize> *> pools;
+  std::map<void *, MemoryPool<T, growSize> *> allocated;
+};
+
 template <typename T>
-struct CustomAllocator : MemoryPool<T, 1024> {
+struct CustomAllocator : MemoryPool<T, 1024 * 1024 * 100> {
   using value_type = T;
 
   CustomAllocator() = default;
@@ -113,12 +123,12 @@ struct CustomAllocator : MemoryPool<T, 1024> {
   T *allocate(std::size_t n) {
     if (n > std::numeric_limits<std::size_t>::max() / sizeof(T)) throw std::bad_alloc();
     // return static_cast<T *>(malloc(n * sizeof(T)));
-    return MemoryPool<T, 1024>::Borrow();
+    return MemoryPool<T, 1024 * 1024 * 100>::Borrow();
   }
 
   void deallocate(T *p, std::size_t) noexcept {
     // free(p);
-    MemoryPool<T, 1024>::GiveBack(p);
+    MemoryPool<T, 1024 * 1024 * 100>::GiveBack(p);
   }
 };
 
@@ -135,9 +145,31 @@ bool operator!=(const CustomAllocator<T> &, const CustomAllocator<U> &) {
 
 // todo, not passthrough current allocator
 int main() {
+  // const char *fileName = "heap_info.out";
+  // mallctl("prof.dump", NULL, NULL, &fileName, sizeof(const char *));
+
+  /*
+    unsigned nbins, i;
+    size_t mib[4];
+    size_t len, miblen;
+    len = sizeof(nbins);
+    mallctl("arenas.nbins", &nbins, &len, NULL, 0);
+  */
+
+#define STRINGIFY_HELPER(x) #x
+#define STRINGIFY(x) STRINGIFY_HELPER(x)
+
+  // je_mallctl("arena." STRINGIFY(MALLCTL_ARENAS_ALL) ".decay", NULL, NULL, NULL, 0);
+
+  // 关闭内存剖析
+  //   if (je_mallctl("prof.active", NULL, NULL, (void *)true, sizeof(bool)) != 0) {
+  //     perror("");
+  //     return 1;
+  //   }
+
   std::thread t1 = std::thread([&]() {
     auto start = GetTick();
-    for (size_t i = 0; i < 1; i++) {
+    for (size_t i = 0; i < 100; i++) {
       //   using MapAllocator = PoolAllocator<std::pair<const int, int>>;
       //   IntHash hash;
       //   std::unordered_map<int, int, IntHash, std::equal_to<const int>, MapAllocator> m(
@@ -149,10 +181,13 @@ int main() {
 
       std::unordered_map<int, int, std::hash<int>, std::equal_to<int>, CustomAllocator<std::pair<const int, int>>> m;
 
-      for (int i = 0; i < 10000; i++) {
+      std::cout << "Hello waiter\n" << std::flush;
+      std::this_thread::sleep_for(2ms);
+
+      for (int i = 0; i < 100000; i++) {
         m[i] = (i);
       }
-      for (int i = 0; i < 10000; i++) {
+      for (int i = 0; i < 100000; i++) {
         m.erase(i);
       }
     }
@@ -160,15 +195,16 @@ int main() {
     printf("t1 cost : %lu ns.\n", cost);
   });
 
+#define T2
 #ifdef T2
   std::thread t2 = std::thread([]() {
     auto start = GetTick();
     for (size_t i = 0; i < 100; i++) {
       std::unordered_map<int, std::string> m;
-      for (int i = 0; i < 1000; i++) {
+      for (int i = 0; i < 100000; i++) {
         m[i] = (i);
       }
-      for (int i = 0; i < 1000; i++) {
+      for (int i = 0; i < 100000; i++) {
         m.erase(i);
       }
     }
@@ -181,6 +217,8 @@ int main() {
 #ifdef T2
   t2.join();
 #endif
+
+  //   malloc_dump("1.dump");
 
   return 0;
 }
