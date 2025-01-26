@@ -117,25 +117,34 @@ class BufferPool {
     Block *next;
   };
 
+  static const size_t growSize = 1024;
   class Buffer {
-    static const std::size_t blockSize = sizeof(T) > sizeof(Block) ? sizeof(T) : sizeof(Block);
-    constexpr growSize = 1024;
-    uint8_t data[blockSize * growSize];
+    uint8_t *buffer_;
 
    public:
     Buffer *const next;
+    size_t block_size_;
 
-    Buffer(Buffer *next) : next(next) {}
+    Buffer(Buffer *next, size_t block_size) : next(next), block_size_(block_size) {
+      buffer_ = new uint8_t[growSize * block_size_];
+    }
+    ~Buffer() { delete[] buffer_; }
 
-    T *getBlock(std::size_t index) { return reinterpret_cast<T *>(&data[blockSize * index]); }
+    T *getBlock(std::size_t index) { return reinterpret_cast<T *>(buffer_ + index * growSize); }
   };
 
+  const size_t block_size_;
   Block *firstFreeBlock = nullptr;
   Buffer *firstBuffer = nullptr;
   std::size_t bufferedBlocks = growSize;
 
  public:
-  BufferPool() = default;
+  BufferPool(const size_t block_size)
+      : block_size_(block_size) {
+          // std::cout << "new Buffer pool[" << this << "], block size : " << block_size_ << ", sizeof(T) : " <<
+          // sizeof(T)
+          //           << std::endl;
+        };
   BufferPool(BufferPool &&memoryPool) = delete;
   BufferPool(const BufferPool &memoryPool) = delete;
   BufferPool operator=(BufferPool &&memoryPool) = delete;
@@ -150,44 +159,31 @@ class BufferPool {
   }
 
   T *Borrow() {
-    std::cout << "allocate : " << sizeof(T) << std::endl;
+    // std::cout << "BufferPool[" << this << "] - allocate : " << typeid(T).name() << std::endl;
     if (firstFreeBlock) {
       Block *block = firstFreeBlock;
       firstFreeBlock = block->next;
-      allocated.emplace(block, sizeof(T));
 
-      std::cout << "allocate : " << sizeof(T) << ", ret : " << block << std::endl;
+      // std::cout << "BufferPool[" << this << "] - allocate : " << sizeof(T) << ", ret : " << block << std::endl;
       return reinterpret_cast<T *>(block);
     }
 
     if (bufferedBlocks >= growSize) {
-      firstBuffer = new Buffer(firstBuffer);
-      // std::cout << "new buffer : " << firstBuffer << std::endl;
+      firstBuffer = new Buffer(firstBuffer, block_size_);
       bufferedBlocks = 0;
     }
 
     auto ret = firstBuffer->getBlock(bufferedBlocks++);
-    // std::cout << "return : " << ret << std::endl;
-    allocated.emplace(ret, sizeof(T));
-    std::cout << "allocate : " << sizeof(T) << ", ret : " << ret << std::endl;
+    // std::cout << "BufferPool[" << this << "] - allocate : " << sizeof(T) << ", ret : " << ret << std::endl;
     return ret;
   }
 
   void GiveBack(T *pointer) {
-    if (allocated.find(pointer) != allocated.end()) {
-      // std::cout << "free size : " << allocated[pointer] << std::endl;
-      allocated.erase(pointer);
-    } else {
-      std::cout << "free error : " << pointer << std::endl;
-    }
-
-    // std::cout << "free : " << pointer << ", " << sizeof(T) << std::endl;
+    // std::cout << "BufferPool[" << this << "] - GiveBack : " << pointer << std::endl;
     Block *block = reinterpret_cast<Block *>(pointer);
     block->next = firstFreeBlock;
     firstFreeBlock = block;
   }
-
-  std::map<void *, size_t> allocated;
 };
 
 template <typename T>
@@ -200,24 +196,36 @@ struct CustomAllocator {
   CustomAllocator(const CustomAllocator<U> &) {}
 
   T *allocate(std::size_t n) {
+    std::cout << "CustomAllocator - allocate : " << n << std::endl;
     if (n > std::numeric_limits<std::size_t>::max() / sizeof(T)) throw std::bad_alloc();
     // return static_cast<T *>(malloc(n * sizeof(T)));
     // return pool_.Borrow();
-    auto it = pool_.find(n);
+    auto it = pool_.find(n * sizeof(T));
     if (it == pool_.end()) {
-      pool_[n] = new BufferPool<T>();
-      return pool_[n]->Borrow();
+      pool_[n * sizeof(T)] = new BufferPool<T>(n * sizeof(T));
+      auto ret = pool_[n * sizeof(T)]->Borrow();
+      allocated[ret] = pool_[n * sizeof(T)];
+      return ret;
     }
-    return it->Borrow();
+    auto ret = it->second->Borrow();
+    allocated[ret] = it->second;
+    return ret;
   }
 
   void deallocate(T *p, std::size_t) noexcept {
-    // free(p);
-    // pool_.GiveBack(p);
+    // std::cout << "CustomAllocator - deallocate : " << p << std::endl;
+    auto it = allocated.find(p);
+    if (it != allocated.end()) {
+      it->second->GiveBack(p);
+      allocated.erase(it);
+    } else {
+      std::cout << "deallocate error : " << p << std::endl;
+    }
   }
 
   // MemoryPool<T, 1024 * 1024 * 100> pool_;
   std::map<size_t, BufferPool<T> *> pool_;
+  std::unordered_map<void *, BufferPool<T> *> allocated;
 };
 
 // 比较操作符
@@ -233,17 +241,6 @@ bool operator!=(const CustomAllocator<T> &, const CustomAllocator<U> &) {
 
 // todo, not passthrough current allocator
 int main() {
-  // const char *fileName = "heap_info.out";
-  // mallctl("prof.dump", NULL, NULL, &fileName, sizeof(const char *));
-
-  /*
-    unsigned nbins, i;
-    size_t mib[4];
-    size_t len, miblen;
-    len = sizeof(nbins);
-    mallctl("arenas.nbins", &nbins, &len, NULL, 0);
-  */
-
 #define STRINGIFY_HELPER(x) #x
 #define STRINGIFY(x) STRINGIFY_HELPER(x)
 
@@ -269,18 +266,19 @@ int main() {
 
       std::unordered_map<int, int, std::hash<int>, std::equal_to<int>, CustomAllocator<std::pair<const int, int>>> m;
 
-      std::cout << "Hello waiter\n" << std::flush;
-      std::this_thread::sleep_for(2ms);
+      // std::cout << "Hello waiter\n" << std::flush;
+      // std::this_thread::sleep_for(2ms);
 
-      for (int i = 0; i < 100000; i++) {
+      int cycle_size = 10;
+      for (int i = 0; i < cycle_size; i++) {
         m[i] = (i);
       }
-      for (int i = 0; i < 100000; i++) {
+      for (int i = 0; i < cycle_size; i++) {
         m.erase(i);
       }
     }
     auto cost = GetTick() - start;
-    printf("t1 cost : %lu ns.\n", cost);
+    std::cout << "t1 cost : " << cost << " ns.\n";
   });
 
 #define T2
@@ -289,15 +287,17 @@ int main() {
     auto start = GetTick();
     for (size_t i = 0; i < 100; i++) {
       std::unordered_map<int, std::string> m;
-      for (int i = 0; i < 100000; i++) {
+
+      int cycle_size = 10;
+      for (int i = 0; i < cycle_size; i++) {
         m[i] = (i);
       }
-      for (int i = 0; i < 100000; i++) {
+      for (int i = 0; i < cycle_size; i++) {
         m.erase(i);
       }
     }
     auto cost = GetTick() - start;
-    printf("t2 cost : %lu ns.\n", cost);
+    std::cout << "t2 cost : " << cost << " ns.\n";
   });
 #endif
 
