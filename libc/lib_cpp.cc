@@ -1,5 +1,6 @@
 
 #include "lib.h"
+#include "ms_print.h"
 
 // C++ api
 void *operator new(size_t size) {
