@@ -4,6 +4,7 @@
 #include <fcntl.h>
 #include <dlfcn.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #include "def.h"
 
@@ -44,20 +45,29 @@ void *consumer(void *arg) {
   return NULL;
 }
 
-#define GET_REAL_FUNC(func, func_type)                  \
-  if (!real_##func) {                                   \
-    real_##func = (func_type)dlsym(handle_libc, #func); \
-    if (!real_##func) {                                 \
-      malloc_printf("dlsym failed: %s\n", dlerror());   \
-      dlclose(handle_libc);                             \
-      handle_libc = NULL;                               \
-      return;                                           \
-    }                                                   \
-    malloc_printf("Get real func from lib, %s func : %p\n", #func, real_##func);          \
+#define GET_REAL_FUNC(func, func_type)                                           \
+  if (!real_##func) {                                                            \
+    real_##func = (func_type)dlsym(handle_libc, #func);                          \
+    if (!real_##func) {                                                          \
+      malloc_printf("dlsym failed: %s\n", dlerror());                            \
+      dlclose(handle_libc);                                                      \
+      handle_libc = NULL;                                                        \
+      return;                                                                    \
+    }                                                                            \
+    malloc_printf("Get real func from lib, %s func : %p\n", #func, real_##func); \
   }
 
-#undef malloc
-static __attribute__((constructor)) void init_library() {
+volatile bool kInitialized = false;
+pthread_mutex_t kInitializedMutex = PTHREAD_MUTEX_INITIALIZER;
+
+EXTERNC void InitLib() {
+  if (kInitialized) {
+    return;
+  }
+  pthread_mutex_lock(&kInitializedMutex);
+  if (kInitialized) {
+    pthread_mutex_unlock(&kInitializedMutex);
+  }
   malloc_printf("init library\n");
 #ifdef USE_JE_MALLOC
   real_malloc = je_malloc;
@@ -100,9 +110,14 @@ static __attribute__((constructor)) void init_library() {
     malloc_printf("init backend thread failed.\n");
     init_flag = false;
   }
+  kInitialized = true;
+  pthread_mutex_unlock(&kInitializedMutex);
 }
 
-static  __attribute__((destructor)) void cleanup_library() {
+#undef malloc
+__attribute__((constructor)) void init_library() {}
+
+__attribute__((destructor)) void cleanup_library() {
   malloc_printf("Shared library is being cleaned up.\n");
 #ifndef USE_JE_MALLOC
   if (handle_libc) {

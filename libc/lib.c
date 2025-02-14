@@ -44,67 +44,71 @@ void print_backtrace() {
 
 EXPORT void *malloc(size_t size) CXX_THROW {
   malloc_printf("lib malloc %ld\n", size);
-  if (real_malloc) {
-#ifdef USE_LIB_UNWIND
-    print_backtrace();
-#endif
-    return real_malloc(size);
+  if (!real_malloc) {
+    InitLib();
   }
 
-  malloc_printf("use default mmap, size : %ld\n", size);
-  if (size < MEMORY_SIZE) {
-    size = MEMORY_SIZE;
-  }
-  void *mapped_memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-  if (mapped_memory == MAP_FAILED) {
-    return NULL;
-  }
-  return mapped_memory;
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_malloc(size);
+
+  //   malloc_printf("use default mmap, size : %ld\n", size);
+  //   if (size < MEMORY_SIZE) {
+  //     size = MEMORY_SIZE;
+  //   }
+  //   void *mapped_memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+  //   if (mapped_memory == MAP_FAILED) {
+  //     return NULL;
+  //   }
+  //   return mapped_memory;
 }
 
 EXPORT void *calloc(size_t nmemb, size_t size) CXX_THROW {
   malloc_printf("lib calloc %ld\n", size);
-  if (real_calloc) {
-#ifdef USE_LIB_UNWIND
-    print_backtrace();
-#endif
-    return real_calloc(nmemb, size);
+  if (!real_calloc) {
+    InitLib();
   }
-  return NULL;
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_calloc(nmemb, size);
 }
 
 EXPORT void *realloc(void *ptr, size_t size) CXX_THROW {
   malloc_printf("lib realloc %ld\n", size);
-  if (real_realloc) {
-#ifdef USE_LIB_UNWIND
-    print_backtrace();
-#endif
-    return real_realloc(ptr, size);
+  if (!real_realloc) {
+    InitLib();
   }
-  return NULL;
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_realloc(ptr, size);
 }
 
 EXPORT void *aligned_alloc(size_t alignment, size_t size) CXX_THROW {
   malloc_printf("lib aligned_alloc %ld\n", size);
-  if (real_aligned_alloc) {
-#ifdef USE_LIB_UNWIND
-    print_backtrace();
-#endif
-    return real_aligned_alloc(alignment, size);
+  if (!real_aligned_alloc) {
+    InitLib();
   }
-  return NULL;
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_aligned_alloc(alignment, size);
 }
 
 EXPORT void free(void *ptr) CXX_THROW {
   malloc_printf("lib free %p\n", ptr);
-  if (real_free) {
-#ifdef USE_LIB_UNWIND
-    print_backtrace();
-#endif
-    real_free(ptr);
-  } else {
-    munmap(ptr, MEMORY_SIZE);
+  if (!real_free) {
+    InitLib();
   }
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  real_free(ptr);
+  // else {
+  //  munmap(ptr, MEMORY_SIZE);
+  // }
 }
 
 /*
