@@ -14,6 +14,11 @@
 #include <string.h>
 typedef char byte_t;
 
+#define USE_JE_MALLOC
+#ifdef USE_JE_MALLOC
+#include <jemalloc/jemalloc.h>
+#endif
+
 #define USE_LIB_UNWIND
 
 #ifdef USE_LIB_UNWIND
