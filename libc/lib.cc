@@ -42,7 +42,7 @@ void print_backtrace() {
 
 ////////////////////////
 
-EXPORT void *malloc(size_t size) {
+EXPORT void *malloc(size_t size) CXX_THROW {
   // malloc_printf("lib malloc %ld\n", size);
   if (real_malloc) {
 #ifdef USE_LIB_UNWIND
@@ -99,7 +99,7 @@ EXPORT void *aligned_alloc(size_t alignment, size_t size) {
 }
 */
 
-EXPORT void free(void *ptr) {
+EXPORT void free(void *ptr) CXX_THROW {
   // malloc_printf("lib free %p\n", ptr);
   if (real_free) {
 #ifdef USE_LIB_UNWIND
