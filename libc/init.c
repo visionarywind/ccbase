@@ -53,7 +53,7 @@ void *consumer(void *arg) {
       handle_libc = NULL;                               \
       return;                                           \
     }                                                   \
-    malloc_printf("%s func : %p\n", #func, real_##func);          \
+    malloc_printf("Get real func from lib, %s func : %p\n", #func, real_##func);          \
   }
 
 #undef malloc

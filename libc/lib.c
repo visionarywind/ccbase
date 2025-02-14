@@ -43,7 +43,7 @@ void print_backtrace() {
 ////////////////////////
 
 EXPORT void *malloc(size_t size) CXX_THROW {
-  // malloc_printf("lib malloc %ld\n", size);
+  malloc_printf("lib malloc %ld\n", size);
   if (real_malloc) {
 #ifdef USE_LIB_UNWIND
     print_backtrace();
@@ -63,6 +63,7 @@ EXPORT void *malloc(size_t size) CXX_THROW {
 }
 
 EXPORT void *calloc(size_t nmemb, size_t size) CXX_THROW {
+  malloc_printf("lib calloc %ld\n", size);
   if (real_calloc) {
 #ifdef USE_LIB_UNWIND
     print_backtrace();
@@ -73,6 +74,7 @@ EXPORT void *calloc(size_t nmemb, size_t size) CXX_THROW {
 }
 
 EXPORT void *realloc(void *ptr, size_t size) CXX_THROW {
+  malloc_printf("lib realloc %ld\n", size);
   if (real_realloc) {
 #ifdef USE_LIB_UNWIND
     print_backtrace();
@@ -83,6 +85,7 @@ EXPORT void *realloc(void *ptr, size_t size) CXX_THROW {
 }
 
 EXPORT void *aligned_alloc(size_t alignment, size_t size) CXX_THROW {
+  malloc_printf("lib aligned_alloc %ld\n", size);
   if (real_aligned_alloc) {
 #ifdef USE_LIB_UNWIND
     print_backtrace();
@@ -93,7 +96,7 @@ EXPORT void *aligned_alloc(size_t alignment, size_t size) CXX_THROW {
 }
 
 EXPORT void free(void *ptr) CXX_THROW {
-  // malloc_printf("lib free %p\n", ptr);
+  malloc_printf("lib free %p\n", ptr);
   if (real_free) {
 #ifdef USE_LIB_UNWIND
     print_backtrace();
