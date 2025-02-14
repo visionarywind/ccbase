@@ -51,6 +51,7 @@ EXPORT void *malloc(size_t size) CXX_THROW {
     return real_malloc(size);
   }
 
+  malloc_printf("use default mmap, size : %ld\n", size);
   if (size < MEMORY_SIZE) {
     size = MEMORY_SIZE;
   }
@@ -134,24 +135,3 @@ void dallocx(void *ptr, int flags) { free(ptr); }
 EXPORT
 void sdallocx(void *ptr, size_t size, int flags) { free(ptr); }
 */
-
-// C++ api
-void *operator new(size_t size) {
-  // malloc_printf("lib new size : %ld\n", size);
-  return malloc(size);
-}
-
-void *operator new[](size_t size) {
-    // malloc_printf("lib new[] size : %ld\n", size);
-    return malloc(size);
-}
-
-void operator delete(void *ptr) noexcept {
-    // malloc_printf("lib delete ptr : %p\n", ptr);
-    return free(ptr);
-}
-
-void operator delete[](void *ptr) noexcept {
-    // malloc_printf("lib delete[] ptr : %p\n", ptr);
-    return free(ptr);
-}
