@@ -6,6 +6,11 @@
 #include <unistd.h>
 
 #include "def.h"
+
+#ifdef USE_JE_MALLOC
+#include <jemalloc/jemalloc.h>
+#endif
+
 #include "init.h"
 #include "ms_print.h"
 

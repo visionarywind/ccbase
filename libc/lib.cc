@@ -17,10 +17,6 @@
 
 typedef char byte_t;
 
-#ifdef USE_JE_MALLOC
-#include <jemalloc/jemalloc.h>
-#endif
-
 #define USE_LIB_UNWIND
 
 #ifdef USE_LIB_UNWIND
