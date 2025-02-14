@@ -62,43 +62,35 @@ EXPORT void *malloc(size_t size) CXX_THROW {
   return mapped_memory;
 }
 
-/*
 EXPORT void *calloc(size_t nmemb, size_t size) {
-  if (size < MEMORY_SIZE) {
-    size = MEMORY_SIZE;
+  if (real_calloc) {
+#ifdef USE_LIB_UNWIND
+    print_backtrace();
+#endif
+    return real_calloc(nmemb, size);
   }
-  void *mapped_memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-  if (mapped_memory == MAP_FAILED) {
-    return NULL;
-  }
-  return mapped_memory;
+  return NULL;
 }
 
-EXPORT
-int posix_memalign(void **ptr, size_t alignment, size_t size) { return (int)alignment; }
-
 EXPORT void *realloc(void *ptr, size_t size) {
-  if (size < MEMORY_SIZE) {
-    size = MEMORY_SIZE;
+  if (real_realloc) {
+#ifdef USE_LIB_UNWIND
+    print_backtrace();
+#endif
+    return real_realloc(ptr, size);
   }
-  void *mapped_memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-  if (mapped_memory == MAP_FAILED) {
-    return NULL;
-  }
-  return mapped_memory;
+  return NULL;
 }
 
 EXPORT void *aligned_alloc(size_t alignment, size_t size) {
-  if (size < MEMORY_SIZE) {
-    size = MEMORY_SIZE;
+  if (real_aligned_alloc) {
+#ifdef USE_LIB_UNWIND
+    print_backtrace();
+#endif
+    return real_aligned_alloc(alignment, size);
   }
-  void *mapped_memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-  if (mapped_memory == MAP_FAILED) {
-    return NULL;
-  }
-  return mapped_memory;
+  return NULL;
 }
-*/
 
 EXPORT void free(void *ptr) CXX_THROW {
   // malloc_printf("lib free %p\n", ptr);
