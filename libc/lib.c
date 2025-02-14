@@ -1,0 +1,149 @@
+#include "lib.h"
+
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdarg.h>
+
+// #include <assert.h>
+
+#include <inttypes.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <dlfcn.h>
+#include <unistd.h>
+#include <string.h>
+
+#include "def.h"
+
+typedef char byte_t;
+
+// #define USE_LIB_UNWIND
+
+#ifdef USE_LIB_UNWIND
+#include <libunwind.h>
+#endif
+
+#include "ms_print.h"
+
+#include "init.h"
+
+// #include "map.h"
+
+#define MEMORY_SIZE 4096
+
+#ifdef USE_LIB_UNWIND
+void print_backtrace() {
+  if (!real_malloc) {
+    InitLib();
+  }
+  ExecStack *exec_stack = (ExecStack *)real_malloc(sizeof(ExecStack));
+  int frames = unw_backtrace(exec_stack->buffer, MAX_STACK_FRAMES);
+  exec_stack->frames = frames;
+  AppendExecStack(exec_stack);
+}
+#endif
+
+////////////////////////
+
+EXPORT void *malloc(size_t size) CXX_THROW {
+#ifdef LIB_TRACING
+  malloc_printf("lib malloc %ld\n", size);
+#endif
+  if (!real_malloc) {
+    InitLib();
+  }
+
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_malloc(size);
+
+  //   malloc_printf("use default mmap, size : %ld\n", size);
+  //   if (size < MEMORY_SIZE) {
+  //     size = MEMORY_SIZE;
+  //   }
+  //   void *mapped_memory = mmap(NULL, MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
+  //   if (mapped_memory == MAP_FAILED) {
+  //     return NULL;
+  //   }
+  //   return mapped_memory;
+}
+
+EXPORT void *calloc(size_t nmemb, size_t size) CXX_THROW {
+#ifdef LIB_TRACING
+  malloc_printf("lib calloc %ld\n", size);
+#endif
+  if (!real_calloc) {
+    InitLib();
+  }
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_calloc(nmemb, size);
+}
+
+EXPORT void *realloc(void *ptr, size_t size) CXX_THROW {
+#ifdef LIB_TRACING
+  malloc_printf("lib realloc %ld\n", size);
+#endif
+  if (!real_realloc) {
+    InitLib();
+  }
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_realloc(ptr, size);
+}
+
+EXPORT void *aligned_alloc(size_t alignment, size_t size) CXX_THROW {
+#ifdef LIB_TRACING
+  malloc_printf("lib aligned_alloc %ld\n", size);
+#endif
+  if (!real_aligned_alloc) {
+    InitLib();
+  }
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  return real_aligned_alloc(alignment, size);
+}
+
+EXPORT void free(void *ptr) CXX_THROW {
+#ifdef LIB_TRACING
+  malloc_printf("lib free %p\n", ptr);
+#endif
+  if (!real_free) {
+    InitLib();
+  }
+#ifdef USE_LIB_UNWIND
+  print_backtrace();
+#endif
+  real_free(ptr);
+  // else {
+  //  munmap(ptr, MEMORY_SIZE);
+  // }
+}
+
+/*
+// Not standard api.
+EXPORT
+void *mallocx(size_t size, int flags) {
+  malloc_printf("mallocx %ld\n", size);
+  return malloc(size);
+}
+
+EXPORT
+void *rallocx(void *ptr, size_t size, int flags) { return realloc(ptr, size); }
+
+EXPORT
+size_t xallocx(void *ptr, size_t size, size_t extra, int flags) { return size; }
+
+EXPORT
+size_t sallocx(void *ptr, int flags) { return 0; }
+
+EXPORT
+void dallocx(void *ptr, int flags) { free(ptr); }
+
+EXPORT
+void sdallocx(void *ptr, size_t size, int flags) { free(ptr); }
+*/

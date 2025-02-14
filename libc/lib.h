@@ -10,6 +10,8 @@
 #  define CXX_THROW
 #endif
 
+// #define LIB_TRACING
+
 EXPORT void *malloc(size_t size) CXX_THROW;
 EXPORT void *calloc(size_t nmemb, size_t size) CXX_THROW;
 EXPORT void *realloc(void *ptr, size_t size) CXX_THROW;
