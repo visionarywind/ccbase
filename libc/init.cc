@@ -5,6 +5,7 @@
 #include <dlfcn.h>
 #include <unistd.h>
 
+#include "def.h"
 #include "init.h"
 #include "ms_print.h"
 

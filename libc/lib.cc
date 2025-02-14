@@ -12,9 +12,11 @@
 #include <dlfcn.h>
 #include <unistd.h>
 #include <string.h>
+
+#include "def.h"
+
 typedef char byte_t;
 
-#define USE_JE_MALLOC
 #ifdef USE_JE_MALLOC
 #include <jemalloc/jemalloc.h>
 #endif
