@@ -57,7 +57,7 @@ void *consumer(void *arg) {
   }
 
 #undef malloc
-__attribute__((constructor)) void init_library() {
+static __attribute__((constructor)) void init_library() {
   malloc_printf("init library\n");
 #ifdef USE_JE_MALLOC
   real_malloc = je_malloc;
@@ -102,7 +102,7 @@ __attribute__((constructor)) void init_library() {
   }
 }
 
-__attribute__((destructor)) void cleanup_library() {
+static  __attribute__((destructor)) void cleanup_library() {
   malloc_printf("Shared library is being cleaned up.\n");
 #ifndef USE_JE_MALLOC
   if (handle_libc) {
