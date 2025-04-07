@@ -7,7 +7,7 @@ def FindAndSlice(lst, target):
         # print("remove", lst[:index + 1])
         return lst[index + 1 :]
     except ValueError:
-        print(f"WARNING: event {target} not found!", flush=True)
+        # print(f"WARNING: event {target} not found!", flush=True)
         return lst
 
 
@@ -33,7 +33,6 @@ def _CheckAddrValidInMemory(addr, size, memory_info):
 def LoadFileAndCheck(file_path):
     memory_info = dict()  # addr -> size
     event_info = dict()
-    stream_launch_info = dict()
     stream_task_list = dict() # stream_id -> task list
     wait_info = [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -76,8 +75,6 @@ def LoadFileAndCheck(file_path):
                 is_record = arr[2] == "record"
                 event = arr[3]
                 
-                if stream_id not in stream_launch_info:
-                    stream_launch_info[stream_id] = list()
                 if stream_id not in stream_task_list:
                     stream_task_list[stream_id] = list()
                 
@@ -89,9 +86,6 @@ def LoadFileAndCheck(file_path):
                         print(f"ERROR: {process_count} event {event} duplicated!", flush=True)
                         return
                     event_info[event] = (stream_id, len(stream_task_list[stream_id]))
-                    # update record stream
-                    stream_launch_info[stream_id].append(event)
-                    # print(stream_launch_info[stream_id])
                 else:
                     # process wait event
                     if event not in event_info:
@@ -112,11 +106,6 @@ def LoadFileAndCheck(file_path):
                                 print("update hp for", i, int(stream_id), wait_task_index)
                                 wait_info[i][int(stream_id)] = wait_task_index
                                                 
-                    if stream_id == "0":
-                        # print("process event info", line)
-                        # find record stream id and process launch infos
-                        remain = FindAndSlice(stream_launch_info[record_stream_id], event)
-                        stream_launch_info[record_stream_id] = remain
                     del event_info[event]
             elif "lanunch_info" in line:
 
@@ -141,15 +130,19 @@ def LoadFileAndCheck(file_path):
                 output_addrs = ExtractAddrAndSize(arr[4])
                 workspace_addrs = ExtractAddrAndSize(arr[5])
                 # here input is reading addrs and output, workspace are writing addrs
-                cur_reading_addrs = {**input_addrs}
-                cur_writing_addrs = {**output_addrs, **workspace_addrs}
+                cur_reading_addrs = None
+                cur_writing_addrs = None
+                if "Assign" in kernel_name:
+                    cur_reading_addrs = {}
+                    cur_writing_addrs = {**output_addrs, **input_addrs, **workspace_addrs}
+                else:
+                    cur_reading_addrs = {**input_addrs}
+                    cur_writing_addrs = {**output_addrs, **workspace_addrs}
                 launch_addrs = {
                     "reading_addrs": cur_reading_addrs,
                     "writing_addrs": cur_writing_addrs,
                 }
-                
-                if stream_id not in stream_launch_info:
-                    stream_launch_info[stream_id] = list()
+
                 if stream_id not in stream_task_list:
                     stream_task_list[stream_id] = list()
                     
@@ -161,7 +154,7 @@ def LoadFileAndCheck(file_path):
                     if addr == "0":
                         continue
                     if addr not in memory_info:
-                        print(f"WARNING: {process_count} {kernel_name} addr {addr} not exist!", flush=True)
+                        # print(f"WARNING: {process_count} {kernel_name} addr {addr} not exist!", flush=True)
                         if not _CheckAddrValidInMemory(addr, size, memory_info):
                             print(f"ERROR: {process_count} {kernel_name} addr {addr} not valid!", flush=True)
                             return
@@ -185,8 +178,6 @@ def LoadFileAndCheck(file_path):
                         if size > memory_info[addr]:
                             print(f"ERROR: {process_count} {kernel_name} addr {addr} overlap, {size} > {memory_info[addr]}!", flush=True)
                             return
-
-                stream_launch_info[stream_id].append(launch_addrs)
                 
                 def _CheckAddrOverlap(left, left_size, right, right_size):
                     left_start = int(left, 16)
@@ -235,32 +226,6 @@ def LoadFileAndCheck(file_path):
                         if CheckAddrsOverlap(cur_writing_addrs, reading_addrs):
                             print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
                             return
-                    
-                # old check on default stream
-                if stream_id == "0":
-                    # check addrs
-                    for id, launch_infos in stream_launch_info.items():
-                        # print("check on stream", id, flush=True)
-                        if id == stream_id:
-                            continue
-
-                        for launch_info in launch_infos:
-                            if not isinstance(launch_info, dict):
-                                continue
-                            # print("do check", launch_info)
-                            # get reading addrs and writing addrs
-                            reading_addrs = launch_info["reading_addrs"]
-                            writing_addrs = launch_info["writing_addrs"]
-                            # check read/write conflicts
-                            if CheckAddrsOverlap(cur_reading_addrs, writing_addrs):
-                                print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
-                                return
-                            if CheckAddrsOverlap(cur_writing_addrs, writing_addrs):
-                                print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
-                                return
-                            if CheckAddrsOverlap(cur_writing_addrs, reading_addrs):
-                                print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
-                                return
 
 
 if __name__ == "__main__":
