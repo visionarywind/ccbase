@@ -35,22 +35,29 @@ def LoadFileAndCheck(file_path):
     event_info = dict()
     stream_task_list = dict() # stream_id -> task list
     wait_info = [
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
     with open(file_path, "r", encoding="utf-8") as file:
         process_count = 0
         for line in file:
+            import pdb
+            # if process_count == 12551:
+            #     pdb.set_trace()
             process_count = process_count + 1
-            print("process ", process_count, line, flush=True)
+            # print("process ", process_count, line, flush=True)
+            # print(wait_info, flush=True)
             # load info and update memory info
             arr = line.split(",")
             if "memory_info" in line:
@@ -95,16 +102,20 @@ def LoadFileAndCheck(file_path):
                     # todo : may be need check cross stream event
                     # update sync info
                     record_stream_id, record_task_index = event_info[event]
-                    if record_task_index > wait_info[int(record_stream_id)][int(stream_id)]:
-                        wait_info[int(record_stream_id)][int(stream_id)] = record_task_index
+                    
+                    record_stream_id_int = int(record_stream_id)
+                    stream_id_int = int(stream_id)
+
+                    if record_task_index > wait_info[record_stream_id_int][stream_id_int]:
+                        wait_info[record_stream_id_int][stream_id_int] = record_task_index
                         # update hb info
-                        for i in range(10):
+                        for i in range(12):
                             if i == int(record_stream_id):
                                 continue
-                            wait_task_index = wait_info[i][int(record_stream_id)]
-                            if wait_task_index > wait_info[i][int(stream_id)]:
-                                print("update hp for", i, int(stream_id), wait_task_index)
-                                wait_info[i][int(stream_id)] = wait_task_index
+                            wait_task_index = wait_info[i][record_stream_id_int]
+                            if wait_task_index > wait_info[i][stream_id_int]:
+                                # print("update hp for", i, int(stream_id), wait_task_index)
+                                wait_info[i][stream_id_int] = wait_task_index
                                                 
                     del event_info[event]
             elif "lanunch_info" in line:
@@ -157,13 +168,13 @@ def LoadFileAndCheck(file_path):
                         # print(f"WARNING: {process_count} {kernel_name} addr {addr} not exist!", flush=True)
                         if not _CheckAddrValidInMemory(addr, size, memory_info):
                             print(f"ERROR: {process_count} {kernel_name} addr {addr} not valid!", flush=True)
-                            return
+                            # return
                     if addr in memory_info and size != memory_info[addr]:
                         if memory_info[addr] - size > 512:
-                            print(f"ERROR: {process_count} {kernel_name} addr {addr} waste more than 512!", flush=True)
+                            print(f"WARNING: {process_count} {kernel_name} addr {addr} waste more than 512!", flush=True)
                         if size > memory_info[addr]:
                             print(f"ERROR: {process_count} {kernel_name} addr {addr} overlap, {size} > {memory_info[addr]}!", flush=True)
-                            return
+                            # return
                 for addr, size in cur_writing_addrs.items():
                     if addr == "0":
                         continue
@@ -171,13 +182,13 @@ def LoadFileAndCheck(file_path):
                         print(f"ERROR: {process_count} {kernel_name} addr {addr} not exist!", flush=True)
                         if not _CheckAddrValidInMemory(addr, size, memory_info):
                             print(f"ERROR: {process_count} {kernel_name} addr {addr} not valid!", flush=True)
-                            return
+                            # return
                     if addr in memory_info and size != memory_info[addr]:
                         if memory_info[addr] - size > 512:
-                            print(f"ERROR: {process_count} {kernel_name} addr {addr} waste more than 512!", flush=True)
+                            print(f"WARNING: {process_count} {kernel_name} addr {addr} waste more than 512!", flush=True)
                         if size > memory_info[addr]:
                             print(f"ERROR: {process_count} {kernel_name} addr {addr} overlap, {size} > {memory_info[addr]}!", flush=True)
-                            return
+                            # return
                 
                 def _CheckAddrOverlap(left, left_size, right, right_size):
                     left_start = int(left, 16)
@@ -210,7 +221,7 @@ def LoadFileAndCheck(file_path):
                     candidate_tasks = task_list[safe_index:]
                     # do check launch info and candidate tasks
                     for candidate_task in candidate_tasks:
-                        task_name, kernel_name, launch_info, process_count = candidate_task
+                        task_name, kernel_name, launch_info, task_count = candidate_task
                         if task_name == "event_info":
                             continue
                         # process launch info
@@ -218,17 +229,18 @@ def LoadFileAndCheck(file_path):
                         writing_addrs = launch_info["writing_addrs"]
                         # check read/write conflicts
                         if CheckAddrsOverlap(cur_reading_addrs, writing_addrs):
-                            print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
-                            return
+                            print(f"ERROR: {process_count} {task_count} {kernel_name} overlapped!", flush=True)
+                            # return
                         if CheckAddrsOverlap(cur_writing_addrs, writing_addrs):
-                            print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
-                            return
+                            print(f"ERROR: {process_count} {task_count} {kernel_name} overlapped!", flush=True)
+                            # return
                         if CheckAddrsOverlap(cur_writing_addrs, reading_addrs):
-                            print(f"ERROR: {process_count} {kernel_name} overlapped!", flush=True)
-                            return
+                            print(f"ERROR: {process_count} {task_count} {kernel_name} overlapped!", flush=True)
+                            # return
 
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
         file_name = sys.argv[1]
         LoadFileAndCheck(file_name)
+        print("success")

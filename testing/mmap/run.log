@@ -1,0 +1,2050 @@
+init mapping file
+init mapping file start
+open file : 3
+32953 - spin lock init : 0x1047fc020
+init mapping file size : 1605632
+try to extand file : 3, size : 1605632, mapping size : 1605632
+try to mapping file : 3
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049ec000
+get mapping ptr
+write for K, size : 1568, ptr : 0x1049ed260
+get mapping ptr
+write for W, size : 1568, ptr : 0x1049ed880
+get mapping ptr
+write for W, size : 1568, ptr : 0x1049edea0
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049ee4c0
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049eeae0
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049ef100
+get mapping ptr
+write for U, size : 1568, ptr : 0x1049ef720
+get mapping ptr
+write for E, size : 1568, ptr : 0x1049ecc40
+get mapping ptr
+get mapping ptr
+write for A, size : 1568, ptr : 0x1049ec620
+get mapping ptr
+write for S, size : 1568, ptr : 0x1049f0fa0
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049f15c0
+get mapping ptr
+write for S, size : 1568, ptr : 0x1049f1be0
+get mapping ptr
+write for E, size : 1568, ptr : 0x1049f2200
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049f2820
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049f2e40
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049f3460
+write for E, size : 1568, ptr : 0x1049f0360
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049f46c0
+get mapping ptr
+write for C, size : 1568, ptr : 0x1049f5300
+write for E, size : 1568, ptr : 0x1049f4ce0
+get mapping ptr
+write for M, size : 1568, ptr : 0x1049f5920
+get mapping ptr
+write for M, size : 1568, ptr : 0x1049f5f40
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049f6560
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049f6b80
+get mapping ptr
+write for S, size : 1568, ptr : 0x1049f71a0
+write for S, size : 1568, ptr : 0x1049f77c0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049f8400
+write for Q, size : 1568, ptr : 0x1049f7de0
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x1049f8a20
+write for Y, size : 1568, ptr : 0x1049f9040
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x1049f9660
+write for W, size : 1568, ptr : 0x1049f9c80
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049fa2a0
+write for I, size : 1568, ptr : 0x1049fa8c0
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049faee0
+write for G, size : 1568, ptr : 0x1049fb500
+get mapping ptr
+get mapping ptr
+write for U, size : 1568, ptr : 0x1049efd40
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049fc760
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049fcd80
+get mapping ptr
+write for U, size : 1568, ptr : 0x1049fd3a0
+get mapping ptr
+write for U, size : 1568, ptr : 0x1049fd9c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x1049fdfe0
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049fe600
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049fec20
+get mapping ptr
+write for G, size : 1568, ptr : 0x1049ff240
+get mapping ptr
+write for Q, size : 1568, ptr : 0x1049ff860
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049f0980
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a004a0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a00ac0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a010e0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a01700
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a01d20
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a02340
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a02960
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a02f80
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a035a0
+get mapping ptr
+write for E, size : 1568, ptr : 0x1049fbb20
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a03bc0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a04800
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a04e20
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a05440
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a05a60
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a06080
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a066a0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a06cc0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a072e0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a07900
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a07f20
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a08540
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a08b60
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a09180
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a097a0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a09dc0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a0a3e0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a0aa00
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a0b020
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a0b640
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a0bc60
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a0c280
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a0c8a0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a0cec0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a0d4e0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a0db00
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a0e120
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a0e740
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a0ed60
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a0f380
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a0f9a0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a0ffc0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a105e0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a10c00
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a11220
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a11840
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a11e60
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a12480
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a12aa0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a130c0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a136e0
+get mapping ptr
+write for A, size : 1568, ptr : 0x1049f3a80
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a14320
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a14940
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a14f60
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a15580
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a15ba0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a161c0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a167e0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a16e00
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a17420
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a17a40
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a18060
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a18680
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a18ca0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a192c0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a198e0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a19f00
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a1a520
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a1ab40
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a1b160
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a1b780
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a1bda0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a1c3c0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a1c9e0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a1d000
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a1d620
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a1dc40
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a1e260
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a1e880
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a1eea0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a1f4c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a1fae0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a20100
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a20720
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a20d40
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a21360
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a21980
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a21fa0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a225c0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a22be0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a23200
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a23820
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a23e40
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a24460
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a24a80
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a250a0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a256c0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a25ce0
+get mapping ptr
+write for I, size : 1568, ptr : 0x1049f40a0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a26920
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a26f40
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a27560
+get mapping ptr
+write for E, size : 1568, ptr : 0x1049fc140
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a27b80
+write for W, size : 1568, ptr : 0x104a041e0
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a29400
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a29a20
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a2a040
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a2a660
+get mapping ptr
+write for C, size : 1568, ptr : 0x1049ffe80
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a2ac80
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a2b2a0
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a13d00
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a26300
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a287c0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a281a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a2cb20
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a2e3a0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a2bee0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a2efe0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a2f600
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a2dd80
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a28de0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a2c500
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a30860
+write for S, size : 1568, ptr : 0x104a30e80
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a314a0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a31ac0
+write for C, size : 1568, ptr : 0x104a320e0
+write for Y, size : 1568, ptr : 0x104a2d760
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a32700
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a32d20
+write for M, size : 1568, ptr : 0x104a2e9c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a33340
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a33960
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a30240
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a2b8c0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a33f80
+write for O, size : 1568, ptr : 0x104a2d140
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a351e0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a35800
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a35e20
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a36440
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a36a60
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a37080
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a2fc20
+write for U, size : 1568, ptr : 0x104a376a0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a34bc0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a39540
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a39b60
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a3a180
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a3a7a0
+write for E, size : 1568, ptr : 0x104a382e0
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a3adc0
+write for E, size : 1568, ptr : 0x104a3b3e0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a38900
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a3ba00
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a3c020
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a3c640
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a3d280
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a37cc0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a3d8a0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a345a0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a3eb00
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a3f740
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a38f20
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a3fd60
+write for U, size : 1568, ptr : 0x104a40fc0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a3dec0
+write for O, size : 1568, ptr : 0x104a3f120
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a41c00
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a42220
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a42840
+write for C, size : 1568, ptr : 0x104a3e4e0
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a43480
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a415e0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a43aa0
+write for A, size : 1568, ptr : 0x104a446e0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a440c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a44d00
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a45320
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a45940
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a45f60
+write for K, size : 1568, ptr : 0x104a3cc60
+write for Y, size : 1568, ptr : 0x104a40380
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a46ba0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a471c0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a477e0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a46580
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a409a0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a49680
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a49ca0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a4a2c0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a4a8e0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a4af00
+write for U, size : 1568, ptr : 0x104a48420
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a47e00
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a4b520
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a49060
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a42e60
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a48a40
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a4bb40
+write for O, size : 1568, ptr : 0x104a4d9e0
+write for A, size : 1568, ptr : 0x104a4e000
+write for M, size : 1568, ptr : 0x104a4c780
+write for Y, size : 1568, ptr : 0x104a4d3c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a4ec40
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a4f260
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a4f880
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a4c160
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a50ae0
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a51100
+write for M, size : 1568, ptr : 0x104a4cda0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a51720
+write for Y, size : 1568, ptr : 0x104a4e620
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a52360
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a52980
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a4fea0
+write for G, size : 1568, ptr : 0x104a535c0
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a504c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a54820
+write for Y, size : 1568, ptr : 0x104a51d40
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a54e40
+write for S, size : 1568, ptr : 0x104a55460
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a55a80
+write for Q, size : 1568, ptr : 0x104a54200
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a566c0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a56ce0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a57300
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a52fa0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a57920
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a591a0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a597c0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a59de0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a5a400
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a5aa20
+write for W, size : 1568, ptr : 0x104a58560
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a53be0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a5b040
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a5c8c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a5cee0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a5c2a0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a5d500
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a5e140
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a58b80
+write for G, size : 1568, ptr : 0x104a5ed80
+write for K, size : 1568, ptr : 0x104a57f40
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a5f3a0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a5f9c0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a5bc80
+write for O, size : 1568, ptr : 0x104a5ffe0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a5e760
+write for Q, size : 1568, ptr : 0x104a5b660
+write for S, size : 1568, ptr : 0x104a60c20
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a61240
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a61860
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a61e80
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a624a0
+write for C, size : 1568, ptr : 0x104a560a0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a5db20
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a630e0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a63700
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a60600
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a655a0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a65bc0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a661e0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a66800
+write for W, size : 1568, ptr : 0x104a64f80
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a63d20
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a67440
+write for C, size : 1568, ptr : 0x104a62ac0
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a64340
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a686a0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a67a60
+write for I, size : 1568, ptr : 0x104a68080
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a692e0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a69900
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a69f20
+write for E, size : 1568, ptr : 0x104a66e20
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a6a540
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a6ab60
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a6b180
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a64960
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a68cc0
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a6b7a0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a6ca00
+write for S, size : 1568, ptr : 0x104a6dc60
+write for C, size : 1568, ptr : 0x104a6e8a0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a6eec0
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a6f4e0
+write for E, size : 1568, ptr : 0x104a6e280
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a6fb00
+write for Q, size : 1568, ptr : 0x104a70120
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a70740
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a6c3e0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a71380
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a719a0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a71fc0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a72c00
+write for Y, size : 1568, ptr : 0x104a6d640
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a725e0
+write for Q, size : 1568, ptr : 0x104a73220
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a6bdc0
+write for O, size : 1568, ptr : 0x104a70d60
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a750c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a756e0
+get mapping ptr
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a74480
+write for I, size : 1568, ptr : 0x104a76320
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a74aa0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a76940
+write for Q, size : 1568, ptr : 0x104a73840
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a76f60
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a78e00
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a79420
+write for O, size : 1568, ptr : 0x104a77ba0
+write for A, size : 1568, ptr : 0x104a73e60
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a79a40
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a7a060
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a7a680
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a7aca0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a7b2c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a75d00
+write for A, size : 1568, ptr : 0x104a6d020
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a7bf00
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a7cb40
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a7d160
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a7d780
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a7dda0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a7e3c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a7e9e0
+write for Q, size : 1568, ptr : 0x104a7b8e0
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a7f620
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a77580
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a80880
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a7fc40
+write for K, size : 1568, ptr : 0x104a814c0
+write for O, size : 1568, ptr : 0x104a80260
+write for U, size : 1568, ptr : 0x104a7f000
+write for A, size : 1568, ptr : 0x104a787e0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a81ae0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a82100
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a82720
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a82d40
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a781c0
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a83980
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a80ea0
+get mapping ptr
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a84be0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a85e40
+write for C, size : 1568, ptr : 0x104a83fa0
+write for K, size : 1568, ptr : 0x104a85200
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a86460
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a86a80
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a83360
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a870a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a7c520
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a876c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a88920
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a88f40
+write for S, size : 1568, ptr : 0x104a89560
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a8a1a0
+write for Y, size : 1568, ptr : 0x104a87ce0
+write for K, size : 1568, ptr : 0x104a88300
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a8a7c0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a8ade0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a8b400
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a845c0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a85820
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a89b80
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a8cc80
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a8eb20
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a8f140
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a8f760
+get mapping ptr
+write for A, size : 1568, ptr : 0x104a8d8c0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a903a0
+write for M, size : 1568, ptr : 0x104a8e500
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a8c660
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a909c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a90fe0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a91600
+write for W, size : 1568, ptr : 0x104a8ba20
+write for E, size : 1568, ptr : 0x104a8d2a0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a92240
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a92860
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a934a0
+write for G, size : 1568, ptr : 0x104a92e80
+write for E, size : 1568, ptr : 0x104a93ac0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a940e0
+write for S, size : 1568, ptr : 0x104a8fd80
+write for Y, size : 1568, ptr : 0x104a91c20
+get mapping ptr
+write for M, size : 1568, ptr : 0x104a94700
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a95340
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a95960
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a95f80
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a965a0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a96bc0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104a97800
+write for A, size : 1568, ptr : 0x104a8dee0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a8c040
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a971e0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a98a60
+write for S, size : 1568, ptr : 0x104a98440
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a996a0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a99cc0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a9a2e0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a9a900
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a9b540
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a97e20
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104a9c180
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104a9cdc0
+write for M, size : 1568, ptr : 0x104a94d20
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a9d3e0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104a9da00
+get mapping ptr
+write for I, size : 1568, ptr : 0x104a9e020
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a99080
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a9ec60
+get mapping ptr
+write for S, size : 1568, ptr : 0x104a9f280
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104a9f8a0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104a9c7a0
+write for S, size : 1568, ptr : 0x104a9bb60
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104aa1120
+write for A, size : 1568, ptr : 0x104aa04e0
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104aa1740
+get mapping ptr
+write for U, size : 1568, ptr : 0x104aa1d60
+write for U, size : 1568, ptr : 0x104aa2380
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aa29a0
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104aa2fc0
+write for A, size : 1568, ptr : 0x104aa35e0
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104a9fec0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104aa4840
+write for K, size : 1568, ptr : 0x104aa3c00
+get mapping ptr
+write for E, size : 1568, ptr : 0x104aa4e60
+get mapping ptr
+write for E, size : 1568, ptr : 0x104aa5480
+get mapping ptr
+write for U, size : 1568, ptr : 0x104a9e640
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aa5aa0
+write for M, size : 1568, ptr : 0x104aa0b00
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104aa6d00
+get mapping ptr
+get mapping ptr
+write for U, size : 1568, ptr : 0x104aa7320
+get mapping ptr
+write for G, size : 1568, ptr : 0x104aa7940
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104aa4220
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104aa91c0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aa97e0
+write for S, size : 1568, ptr : 0x104aa8580
+get mapping ptr
+write for A, size : 1568, ptr : 0x104aa66e0
+write for W, size : 1568, ptr : 0x104aa9e00
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104a9af20
+get mapping ptr
+write for G, size : 1568, ptr : 0x104aaa420
+get mapping ptr
+write for G, size : 1568, ptr : 0x104aaaa40
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aab060
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aab680
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aa8ba0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104aa7f60
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aa60c0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104aac8e0
+write for I, size : 1568, ptr : 0x104aae160
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aabca0
+write for U, size : 1568, ptr : 0x104aaeda0
+write for E, size : 1568, ptr : 0x104aac2c0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aaf3c0
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104aad520
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104aaf9e0
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104aadb40
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ab1260
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104ab1ea0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104ab24c0
+write for O, size : 1568, ptr : 0x104ab1880
+write for Q, size : 1568, ptr : 0x104ab0000
+get mapping ptr
+write for W, size : 1568, ptr : 0x104ab2ae0
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ab0c40
+write for G, size : 1568, ptr : 0x104aae780
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ab3720
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ab4980
+write for S, size : 1568, ptr : 0x104ab4fa0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aacf00
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ab5be0
+get mapping ptr
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ab6820
+write for G, size : 1568, ptr : 0x104ab3d40
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ab7460
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ab4360
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ab7a80
+write for W, size : 1568, ptr : 0x104ab86c0
+write for Q, size : 1568, ptr : 0x104ab0620
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104ab3100
+write for U, size : 1568, ptr : 0x104ab6e40
+get mapping ptr
+write for E, size : 1568, ptr : 0x104ab9300
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104ab9920
+write for Q, size : 1568, ptr : 0x104aba560
+get mapping ptr
+write for O, size : 1568, ptr : 0x104abab80
+get mapping ptr
+write for A, size : 1568, ptr : 0x104abb1a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104abb7c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ab6200
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104ab80a0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104abd040
+get mapping ptr
+write for C, size : 1568, ptr : 0x104abd660
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104abdc80
+write for E, size : 1568, ptr : 0x104abe2a0
+write for G, size : 1568, ptr : 0x104ab8ce0
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104abc400
+write for M, size : 1568, ptr : 0x104abe8c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104abeee0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104abbde0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104abfb20
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ac0140
+write for E, size : 1568, ptr : 0x104ab55c0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ab9f40
+write for A, size : 1568, ptr : 0x104ac13a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104ac19c0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104ac1fe0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104ac2600
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104ac2c20
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104ac3240
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ac3860
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104abf500
+get mapping ptr
+write for W, size : 1568, ptr : 0x104abca20
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ac0760
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ac0d80
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ac4ac0
+write for K, size : 1568, ptr : 0x104ac3e80
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104ac6f80
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ac75a0
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ac6340
+write for U, size : 1568, ptr : 0x104ac44a0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ac8800
+write for W, size : 1568, ptr : 0x104ac6960
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104ac81e0
+write for Q, size : 1568, ptr : 0x104ac9440
+write for A, size : 1568, ptr : 0x104ac5700
+get mapping ptr
+write for O, size : 1568, ptr : 0x104ac9a60
+get mapping ptr
+write for A, size : 1568, ptr : 0x104aca080
+get mapping ptr
+write for A, size : 1568, ptr : 0x104aca6a0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104ac8e20
+get mapping ptr
+write for M, size : 1568, ptr : 0x104acacc0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104acb2e0
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104acb900
+write for K, size : 1568, ptr : 0x104ac7bc0
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ac50e0
+write for K, size : 1568, ptr : 0x104acbf20
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104accb60
+get mapping ptr
+write for E, size : 1568, ptr : 0x104acd7a0
+write for Y, size : 1568, ptr : 0x104ac5d20
+get mapping ptr
+write for A, size : 1568, ptr : 0x104ace3e0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104acf020
+write for U, size : 1568, ptr : 0x104acd180
+write for K, size : 1568, ptr : 0x104acc540
+get mapping ptr
+write for G, size : 1568, ptr : 0x104acf640
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104acfc60
+get mapping ptr
+write for C, size : 1568, ptr : 0x104acddc0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ad1b00
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ad2120
+write for C, size : 1568, ptr : 0x104ad0ec0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ad2d60
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ad3380
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ad39a0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ad0280
+get mapping ptr
+write for A, size : 1568, ptr : 0x104ad3fc0
+write for I, size : 1568, ptr : 0x104ad4c00
+write for A, size : 1568, ptr : 0x104ad45e0
+write for A, size : 1568, ptr : 0x104acea00
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ad5220
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ad5840
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ad5e60
+write for E, size : 1568, ptr : 0x104ad08a0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104ad6aa0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ad70c0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ad76e0
+write for C, size : 1568, ptr : 0x104ad6480
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ad2740
+get mapping ptr
+write for W, size : 1568, ptr : 0x104ad8940
+get mapping ptr
+write for K, size : 1568, ptr : 0x104ad8320
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ad8f60
+write for S, size : 1568, ptr : 0x104ad9ba0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ada7e0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104adae00
+write for C, size : 1568, ptr : 0x104ad14e0
+get mapping ptr
+get mapping ptr
+write for A, size : 1568, ptr : 0x104ad7d00
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ad9580
+get mapping ptr
+write for E, size : 1568, ptr : 0x104ada1c0
+write for I, size : 1568, ptr : 0x104adba40
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104add2c0
+write for A, size : 1568, ptr : 0x104adb420
+get mapping ptr
+write for O, size : 1568, ptr : 0x104add8e0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104ade520
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104adeb40
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104adf160
+get mapping ptr
+write for W, size : 1568, ptr : 0x104adf780
+get mapping ptr
+write for S, size : 1568, ptr : 0x104adcca0
+write for G, size : 1568, ptr : 0x104adc680
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104adfda0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104ae1000
+write for A, size : 1568, ptr : 0x104addf00
+get mapping ptr
+write for A, size : 1568, ptr : 0x104ae1c40
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104ae2880
+write for U, size : 1568, ptr : 0x104ae09e0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ae1620
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104ae03c0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104ae2ea0
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104ae2260
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ae34c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104adc060
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ae5980
+get mapping ptr
+write for I, size : 1568, ptr : 0x104ae6be0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104ae7200
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ae7820
+get mapping ptr
+write for U, size : 1568, ptr : 0x104ae7e40
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ae8460
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ae8a80
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ae90a0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ae96c0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104ae9ce0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104ae3ae0
+write for C, size : 1568, ptr : 0x104ae4d40
+get mapping ptr
+write for M, size : 1568, ptr : 0x104aea920
+get mapping ptr
+write for M, size : 1568, ptr : 0x104aeaf40
+write for Q, size : 1568, ptr : 0x104ae4100
+write for M, size : 1568, ptr : 0x104ae65c0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104aeb560
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ae5fa0
+write for W, size : 1568, ptr : 0x104aebb80
+get mapping ptr
+write for O, size : 1568, ptr : 0x104aea300
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104aecde0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104aed400
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aeda20
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aee040
+get mapping ptr
+write for C, size : 1568, ptr : 0x104aee660
+get mapping ptr
+write for O, size : 1568, ptr : 0x104aeec80
+get mapping ptr
+write for O, size : 1568, ptr : 0x104aef2a0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104aef8c0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104af0b20
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104af1140
+get mapping ptr
+write for O, size : 1568, ptr : 0x104af1d80
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104af23a0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104af29c0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104af1760
+get mapping ptr
+write for O, size : 1568, ptr : 0x104af3600
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104ae4720
+get mapping ptr
+write for K, size : 1568, ptr : 0x104af3c20
+get mapping ptr
+write for S, size : 1568, ptr : 0x104af4860
+get mapping ptr
+write for C, size : 1568, ptr : 0x104af4e80
+get mapping ptr
+write for C, size : 1568, ptr : 0x104af54a0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104af5ac0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104af60e0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104af6700
+get mapping ptr
+write for K, size : 1568, ptr : 0x104af6d20
+get mapping ptr
+write for I, size : 1568, ptr : 0x104af7340
+get mapping ptr
+write for I, size : 1568, ptr : 0x104aec1a0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104ae5360
+get mapping ptr
+write for S, size : 1568, ptr : 0x104af7f80
+write for E, size : 1568, ptr : 0x104af85a0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104af8bc0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104af91e0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104af9800
+write for K, size : 1568, ptr : 0x104af4240
+get mapping ptr
+write for W, size : 1568, ptr : 0x104af9e20
+write for M, size : 1568, ptr : 0x104aefee0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104afa440
+get mapping ptr
+write for U, size : 1568, ptr : 0x104afaa60
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104af0500
+write for S, size : 1568, ptr : 0x104af2fe0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104afb6a0
+get mapping ptr
+get mapping ptr
+write for U, size : 1568, ptr : 0x104af7960
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104afbcc0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104afcf20
+get mapping ptr
+write for G, size : 1568, ptr : 0x104afdb60
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104afe180
+get mapping ptr
+write for C, size : 1568, ptr : 0x104afedc0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104afe7a0
+write for A, size : 1568, ptr : 0x104aff3e0
+write for A, size : 1568, ptr : 0x104afc900
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104affa00
+get mapping ptr
+write for K, size : 1568, ptr : 0x104afd540
+write for E, size : 1568, ptr : 0x104b00640
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b00c60
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b01280
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b018a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b01ec0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b024e0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b02b00
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b03120
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b03740
+write for E, size : 1568, ptr : 0x104afb080
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104afc2e0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b00020
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104aec7c0
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b04fc0
+write for A, size : 1568, ptr : 0x104b055e0
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b06e60
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b04380
+write for M, size : 1568, ptr : 0x104b07480
+write for Y, size : 1568, ptr : 0x104b07aa0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b080c0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b086e0
+write for K, size : 1568, ptr : 0x104b06220
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b03d60
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b09320
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b049a0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b09f60
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b0a580
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b0aba0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b0b7e0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b0be00
+write for A, size : 1568, ptr : 0x104b0b1c0
+write for W, size : 1568, ptr : 0x104b06840
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b0c420
+write for Q, size : 1568, ptr : 0x104b0ca40
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b0d060
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b0d680
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b0dca0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b08d00
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b0ef00
+write for S, size : 1568, ptr : 0x104b09940
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b0f520
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b10780
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b10da0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b113c0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b119e0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b05c00
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b12620
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b12c40
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b13260
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b13880
+write for A, size : 1568, ptr : 0x104b0e2c0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b14ae0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b15100
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b15720
+write for E, size : 1568, ptr : 0x104b144c0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b15d40
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b0fb40
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b16360
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b16980
+write for E, size : 1568, ptr : 0x104b10160
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b175c0
+get mapping ptr
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b12000
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b17be0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b18820
+get mapping ptr
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b0e8e0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b19a80
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b1a0a0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b1a6c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b1ace0
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b1b920
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b13ea0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b16fa0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b18200
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b18e40
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b19460
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b1b300
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b1d1a0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b1dde0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b1f040
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b1f660
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b1d7c0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b208c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b20ee0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b1fc80
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b1bf40
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b21b20
+write for S, size : 1568, ptr : 0x104b22140
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b22760
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b22d80
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b233a0
+get mapping ptr
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b1e400
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b239c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b1cb80
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b24c20
+write for W, size : 1568, ptr : 0x104b25240
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b25860
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b25e80
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b264a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b26ac0
+write for W, size : 1568, ptr : 0x104b1c560
+get mapping ptr
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b21500
+write for M, size : 1568, ptr : 0x104b202a0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b1ea20
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b23fe0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b27d20
+write for O, size : 1568, ptr : 0x104b28960
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b28f80
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b295a0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b29bc0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b2a1e0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b2a800
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b2ae20
+get mapping ptr
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b2c6a0
+write for I, size : 1568, ptr : 0x104b2c080
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b2ba60
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b2d2e0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b2ccc0
+write for M, size : 1568, ptr : 0x104b2df20
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b2e540
+write for Y, size : 1568, ptr : 0x104b2b440
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b2eb60
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b2f180
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b2f7a0
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b270e0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b30a00
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b31020
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b2fdc0
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b31640
+write for E, size : 1568, ptr : 0x104b31c60
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b32280
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b328a0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b32ec0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b334e0
+write for O, size : 1568, ptr : 0x104b2d900
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b28340
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b34740
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b34120
+write for O, size : 1568, ptr : 0x104b33b00
+get mapping ptr
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b359a0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b35fc0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b365e0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b36c00
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b37220
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b37840
+get mapping ptr
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b24600
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b38aa0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b396e0
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b39d00
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b3a320
+write for U, size : 1568, ptr : 0x104b303e0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b3a940
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b3af60
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b3b580
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b35380
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b34d60
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b37e60
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b390c0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b38480
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b27700
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b3da40
+write for S, size : 1568, ptr : 0x104b3c1c0
+write for U, size : 1568, ptr : 0x104b3e060
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b3eca0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b3f2c0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b3e680
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b3ff00
+get mapping ptr
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b40520
+write for Q, size : 1568, ptr : 0x104b40b40
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b41160
+write for K, size : 1568, ptr : 0x104b3d420
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b41da0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b423c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b429e0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b43000
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b43620
+get mapping ptr
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b3ce00
+write for E, size : 1568, ptr : 0x104b3c7e0
+write for W, size : 1568, ptr : 0x104b43c40
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b44880
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b44ea0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b454c0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b45ae0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b46100
+write for O, size : 1568, ptr : 0x104b41780
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b46d40
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b47360
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b47980
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b47fa0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b485c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b48be0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b49200
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b49820
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b49e40
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b4a460
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b4aa80
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b4b0a0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b4b6c0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b3f8e0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b4c920
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b4cf40
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b4d560
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b4db80
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b4e1a0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b4e7c0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b44260
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b4f400
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b46720
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b4fa20
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b50660
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b50c80
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b512a0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b518c0
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b52500
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b52b20
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b53140
+get mapping ptr
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b4bce0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b53d80
+write for A, size : 1568, ptr : 0x104b4c300
+write for M, size : 1568, ptr : 0x104b543a0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b549c0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b54fe0
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b55600
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b55c20
+write for G, size : 1568, ptr : 0x104b4ede0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b56240
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b56860
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b56e80
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b574a0
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b57ac0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b58700
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b58d20
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b59340
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b59960
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b59f80
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b5a5a0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b50040
+write for Y, size : 1568, ptr : 0x104b5abc0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b5b1e0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b5b800
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b53760
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b580e0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b5c440
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b5dcc0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b5e2e0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b5e900
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b5ef20
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b5f540
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b51ee0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b60180
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b607a0
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b60dc0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b613e0
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b61a00
+get mapping ptr
+write for C, size : 1568, ptr : 0x104b62020
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b5d080
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b62640
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b62c60
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b63280
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b5ca60
+get mapping ptr
+write for A, size : 1568, ptr : 0x104b638a0
+get mapping ptr
+write for Y, size : 1568, ptr : 0x104b64b00
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b65120
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b65740
+get mapping ptr
+write for K, size : 1568, ptr : 0x104b65d60
+write for Y, size : 1568, ptr : 0x104b644e0
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b66380
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b669a0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b66fc0
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b675e0
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b5be20
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b5d6a0
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b68220
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b3bba0
+write for I, size : 1568, ptr : 0x104b68e60
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b69480
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b69aa0
+get mapping ptr
+get mapping ptr
+get mapping ptr
+write for Q, size : 1568, ptr : 0x104b6ad00
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b6b320
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b6b940
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b5fb60
+write for S, size : 1568, ptr : 0x104b6bf60
+write for S, size : 1568, ptr : 0x104b6a6e0
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b6c580
+get mapping ptr
+write for O, size : 1568, ptr : 0x104b6cba0
+write for M, size : 1568, ptr : 0x104b63ec0
+get mapping ptr
+write for M, size : 1568, ptr : 0x104b6d1c0
+get mapping ptr
+get mapping ptr
+write for W, size : 1568, ptr : 0x104b6de00
+write for E, size : 1568, ptr : 0x104b68840
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b6e420
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b6f060
+write for U, size : 1568, ptr : 0x104b6ea40
+get mapping ptr
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b67c00
+get mapping ptr
+write for S, size : 1568, ptr : 0x104b6f680
+get mapping ptr
+write for E, size : 1568, ptr : 0x104b702c0
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b6a0c0
+write for W, size : 1568, ptr : 0x104b70f00
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b71520
+get mapping ptr
+write for I, size : 1568, ptr : 0x104b71b40
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b72160
+get mapping ptr
+write for U, size : 1568, ptr : 0x104b72780
+get mapping ptr
+write for G, size : 1568, ptr : 0x104b72da0
+get mapping ptr
+write for S, size : 156

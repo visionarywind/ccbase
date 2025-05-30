@@ -70,7 +70,7 @@ struct MemoryBlock {
   }
 };
 
-int main() {
+void Trace() {
   MemoryPool *pool = new MemoryPool();
 
   ifstream in("run.log");
@@ -108,6 +108,23 @@ int main() {
   in.close();
 
   pool->DumpDynamicMemPoolStateInfo();
+  delete pool;
+}
+
+int main() {
+  MemoryPool *pool = new MemoryPool();
+  std::vector<void *> addrs;
+  for (size_t i = 0; i < 10; i++) {
+    void *addr = pool->AllocTensorMem(1024 * 1024 * 1024, false);
+    addrs.push_back(addr);
+  }
+  for (auto addr : addrs) {
+    // pool->FreeTensorMem(addr);
+  }
+  pool->FreeTensorMem(addrs[0]);
+  std::cout << "Before release " << pool->TotalMemStatistics() << std::endl;
+  auto release_size = pool->ReleaseFreeBlocks();
+  std::cout << "Release " << release_size << "," << pool->TotalMemStatistics() << std::endl;
   delete pool;
   return 0;
 }

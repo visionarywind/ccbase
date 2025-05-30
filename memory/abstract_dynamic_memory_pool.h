@@ -297,6 +297,7 @@ class MemBufAllocator {
   bool Free(MemBuf *mem_buf, MemBufStatus target_status = MemBufStatus::kMemBufIdle);
   MemBuf *MallocExpandBlock(size_t size);
   const std::pair<size_t, size_t> FreeIdleMemsByEagerFree();
+  size_t ReleaseFreeBlocks();
 
   std::string DumpStateInfo() const;
   std::string DumpDebugInfo() const;
@@ -396,6 +397,8 @@ class BACKEND_EXPORT AbstractDynamicMemPool : virtual public DynamicMemPool {
   void DumpDynamicMemPoolStateInfo() override;
   std::string DynamicMemPoolStateInfo() const;
   void DumpDynamicMemPoolDebugInfo() override;
+
+  size_t ReleaseFreeBlocks();
 
   // The statistics information.
   size_t TotalMemStatistics() const override;

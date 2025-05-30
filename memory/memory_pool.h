@@ -12,7 +12,7 @@ class MemoryPool : public AbstractDynamicMemPool {
 
   size_t AllocDeviceMem(size_t size, DeviceMemPtr *addr) override {
     *addr = malloc(size);
-    alloc_infos_.emplace(addr, size);
+    alloc_infos_.emplace(*addr, size);
     std::cout << "alloc device mem, size : " << size << ", addr : " << *addr << std::endl;
     return size;
   }
@@ -21,6 +21,7 @@ class MemoryPool : public AbstractDynamicMemPool {
     std::cout << "free device mem, addr : " << addr << std::endl;
     auto &&iter = alloc_infos_.find(addr);
     if (iter == alloc_infos_.end()) {
+      std::cout << "count found addr : " << addr << std::endl;
       return false;
     }
     alloc_infos_.erase(iter);
