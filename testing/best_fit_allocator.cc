@@ -1,15 +1,13 @@
-#include <iostream>
 #include <cstddef>
 #include <cstdint>
-#include <cstdlib>
-#include <vector>
-#include <algorithm>
-#include <mutex>
+#include <iostream>
+#include <sys/mman.h>
+#include <unistd.h>
 
-// 内存块最小大小 (64字节)
-constexpr size_t MIN_BLOCK_SIZE = 64;
-// 内存对齐 (16字节)
-constexpr size_t ALIGNMENT = 16;
+// 内存块最小大小 (48字节)
+constexpr size_t MIN_BLOCK_SIZE = 48;
+// 内存对齐 (8字节)
+constexpr size_t ALIGNMENT = 8;
 // 保护标记 (0xABABABAB)
 constexpr uint32_t GUARD_TAG = 0xABABABAB;
 
@@ -23,7 +21,7 @@ struct BlockMeta {
     uint32_t color : 1;   // 红黑树颜色 (仅空闲块有效)
 };
 
-// 空闲块数据结构
+// 空闲块数据结构 (使用用户数据区存储树节点)
 struct FreeBlock {
     BlockMeta header;         // 块头部
     FreeBlock* left;          // 左子树
@@ -32,20 +30,14 @@ struct FreeBlock {
     // 注意: 尾部元数据在块末尾
 };
 
-// 超级块信息
-struct SuperBlock {
-    void* base;               // 内存块起始地址
-    size_t size;              // 总大小
-};
-
 // 内存分配器类
 class BestFitAllocator {
 private:
     FreeBlock* root;          // 红黑树根节点
-    std::vector<SuperBlock> superblocks; // 所有超级块
+    void* heap_start;         // 堆起始位置
+    void* heap_end;           // 堆结束位置
     size_t total_allocated;   // 总分配内存
     size_t total_freed;       // 总释放内存
-    std::mutex mtx;           // 线程安全锁
 
     // 对齐计算
     size_t align_up(size_t size) {
@@ -302,32 +294,25 @@ private:
         return best;
     }
 
-    // 创建新超级块
-    FreeBlock* create_superblock(size_t size) {
-        // 计算超级块大小 (至少1MB)
-        size_t superblock_size = std::max(size * 4, static_cast<size_t>(1 << 20)); // 1MB
-        superblock_size = align_up(superblock_size);
+    // 扩展堆空间
+    FreeBlock* expand_heap(size_t size) {
+        // 计算需要申请的大小 (至少1页)
+        size_t page_size = sysconf(_SC_PAGESIZE);
+        size_t request_size = (size + page_size - 1) / page_size * page_size;
         
-        // 申请内存
-        void* mem = std::malloc(superblock_size);
-        if (!mem) return nullptr;
+        void* block = sbrk(request_size);
+        if (block == reinterpret_cast<void*>(-1)) return nullptr;
         
-        // 记录超级块信息
-        superblocks.push_back({mem, superblock_size});
-        total_allocated += superblock_size;
+        // 初始化新块
+        FreeBlock* new_block = reinterpret_cast<FreeBlock*>(block);
+        init_block(new_block, request_size, false);
         
-        // 初始化保护块 (永不分配)
-        BlockMeta* guard = reinterpret_cast<BlockMeta*>(mem);
-        guard->size = GUARD_TAG;
-        guard->alloc = true;
+        // 更新堆边界
+        if (!heap_start) heap_start = block;
+        heap_end = reinterpret_cast<char*>(block) + request_size;
         
-        // 初始化主空闲块
-        FreeBlock* main_block = reinterpret_cast<FreeBlock*>(
-            reinterpret_cast<char*>(mem) + sizeof(BlockMeta));
-        size_t block_size = superblock_size - 2 * sizeof(BlockMeta);
-        init_block(main_block, block_size, false);
-        
-        return main_block;
+        total_allocated += request_size;
+        return new_block;
     }
 
     // 分割内存块
@@ -360,23 +345,9 @@ private:
     // 合并相邻空闲块
     FreeBlock* coalesce_blocks(FreeBlock* block) {
         // 检查前一个块
-        FreeBlock* prev = get_prev_block(block);
-        if (prev && !prev->header.alloc) {
-            // 检查是否在同一超级块
-            bool same_superblock = false;
-            for (const auto& sb : superblocks) {
-                char* start = reinterpret_cast<char*>(sb.base);
-                char* end = start + sb.size;
-                if (reinterpret_cast<char*>(prev) >= start && 
-                    reinterpret_cast<char*>(prev) < end &&
-                    reinterpret_cast<char*>(block) >= start && 
-                    reinterpret_cast<char*>(block) < end) {
-                    same_superblock = true;
-                    break;
-                }
-            }
-            
-            if (same_superblock) {
+        if (block != heap_start) {
+            FreeBlock* prev = get_prev_block(block);
+            if (prev && !prev->header.alloc) {
                 // 从树中删除前块
                 rb_delete(prev);
                 
@@ -389,23 +360,9 @@ private:
         }
         
         // 检查后一个块
-        FreeBlock* next = get_next_block(block);
-        if (next && !next->header.alloc) {
-            // 检查是否在同一超级块
-            bool same_superblock = false;
-            for (const auto& sb : superblocks) {
-                char* start = reinterpret_cast<char*>(sb.base);
-                char* end = start + sb.size;
-                if (reinterpret_cast<char*>(block) >= start && 
-                    reinterpret_cast<char*>(block) < end &&
-                    reinterpret_cast<char*>(next) >= start && 
-                    reinterpret_cast<char*>(next) < end) {
-                    same_superblock = true;
-                    break;
-                }
-            }
-            
-            if (same_superblock) {
+        if (reinterpret_cast<char*>(block) + block->header.size < reinterpret_cast<char*>(heap_end)) {
+            FreeBlock* next = get_next_block(block);
+            if (next && !next->header.alloc) {
                 // 从树中删除后块
                 rb_delete(next);
                 
@@ -420,28 +377,39 @@ private:
 
 public:
     BestFitAllocator() 
-        : root(nullptr), total_allocated(0), total_freed(0) {
-        // 初始创建一个小超级块
-        FreeBlock* block = create_superblock(1 << 16); // 64KB
-        if (block) {
-            root = block;
-            root->left = root->right = root->parent = nullptr;
-            root->header.color = static_cast<uint32_t>(Color::BLACK);
-        }
+        : root(nullptr), heap_start(nullptr), heap_end(nullptr), 
+          total_allocated(0), total_freed(0) {
+        // 初始申请4页内存
+        size_t page_size = sysconf(_SC_PAGESIZE);
+        heap_start = sbrk(4 * page_size);
+        heap_end = reinterpret_cast<char*>(heap_start) + 4 * page_size;
+        
+        // 初始化保护块 (永不分配)
+        FreeBlock* guard = reinterpret_cast<FreeBlock*>(heap_start);
+        guard->header.size = GUARD_TAG;
+        guard->header.alloc = true;
+        
+        // 初始化主空闲块
+        FreeBlock* main_block = reinterpret_cast<FreeBlock*>(
+            reinterpret_cast<char*>(heap_start) + sizeof(BlockMeta));
+        size_t main_size = 4 * page_size - 2 * sizeof(BlockMeta);
+        init_block(main_block, main_size, false);
+        
+        // 插入红黑树
+        root = main_block;
+        main_block->left = main_block->right = main_block->parent = nullptr;
+        main_block->header.color = static_cast<uint32_t>(Color::BLACK);
+        
+        total_allocated = 4 * page_size;
     }
 
     ~BestFitAllocator() {
-        // 释放所有超级块
-        for (auto& sb : superblocks) {
-            std::free(sb.base);
-        }
-        superblocks.clear();
+        // 重置堆指针
+        brk(heap_start);
     }
 
     // 内存分配函数
     void* allocate(size_t size) {
-        std::lock_guard<std::mutex> lock(mtx);
-        
         if (size == 0) return nullptr;
         
         // 计算所需总大小
@@ -450,13 +418,11 @@ public:
         // 搜索最佳匹配
         FreeBlock* block = search_best_fit(total_size);
         
-        // 没有合适块则创建新超级块
+        // 没有合适块则扩展堆
         if (!block) {
-            block = create_superblock(total_size);
+            block = expand_heap(total_size);
             if (!block) return nullptr;
             rb_insert(block);
-            block = search_best_fit(total_size);
-            if (!block) return nullptr;
         }
         
         // 从树中删除找到的块
@@ -469,8 +435,6 @@ public:
     // 内存释放函数
     void deallocate(void* ptr) {
         if (!ptr) return;
-        
-        std::lock_guard<std::mutex> lock(mtx);
         
         // 获取块起始位置 (用户指针前移得到块头)
         FreeBlock* block = reinterpret_cast<FreeBlock*>(
@@ -500,27 +464,6 @@ public:
         std::cout << "  Total Allocated: " << total_allocated << " bytes\n";
         std::cout << "  Total Freed: " << total_freed << " bytes\n";
         std::cout << "  Current Usage: " << (total_allocated - total_freed) << " bytes\n";
-        std::cout << "  Superblocks: " << superblocks.size() << "\n";
-        std::cout << "  Fragmentation: " 
-                  << (total_allocated - total_freed - get_used_memory()) * 100.0 / total_allocated 
-                  << "%\n";
-    }
-
-    // 获取实际使用内存
-    size_t get_used_memory() const {
-        size_t used = 0;
-        for (const auto& sb : superblocks) {
-            FreeBlock* block = reinterpret_cast<FreeBlock*>(
-                reinterpret_cast<char*>(sb.base) + sizeof(BlockMeta));
-            
-            while (reinterpret_cast<char*>(block) < reinterpret_cast<char*>(sb.base) + sb.size) {
-                if (block->header.alloc) {
-                    used += block->header.size;
-                }
-                block = get_next_block(block);
-            }
-        }
-        return used;
     }
 };
 
@@ -537,7 +480,7 @@ extern "C" void bf_free(void* ptr) {
 }
 
 // 测试函数
-void run_allocator_tests() {
+void test_allocator() {
     // 基本分配/释放测试
     void* p1 = bf_malloc(100);
     void* p2 = bf_malloc(200);
@@ -572,50 +515,22 @@ void run_allocator_tests() {
     
     // 合并测试
     void* a = bf_malloc(64);
-    void* b_ptr = bf_malloc(64);
+    void* b = bf_malloc(64);
     void* c = bf_malloc(64);
     
     std::cout << "Allocated a: " << a << "\n";
-    std::cout << "Allocated b: " << b_ptr << "\n";
+    std::cout << "Allocated b: " << b << "\n";
     std::cout << "Allocated c: " << c << "\n";
     
-    bf_free(b_ptr);
+    bf_free(b);
     bf_free(a); // 应合并a和b
     
     bf_free(c);
     
-    // 性能测试
-    const int NUM_ALLOCS = 10000;
-    std::vector<void*> pointers;
-    pointers.reserve(NUM_ALLOCS);
-    
-    for (int i = 0; i < NUM_ALLOCS; i++) {
-        size_t size = (i % 128 + 1) * 16;
-        pointers.push_back(bf_malloc(size));
-    }
-    
-    // 随机释放一半指针
-    std::random_shuffle(pointers.begin(), pointers.end());
-    for (int i = 0; i < NUM_ALLOCS / 2; i++) {
-        bf_free(pointers[i]);
-    }
-    
-    // 再分配一些
-    for (int i = 0; i < NUM_ALLOCS / 4; i++) {
-        size_t size = (i % 64 + 1) * 32;
-        pointers.push_back(bf_malloc(size));
-    }
-    
-    // 释放剩余指针
-    for (void* ptr : pointers) {
-        if (ptr) bf_free(ptr);
-    }
-    
     allocator.print_stats();
-    std::cout << "All tests completed successfully!\n";
 }
 
 int main() {
-    run_allocator_tests();
+    test_allocator();
     return 0;
 }

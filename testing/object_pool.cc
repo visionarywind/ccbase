@@ -16,8 +16,8 @@ class ObjectPool : public std::enable_shared_from_this<ObjectPool<T>> {
 
   std::shared_ptr<T> Acquire() {
     std::lock_guard<std::mutex> lock(mutex_);
-    if (pool_.empty()) {
-      if (autoDestroyed_) {
+    if (object_cache_.empty()) {
+      if (is_destroyed_) {
         throw std::runtime_error("ObjectPool has been destroyed");
       }
 
@@ -25,8 +25,8 @@ class ObjectPool : public std::enable_shared_from_this<ObjectPool<T>> {
       return CreateNew();
     } else {
       std::cout << "Reusing existing object\n";
-      auto ptr = pool_.front();
-      pool_.pop();
+      auto ptr = object_cache_.front();
+      object_cache_.pop();
 
       return std::shared_ptr<T>(ptr, [weak_pool = this->weak_from_this()](T *obj) {
         if (auto pool_ptr = weak_pool.lock()) {
@@ -41,25 +41,25 @@ class ObjectPool : public std::enable_shared_from_this<ObjectPool<T>> {
 
   void Clear() {
     std::lock_guard<std::mutex> lock(mutex_);
-    std::cout << "Clearing pool (" << pool_.size() << " objects)\n";
-    while (!pool_.empty()) {
-      delete pool_.front();
-      pool_.pop();
+    std::cout << "Clearing pool (" << object_cache_.size() << " objects)\n";
+    while (!object_cache_.empty()) {
+      delete object_cache_.front();
+      object_cache_.pop();
     }
   }
 
   size_t Size() const {
     std::lock_guard<std::mutex> lock(mutex_);
-    return pool_.size();
+    return object_cache_.size();
   }
 
   void Destroy() {
     Clear();
-    autoDestroyed_ = true;
+    is_destroyed_ = true;
   }
 
   ~ObjectPool() {
-    if (!autoDestroyed_) {
+    if (!is_destroyed_) {
       std::cout << "ObjectPool destructor called - clearing remaining objects\n";
       Clear();
     }
@@ -70,7 +70,7 @@ class ObjectPool : public std::enable_shared_from_this<ObjectPool<T>> {
 
   void Initialize(size_t initialSize) {
     for (size_t i = 0; i < initialSize; ++i) {
-      pool_.push(CreateRaw());
+      object_cache_.push(CreateRaw());
     }
   }
 
@@ -93,20 +93,20 @@ class ObjectPool : public std::enable_shared_from_this<ObjectPool<T>> {
 
   void Release(T *obj) {
     std::lock_guard<std::mutex> lock(mutex_);
-    if (autoDestroyed_) {
+    if (is_destroyed_) {
       std::cout << "Pool destroyed - deleting released object\n";
       delete obj;
     } else {
       if constexpr (std::is_member_function_pointer_v<decltype(&T::Reset)>) {
         obj->Reset();
       }
-      pool_.push(obj);
+      object_cache_.push(obj);
     }
   }
 
-  std::queue<T *> pool_;
+  std::queue<T *> object_cache_;
   mutable std::mutex mutex_;
-  bool autoDestroyed_ = false;
+  bool is_destroyed_ = false;
 };
 
 class MyResource {
