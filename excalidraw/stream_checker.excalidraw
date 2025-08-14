@@ -1,0 +1,51 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "rz0hAZOqqBfrIo7QqG9CN",
+      "type": "text",
+      "x": 389,
+      "y": 240,
+      "width": 759.2596435546875,
+      "height": 350,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a2",
+      "roundness": null,
+      "seed": 1628641269,
+      "version": 670,
+      "versionNonce": 1480640597,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1754985533014,
+      "link": null,
+      "locked": false,
+      "text": "stream t：维护向量，stream_vec[i]   对于当前流，其他流执行到了哪个event\naddr a：   read_vec[i] write_vec[i]  对于当前地址，流i在哪个event后进行了访问\nevent e：  event_vec[i]                event i执行时，其他流执行完了哪些event\n\nrecord event\n    event_vec[i] += 1\n    更新其他event的event[i]\n\nwait event\n    更新当前event_vec[i]\n\n下发算子\n1 读 read_vec[i] = stream_vec[i] 写 write_vec[i] = stream_vec[i]\n",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "stream t：维护向量，stream_vec[i]   对于当前流，其他流执行到了哪个event\naddr a：   read_vec[i] write_vec[i]  对于当前地址，流i在哪个event后进行了访问\nevent e：  event_vec[i]                event i执行时，其他流执行完了哪些event\n\nrecord event\n    event_vec[i] += 1\n    更新其他event的event[i]\n\nwait event\n    更新当前event_vec[i]\n\n下发算子\n1 读 read_vec[i] = stream_vec[i] 写 write_vec[i] = stream_vec[i]\n",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "gridStep": 5,
+    "gridModeEnabled": false,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
