@@ -555,6 +555,8 @@ void AbstractDynamicMemPool::FreeTensorMem(const DeviceMemPtr &device_addr) {
 
 // The main program entry of memory free.
 bool AbstractDynamicMemPool::DoFreeTensorMem(const DeviceMemPtr &device_addr) {
+  std::cout << "Do free tensor mem : " << device_addr << std::endl;
+  
   void *addr = device_addr;
   auto &&it = addr_mem_buf_allocators_.find(device_addr);
   if (MS_LIKELY(it != addr_mem_buf_allocators_.end())) {
@@ -564,12 +566,14 @@ bool AbstractDynamicMemPool::DoFreeTensorMem(const DeviceMemPtr &device_addr) {
     if (MS_LIKELY(allocator->Free(mem_buf))) {
       mem_stat_.used_size_ -= free_size;
       (void)addr_mem_buf_allocators_.erase(it);
+      std::cout << "Exit do free tensor mem : " << device_addr << std::endl;
       return true;
     }
   } else {
     // This may be normal case.
     // MS_LOG(INFO) << "Free tensor mem failed, can not find address : " << addr << ".";
   }
+  std::cout << "Exit do free tensor mem : " << device_addr << std::endl;
   return false;
 }
 
