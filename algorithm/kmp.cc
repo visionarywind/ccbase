@@ -4,14 +4,27 @@
 
 std::vector<int> BuildPatternTable(const std::string_view &pattern) {
   std::vector<int> pattern_table(pattern.size(), 0);
-  for (int i = 1, j = 0; i < pattern.size(); i++) {
-    while (j > 0 && pattern[i] != pattern[j]) {
-      j = pattern_table[j - 1];
-    }
+  // for (int i = 1, j = 0; i < pattern.size(); i++) {
+  //   while (j > 0 && pattern[i] != pattern[j]) {
+  //     j = pattern_table[j - 1];
+  //   }
+  //   if (pattern[i] == pattern[j]) {
+  //     j++;
+  //   }
+  //   pattern_table[i] = j;
+  // }
+  for (int i = 1, j = 0; i < pattern.size(); ) {
     if (pattern[i] == pattern[j]) {
       j++;
+      pattern_table[i] = j;
+      i++;
+    } else {
+      if (j > 0) {
+        j = pattern_table[j - 1];
+      } else {
+        i++;
+      }
     }
-    pattern_table[i] = j;
   }
   return pattern_table;
 }
