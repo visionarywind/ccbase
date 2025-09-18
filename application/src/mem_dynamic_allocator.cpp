@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include "mem_dynamic_allocator.h"
+
 #include <chrono>
 #include <string>
 #include <algorithm>
@@ -38,7 +38,33 @@ constexpr size_t kGBToByte = 1024 << 20;
 // Set experience value to 10M
 const size_t kMinimumAllocMem = 10 << 20;
 
-thread_local AllocatorDebugInfo DynamicMemAllocatorDebugInfo::debug_info_;
+// Recording information for debugging the memory allocator.
+struct AllocatorDebugInfo {
+  std::string name_{"Unknown"};
+  AllocatorType type_{AllocatorType::kOther};
+  int input_index_{-1};
+  int output_index_{-1};
+  uint8_t run_mode_{0};
+};
+
+static thread_local AllocatorDebugInfo debug_info_;
+
+class DynamicMemAllocatorDebugInfo {
+ public:
+  static AllocatorDebugInfo &GetDebugInfo() noexcept {
+    return debug_info_;
+  }
+
+  // Set the debug info when memory alloc.
+  static void SetDebugInfo(const std::string &name, AllocatorType type, int input_index = -1,
+                           int output_index = -1, uint8_t run_mode = 0);
+
+ private:
+  DynamicMemAllocatorDebugInfo() = default;
+  virtual ~DynamicMemAllocatorDebugInfo() = default;
+  DynamicMemAllocatorDebugInfo(const DynamicMemAllocatorDebugInfo &) = delete;
+  DynamicMemAllocatorDebugInfo &operator=(const DynamicMemAllocatorDebugInfo &) = delete;
+};
 
 static const std::map<DynamicMemBufStatus, std::string> kBufStatusString = {
   {DynamicMemBufStatus::kMemBufIdle, "idle"},

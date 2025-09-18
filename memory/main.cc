@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 #include <string_view>
+#include <type_traits>
+
 using namespace std;
 
 std::vector<std::string> split(std::string &s, std::string delimiter) {
@@ -169,6 +171,10 @@ std::pair<size_t, size_t> TailSubStr(const std::string_view &src_str, const std:
 }
 
 bool MatchOp(const std::string_view &src, const std::string_view &opname) {
+  if (opname.empty()) {
+    return false;
+  }
+
   auto [start, end] = TailSubStr(src, opname);
   if (start == SIZE_MAX) {
     return false;
@@ -204,6 +210,8 @@ void test() {
   std::cout << "addr : " << addr << ", p " << &addr << std::endl;
   std::cout << bufs[0]->addr << ", p " << &(bufs[0]->addr) << std::endl;
 
+
+  std::cout << MatchOp("Pipeline/WithDynamic/A-op0123", "") << std::endl;
   std::cout << MatchOp("Pipeline/WithDynamic/Add-op0123", "Reshape") << std::endl;
   std::cout << MatchOp("Reshasdadasdpe-op1", "Reshape") << std::endl;
   std::cout << MatchOp("Reshape-op1", "Reshape") << std::endl;
@@ -213,6 +221,21 @@ void test() {
   std::cout << MatchOp("Pipeline/WithDynamic/sdReshape-op0123", "Reshape") << std::endl; 
   std::cout << MatchOp("Pipeline/WithDynamicReshape/Add-op0123", "Reshape") << std::endl;
 }
+
+struct Addr {
+  Addr() {}
+  void *addr;
+};
+
+struct IpAddr : Addr {
+  IpAddr() = default;
+  int version;
+};
+
+struct PlainObj {
+  // std::shared_ptr<std::map<int, int>> mapping;
+  std::shared_ptr<void> addr;
+};
 
 int main() {
   MemoryPool *pool = new MemoryPool();
@@ -259,5 +282,7 @@ int main() {
   addr_size_map.erase(a);
   std::cout << a << std::endl;
   test();
+  std::cout << "is trivial : " << (std::is_trivial_v<EventBase>) << std::endl;
+  std::cout << "PlainObj is trivial : " << (std::is_trivial_v<PlainObj>) << std::endl;
   return 0;
 }

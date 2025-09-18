@@ -14,18 +14,18 @@ add_subdirectory(common)
 add_subdirectory(tools)
 add_subdirectory(nice)
 add_subdirectory(libs)
+add_subdirectory(algorithm)
 add_subdirectory(application)
 add_subdirectory(gtests)
 add_subdirectory(test)
 
 include(FetchContent)
 
-# Configure for google test.
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://gitee.com/mirrors/googletest.git
-        GIT_TAG release-1.12.1
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings.
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
+find_package(googletest QUIET)
+if(NOT googletest_FOUND)
+  FetchContent_Declare(googletest
+    GIT_REPOSITORY https://gitee.com/mirrors/googletest.git
+    GIT_TAG release-1.12.1
+  )
+  FetchContent_MakeAvailable(googletest)
+endif()
