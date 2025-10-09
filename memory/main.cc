@@ -237,7 +237,7 @@ struct PlainObj {
   std::shared_ptr<void> addr;
 };
 
-int main() {
+int main2() {
   MemoryPool *pool = new MemoryPool();
   std::vector<void *> addrs;
   for (size_t i = 0; i < 10; i++) {
@@ -284,5 +284,18 @@ int main() {
   test();
   std::cout << "is trivial : " << (std::is_trivial_v<EventBase>) << std::endl;
   std::cout << "PlainObj is trivial : " << (std::is_trivial_v<PlainObj>) << std::endl;
+  return 0;
+}
+
+struct Address {
+  void *addr_;
+  void *pointer_;
+};
+
+int main() {
+  std::cout << "Hello, World!" << std::endl;
+  void *addr = malloc(sizeof(void *) + sizeof(Address));
+  Address *address = reinterpret_cast<Address *>(addr);
+  
   return 0;
 }
