@@ -21,7 +21,7 @@ using json = nlohmann::json;
 #include "robin_hood.h"
 #include "sorted_vector.h"
 #include "template.h"
-#include "tools/timer.h"
+#include "timer.h"
 #include "skiplist.h"
 #include "mem_dynamic_allocator.h"
 
@@ -191,7 +191,7 @@ string ToHex(char data) {
 }
 
 int main() {
-  std::cout << "Application start2" << std::endl;
+  std::cout << "Application start" << std::endl;
   // json data = {{"pi", 3.141},
   //              {"happy", true},
   //              {"name", "Niels"},
@@ -292,7 +292,7 @@ int main() {
 
   // s.display_list();
 
-  return 0;
+  test();
 
   std::cout << "Application end" << std::endl;
   return 0;

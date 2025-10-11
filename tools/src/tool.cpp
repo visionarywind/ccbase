@@ -1,4 +1,4 @@
-#include <tools/tool.h>
+#include <tool.h>
 
 void CountDownLatch::await() {
     std::unique_lock<std::mutex> lock(mutex_);

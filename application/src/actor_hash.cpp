@@ -7,7 +7,7 @@
 
 #include "robin_hood.h"
 
-#include "tools/timer.h"
+#include "timer.h"
 
 using namespace std;
 

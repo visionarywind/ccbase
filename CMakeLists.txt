@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -O2 -Wall")
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # enable debug
-set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
+# set(CMAKE_CONFIGURATION_TYPES "Debug" CACHE STRING "" FORCE)
 
 add_subdirectory(common)
 add_subdirectory(tools)

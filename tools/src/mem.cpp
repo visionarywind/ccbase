@@ -7,8 +7,8 @@
 #include <thread>
 #include <map>
 
-#include <tools/timer.h>
-#include <tools/tool.h>
+#include <timer.h>
+#include <tool.h>
 
 using namespace std;
 using namespace std::chrono;

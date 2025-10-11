@@ -1,6 +1,6 @@
 project(tools)
 
-include_directories(include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 set(SOURCE_FILES
         src/tool.cpp
@@ -9,7 +9,4 @@ set(SOURCE_FILES
 
 add_library(tools SHARED ${SOURCE_FILES})
 
-target_include_directories(${PROJECT_NAME}
-        INTERFACE
-        ${PROJECT_SOURCE_DIR}/include
-        )
+target_include_directories(tools INTERFACE .)

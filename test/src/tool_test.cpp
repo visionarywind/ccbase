@@ -1,4 +1,4 @@
-#include <tools/tool.h>
+#include <tool.h>
 #include <catch.hpp>
 
 TEST_CASE("Create and count", "[count_down_latch]") {

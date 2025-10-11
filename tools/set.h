@@ -6,6 +6,7 @@
 #define CCBASE_SET_H
 
 #include <memory>
+#include <set>
 
 struct Node {
   Node(int val) : val_(val) {}

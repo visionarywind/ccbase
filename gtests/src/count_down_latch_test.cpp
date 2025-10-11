@@ -3,8 +3,8 @@
 //
 #include <gtest/gtest.h>
 #include <iostream>
-#include <tools/tool.h>
-#include <tools/set.h>
+#include <tool.h>
+#include <set.h>
 #include "count_down_latch_test.h"
 
 using namespace std;
