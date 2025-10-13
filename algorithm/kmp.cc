@@ -2,18 +2,9 @@
 #include <string_view>
 #include <vector>
 
-std::vector<int> BuildPatternTable(const std::string_view &pattern) {
-  std::vector<int> pattern_table(pattern.size(), 0);
-  // for (int i = 1, j = 0; i < pattern.size(); i++) {
-  //   while (j > 0 && pattern[i] != pattern[j]) {
-  //     j = pattern_table[j - 1];
-  //   }
-  //   if (pattern[i] == pattern[j]) {
-  //     j++;
-  //   }
-  //   pattern_table[i] = j;
-  // }
-  for (int i = 1, j = 0; i < pattern.size(); ) {
+std::vector<size_t> BuildPatternTable(const std::string_view &pattern) {
+  std::vector<size_t> pattern_table(pattern.size(), 0);
+  for (size_t i = 1, j = 0; i < pattern.size();) {
     if (pattern[i] == pattern[j]) {
       j++;
       pattern_table[i] = j;
@@ -37,22 +28,13 @@ bool kmp(const std::string_view &src, const std::string_view &pattern) {
     return false;
   }
   const auto &pattern_table = BuildPatternTable(pattern);
-  for (int i = 0, j = 0; i < src.size(); i++) {
-    // while (j > 0 && src[i] != src[j]) {
-    //   j = pattern_table[j - 1];
-    // }
-    // if (src[i] == src[j]) {
-    //   j++;
-    // }
-    // if (j == pattern.size()) {
-    //   return true;
-    // }
+  for (size_t i = 0, j = 0; i < src.size();) {
     if (src[i] == pattern[j]) {
-      i++;
       j++;
       if (j == pattern.size()) {
         return true;
       }
+      i++;
     } else {
       if (j > 0) {
         j = pattern_table[j - 1];
