@@ -46,7 +46,7 @@ size_t lcs_sc(const std::string &left, const std::string &right) {
       if (left[i] == right[j]) {
         dp[j + 1] = prev + 1;
       } else {
-        dp[j + 1] = std::max(prev, dp[j + 1]);
+        dp[j + 1] = std::max(dp[j], dp[j + 1]);
       }
       prev = temp;
     }
