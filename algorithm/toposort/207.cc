@@ -41,17 +41,17 @@ class Solution {
  public:
   bool canFinish(int numCourses, vector<vector<int>> &prerequisites) {
     vector<vector<int>> adj(numCourses, vector<int>());
-    vector<int> in_greed(numCourses, 0);
+    vector<int> inGree(numCourses, 0);
     for (auto &vec : prerequisites) {
       auto a = vec[0];
       auto b = vec[1];  // a <- b
-      in_greed[a]++;
+      inGree[a]++;
       adj[b].push_back(a);
     }
     queue<int> q;
     vector<int> result;
     for (int i = 0; i < numCourses; i++) {
-      if (in_greed[i] == 0) {
+      if (inGree[i] == 0) {
         q.push(i);
       }
     }
@@ -61,7 +61,7 @@ class Solution {
       q.pop();
       auto &courses = adj[course];
       for (auto course : courses) {
-        if (--in_greed[course] == 0) {
+        if (--inGree[course] == 0) {
           q.push(course);
         }
       }
