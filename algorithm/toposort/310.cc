@@ -76,3 +76,12 @@ class Solution {
     return ans;
   }
 };
+
+int sumOfLeftLeaves(TreeNode* root) {
+        if (root == nullptr || (root->left == nullptr && root->right == nullptr)) { return 0; }
+
+        if (root->left != nullptr && root->left->right == nullptr && root->left->left == nullptr) {
+            return root->left->val + sumOfLeftLeaves(root->right);
+        }
+        return sumOfLeftLeaves(root->left) + sumOfLeftLeaves(root->right);
+    }
