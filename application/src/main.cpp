@@ -308,3 +308,17 @@ void test() {
   std::cout << m << std::endl;
   m.reset();
 }
+class Solution {
+public:
+    int findMagicIndex(vector<int>& nums) {
+        auto dfs = [&](this auto &&dfs, int l, int r) -> int {
+            if (l > r) { return -1; }
+            int m = l + ((r - l) >> 1);
+            if (nums[m] == m) { return m; }
+            int left = dfs(l, m - 1);
+            if (left != -1) { return left; }
+            return dfs(m + 1, r);
+        };
+        return dfs(0, nums.size() - 1);
+    }
+};
