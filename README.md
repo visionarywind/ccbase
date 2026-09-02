@@ -1,6 +1,7 @@
 # Information
 - CMake multi-module project
-- Tests via `Catch2` and `GTest`
+- Tests via `GTest`
+- Algo implements
 
 ## Description 
 Base project for learning c++
